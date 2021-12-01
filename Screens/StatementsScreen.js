@@ -2,7 +2,11 @@ import { NavigationContainer, useNavigationContainerRef} from '@react-navigation
 import React, {Component} from 'react';
 import { SectionList, StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {Detail} from './Detail.js';
+import {StatementDetailScreen} from './StatementDetailScreen.js';
+import { useNavigation } from '@react-navigation/native';
+import { Actions } from 'react-native-router-flux';
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -36,22 +40,21 @@ function getFromMongo(){
 }
 //function to get data from mongodb
 
-export class SqlSectionListCom extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-              dateSource:[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
+
+export const StatementsScreen = () => {
+  const goToHome = () => {
+    Actions.home();
+ }
+
+    var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
                           {"category": "JOIN", "name": "Join","description": "Join table_name",},
-                          {"category": "DELETE", "name": "Delete","description": "Delete table_name",},]
-  }
-}
+                          {"category": "DELETE", "name": "Delete","description": "Delete table_name",},];
   
-  render() {
+
     const Stack = createStackNavigator();
     //loop json
     const retrievedJson = this.state.dateSource;
-    var sectionArr=[{title:'SELECT', data:[]},{title:'JOIN', data:[]}];
+    var sectionArr=[{title:'SELECT', data:[]},{title:'JOIN', data:[]},];
     //push correct datasource object into correct object in sectionArr
     //correct means dataSource.category === sectionArr.title
     retrievedJson.forEach(jsonElement => {
@@ -63,25 +66,32 @@ export class SqlSectionListCom extends Component {
           var sectionData = sectionArr[indexOfTitle];
           sectionData.data.push(jsonElement.name);
       }
-          
     });
-
-  
+   
     return (
       <View style={styles.container}>
-        <SectionList
+        {/* <SectionList
           sections={sectionArr}
           //renderItem={({item}) => <Button style={styles.listItem} onPress={()=>console.log('asfdgfg')}>{item}</Button>}
           renderItem={({item}) => 
-                              <Stack.Navigator>
-                                <Stack.Screen name='detail' component={Detail} />
-                              </Stack.Navigator>
+           <TouchableOpacity onPress={goToHome}>
+           <Text >{item}</Text>
+           </TouchableOpacity>
+          //<Detail {...props} navigation={navigation}></Detail>
+                              // <Stack.Navigator>
+                              //   <Stack.Screen name='detail' component={Detail} />
+                              // </Stack.Navigator>
                              
                             }
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
           keyExtractor={(item, index) => index}
-        />
+        /> */}
+        <TouchableOpacity onPress={goToHome}>
+           <Text >item</Text>
+           </TouchableOpacity>
       </View>
-    );
+    )
 }
-}
+//export default StatementsScreen;
+
+
