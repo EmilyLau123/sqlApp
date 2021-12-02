@@ -2,9 +2,10 @@ import { NavigationContainer, useNavigationContainerRef} from '@react-navigation
 import React, {Component} from 'react';
 import { SectionList, StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {StatementDetailScreen} from './StatementDetailScreen.js';
+// import {StatementDetailScreen} from './StatementDetailScreen.js';
 import { useNavigation } from '@react-navigation/native';
-import { Actions } from 'react-native-router-flux';
+import {HomeScreen} from './HomeScreen.js';
+
 
 
 
@@ -32,19 +33,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 })
-
-//function to get data from mongodb
-function getFromMongo(){
-
-  return;//return json object array
-}
-//function to get data from mongodb
-
-
-export const StatementsScreen = () => {
-  const goToHome = () => {
-    Actions.home();
- }
+const StatementsScreen = ({navigation}) => {
 
     var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
                           {"category": "JOIN", "name": "Join","description": "Join table_name",},
@@ -53,7 +42,7 @@ export const StatementsScreen = () => {
 
     const Stack = createStackNavigator();
     //loop json
-    const retrievedJson = this.state.dateSource;
+    const retrievedJson = dateSource;
     var sectionArr=[{title:'SELECT', data:[]},{title:'JOIN', data:[]},];
     //push correct datasource object into correct object in sectionArr
     //correct means dataSource.category === sectionArr.title
@@ -70,11 +59,11 @@ export const StatementsScreen = () => {
    
     return (
       <View style={styles.container}>
-        {/* <SectionList
+        <SectionList
           sections={sectionArr}
           //renderItem={({item}) => <Button style={styles.listItem} onPress={()=>console.log('asfdgfg')}>{item}</Button>}
           renderItem={({item}) => 
-           <TouchableOpacity onPress={goToHome}>
+           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
            <Text >{item}</Text>
            </TouchableOpacity>
           //<Detail {...props} navigation={navigation}></Detail>
@@ -85,13 +74,13 @@ export const StatementsScreen = () => {
                             }
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
           keyExtractor={(item, index) => index}
-        /> */}
-        <TouchableOpacity onPress={goToHome}>
+        /> 
+        {/* <TouchableOpacity onPress={goToHome}>
            <Text >item</Text>
-           </TouchableOpacity>
+           </TouchableOpacity> */}
       </View>
-    )
+    );
 }
-//export default StatementsScreen;
 
+export default StatementsScreen;
 
