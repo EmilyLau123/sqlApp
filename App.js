@@ -11,9 +11,9 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import StatementsScreen from './Screens/StatementsScreen.js';
-// import {StatementDetailScreen} from './StatementDetailScreen';
 import HomeScreen from './Screens/HomeScreen';
 import AccountScreen from './Screens/AccountScreen';
+import SignInScreen from './Screens/SignInScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -50,11 +50,27 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+function MyTab(){
+  return(
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+    >
+      
+        <Tab.Screen name="Home" component={HomeScreen}/>
+        <Tab.Screen name="Statements" component={StatementsScreen}/>
+        <Tab.Screen name="Account" component={AccountScreen}/>
+
+    </Tab.Navigator>
+  );
+}
+
 
 const App=()=>{
   return (
     <NavigationContainer
-          initialRouteName='Account' ///the name of the initial screen
+          initialRouteName="Account" ///the name of the initial screen
 
           screenOptions={({route}) => ({
         //   tabBarIcon: ({foused, color, size}) => {
@@ -77,13 +93,8 @@ const App=()=>{
           tabBarInactiveTintColor: 'gray',
       })}
       >
-        <Tab.Navigator>
-      
-        <Tab.Screen name="Home" component={HomeScreen}/>
-        <Tab.Screen name="Statements" component={StatementsScreen}/>
-        <Tab.Screen name="Account" component={AccountScreen}/>
-
-      </Tab.Navigator>
+        
+      <MyTab/>
       
     </NavigationContainer>
   );

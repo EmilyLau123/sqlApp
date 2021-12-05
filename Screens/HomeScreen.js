@@ -10,7 +10,6 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import StatementsScreen from './StatementsScreen.js';
 // import {StatementDetailScreen} from './StatementDetailScreen';
 // import {AccountScreen} from './AccountScreen';
 
@@ -46,15 +45,40 @@ import { createStackNavigator } from '@react-navigation/stack';
 //   }
 // }
 
+function homeWelcomeHeader(){
+  return(
+    <View>
+      <Text>Welcome User !</Text>
+      <Text>Remember practice makes perfect!</Text>
+    </View>
+    
+  )
+}
+
+function DailyKnowledge(){
+  return(
+    <View>
+      <Text>
+        Welcome User !
+        </Text>
+          <Text>
+        Remember practice makes perfect!
+      </Text>
+    </View>
+    
+  )
+}
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
 const HomeScreen=()=>{
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={homeWelcomeHeader} optios={{title:"Home"}}/>
+      <Stack.Screen name="DailyKnowledge" component={DailyKnowledge} optios={{title:"Daily Knowledge"}}/>
+    </Stack.Navigator>
   );
 }
 export default HomeScreen;

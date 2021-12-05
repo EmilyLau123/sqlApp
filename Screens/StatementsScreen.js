@@ -2,9 +2,10 @@ import { NavigationContainer, useNavigationContainerRef} from '@react-navigation
 import React, {Component} from 'react';
 import { SectionList, StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-// import {StatementDetailScreen} from './StatementDetailScreen.js';
 import { useNavigation } from '@react-navigation/native';
-import {HomeScreen} from './HomeScreen.js';
+import HomeScreen from './HomeScreen.js';
+import StatementDetailScreen from './StatementDetailScreen.js';
+
 
 
 
@@ -15,7 +16,6 @@ const styles = StyleSheet.create({
    paddingTop: 22
   },
   sectionHeader: {
-    paddingTop: 2,
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 2,
@@ -33,51 +33,56 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 })
-const StatementsScreen = ({navigation}) => {
 
-    var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
+function StatementsSectionList({navigation}){
+  var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
                           {"category": "JOIN", "name": "Join","description": "Join table_name",},
                           {"category": "DELETE", "name": "Delete","description": "Delete table_name",},];
-  
 
-    const Stack = createStackNavigator();
     //loop json
     const retrievedJson = dateSource;
-    var sectionArr=[{title:'SELECT', data:[]},{title:'JOIN', data:[]},];
+    var sectionArr=[];
     //push correct datasource object into correct object in sectionArr
     //correct means dataSource.category === sectionArr.title
     retrievedJson.forEach(jsonElement => {
       const indexOfTitle = sectionArr.findIndex(element=>element.title === jsonElement.category);//jsonElement.category
       if(indexOfTitle == -1){//if can't find then create a section
-        var newSection={'title':jsonElement.category, data:[jsonElement.name]};
+        var newSection={'title':jsonElement.category, data:[jsonElement]};
         sectionArr.push(newSection);
       }else{
           var sectionData = sectionArr[indexOfTitle];
           sectionData.data.push(jsonElement.name);
       }
-    });
-   
+    })
+      return(
+        <SectionList
+                sections={sectionArr}
+                //renderItem={({item}) => <Button style={styles.listItem} onPress={()=>console.log('asfdgfg')}>{item}</Button>}
+                renderItem={({item}) => 
+                <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+                  title:{item},
+                  description:{item}
+                })}>
+                <Text >{item}</Text>
+                </TouchableOpacity>
+                                  }
+                renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                keyExtractor={(item, index) => index}
+              /> 
+    )
+
+}
+
+const Stack = createStackNavigator();
+
+const StatementsScreen = ({navigation}) => {
+
     return (
       <View style={styles.container}>
-        <SectionList
-          sections={sectionArr}
-          //renderItem={({item}) => <Button style={styles.listItem} onPress={()=>console.log('asfdgfg')}>{item}</Button>}
-          renderItem={({item}) => 
-           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-           <Text >{item}</Text>
-           </TouchableOpacity>
-          //<Detail {...props} navigation={navigation}></Detail>
-                              // <Stack.Navigator>
-                              //   <Stack.Screen name='detail' component={Detail} />
-                              // </Stack.Navigator>
-                             
-                            }
-          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-          keyExtractor={(item, index) => index}
-        /> 
-        {/* <TouchableOpacity onPress={goToHome}>
-           <Text >item</Text>
-           </TouchableOpacity> */}
+        <Stack.Navigator>
+              <Stack.Screen name="StatementsList" component={StatementsSectionList} optios={{title:"Statements List"}}/>
+              <Stack.Screen name="StatementDetail" component={StatementDetailScreen} optios={{title:"Statements Detail"}}/>
+            </Stack.Navigator>
       </View>
     );
 }

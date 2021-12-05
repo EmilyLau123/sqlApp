@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1ad2ef3-c44d-4522-97c0-c514e796854d" name="Default Changelist" comment="" />
+    <list default="true" id="c1ad2ef3-c44d-4522-97c0-c514e796854d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/AccountScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/AccountScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/HomeScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/SignInScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/SignInScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/SignUpScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/SignUpScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/StatementDetailScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/StatementDetailScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/StatementsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/StatementsScreen.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,10 +48,10 @@
       <screen x="8" y="-1080" width="1920" height="1040" />
     </state>
     <state x="422" y="-906" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/8.-1080.1920.1040@8.-1080.1920.1040" timestamp="1638439885042" />
-    <state x="100" y="-988" width="1736" height="856" key="AVDManager" timestamp="1638441474471">
+    <state x="100" y="-988" width="1736" height="856" key="AVDManager" timestamp="1638687992578">
       <screen x="8" y="-1080" width="1920" height="1040" />
     </state>
-    <state x="100" y="-988" width="1736" height="856" key="AVDManager/0.0.1280.680/8.-1080.1920.1040@8.-1080.1920.1040" timestamp="1638441474471" />
+    <state x="100" y="-988" width="1736" height="856" key="AVDManager/0.0.1280.680/8.-1080.1920.1040@8.-1080.1920.1040" timestamp="1638687992578" />
     <state x="469" y="-916" key="SettingsEditor" timestamp="1638440787699">
       <screen x="8" y="-1080" width="1920" height="1040" />
     </state>
