@@ -34,13 +34,35 @@ const styles = StyleSheet.create({
   },
 })
 
-function StatementsSectionList({navigation}){
-  var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
-                          {"category": "JOIN", "name": "Join","description": "Join table_name",},
-                          {"category": "DELETE", "name": "Delete","description": "Delete table_name",},];
+const getResultFromApi = () => {
+  //fatch api
+  console.log("fetching..");//https://reqres.in/api/products/3
+  return fetch('http://127.0.0.1:19006/statements',{
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+    }
+  })//
+          .then((response) => response.json())
+          .then((json) => {
+    return json;
+  })
+    .catch((error) => {
+    console.error("error:"+error);
+  });
+}
 
+function StatementsSectionList({navigation}){
+
+  var dateSource= getResultFromApi();
+  console.log(dateSource);
+  // var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
+  //                         {"category": "JOIN", "name": "Join","description": "Join table_name",},
+  //                         {"category": "DELETE", "name": "Delete","description": "Delete table_name",},];
+    
     //loop json
-    const retrievedJson = dateSource;
+    const retrievedJson = [dateSource];
     var sectionArr=[];
     //push correct datasource object into correct object in sectionArr
     //correct means dataSource.category === sectionArr.title
@@ -51,21 +73,25 @@ function StatementsSectionList({navigation}){
         sectionArr.push(newSection);
       }else{
           var sectionData = sectionArr[indexOfTitle];
-          sectionData.data.push(jsonElement.name);
+          sectionData.data.push(jsonElement);
       }
     })
+    const setData = (title,des) => {
+      this.state.description = "des";
+    }
       return(
         <SectionList
                 sections={sectionArr}
-                //renderItem={({item}) => <Button style={styles.listItem} onPress={()=>console.log('asfdgfg')}>{item}</Button>}
+                //extraData
                 renderItem={({item}) => 
                 <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-                  title:{item},
-                  description:{item}
+                  title:"titlee",
+                  description:"description"
                 })}>
-                <Text >{item}</Text>
+                <Text>{item.name}</Text>
                 </TouchableOpacity>
-                                  }
+                }
+                
                 renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                 keyExtractor={(item, index) => index}
               /> 
