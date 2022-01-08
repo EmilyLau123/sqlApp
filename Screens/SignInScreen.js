@@ -32,7 +32,7 @@ function submit(){
 }
 
 const SignInScreen = ({navigation}) => {
-    const [username,setUsername] = useState('qwe');
+    const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
 
     return(
@@ -48,7 +48,6 @@ const SignInScreen = ({navigation}) => {
                    style={styles.input}
                    onChangeText={password => setPassword(password)}
                    defaultValue={password}
-                
                 /> 
             <Button title='Login' onPress={username=>alert({username})}></Button>
             <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>

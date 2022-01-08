@@ -1,34 +1,23 @@
-const express = require('express')
-var mongoose = require('mongoose');
-const { MongoClient } = require('mongodb');
+import express from 'express';
 const app = express();
+import {findStatement} from './model/statement.js';
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
+//CRUD
+//Create
 
-const mongoUrl = 'mongodb+srv://emily:emily@cluster0.3i4a2.mongodb.net/sqlDb?retryWrites=true&w=majority'
+//Read
 
-app.get('/statements',function(){
-    console.log("client...");
-    mongoose.connect(mongoUrl)
-            .catch(error => console.log(error));
-    // mongoose.connect('mongodb://localhost:19006/MyDb',
-    //     {useMongoClient: true,}
-    // );
-    console.log("In...");
-    //var statements = mongoose.model('statements', statementsSchema);
-    const statementsSchema = new mongoose.Schema({});
-    const Statement = mongoose.model('Statements', statementsSchema, 'statements');
-    let db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', (callback) => {
-        console.log("retrieving...");
-        
-        Statement.find(function(err, results){
-            if(err){
-                return console.log(err);
-            }
-            db.close();
-            return console.log(results);
-        });
-    });
+
+//Update
+
+//Delete
+
+
+app.get('/Statements',function(req,res){
+    var re = findStatement();
+    console.log("re",re);
+    //res.status(200).json(re);
 });
 
 const server = app.listen(19006,function(){

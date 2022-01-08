@@ -3,14 +3,18 @@ import {
     Text,
     View,
     Image,
-    SectionList
+    SectionList,
+    Button,
+    Alert
     } from 'react-native';
+import { Card } from 'react-native-elements';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import {StatementDetailScreen} from './StatementDetailScreen';
+
+import {QuizScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -45,24 +49,29 @@ import { createStackNavigator } from '@react-navigation/stack';
 //   }
 // }
 
-function homeWelcomeHeader(){
+function homeWelcomeHeader({navigation}){
   return(
     <View>
       <Text>Welcome User !</Text>
       <Text>Remember practice makes perfect!</Text>
+      <Card>
+        <Card.Title>Today's Knowledge</Card.Title>
+        <Card.Divider />
+        <Text>--Knowledge title--</Text>
+        <Text>--Knowledge Content--</Text>
+        <Button title='View Details' onPress={()=>Alert.alert("Jump to the statement's detail page")}></Button>
+      </Card>
+      <Button title='Quiz' onPress={()=>navigation.navigate("Quiz")}></Button>
     </View>
     
   )
 }
 
-function DailyKnowledge(){
+function DailyKnowledge({navigation}){
   return(
     <View>
       <Text>
-        Welcome User !
-        </Text>
-          <Text>
-        Remember practice makes perfect!
+        knowledge
       </Text>
     </View>
     
@@ -72,12 +81,12 @@ function DailyKnowledge(){
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
 const HomeScreen=()=>{
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={homeWelcomeHeader} optios={{title:"Home"}}/>
-      <Stack.Screen name="DailyKnowledge" component={DailyKnowledge} optios={{title:"Daily Knowledge"}}/>
+      <Stack.Screen name="Quiz" component={QuizScreen} optios={{title:"Quiz"}}/>
+
     </Stack.Navigator>
   );
 }

@@ -1,6 +1,6 @@
 import { NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
 import React, {Component} from 'react';
-import { SectionList, StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { SectionList, StyleSheet, Text, View, Button, TouchableOpacity,Platform  } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen.js';
@@ -13,7 +13,7 @@ import StatementDetailScreen from './StatementDetailScreen.js';
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   paddingTop: 22
+   paddingTop: 0
   },
   sectionHeader: {
     paddingLeft: 10,
@@ -34,10 +34,13 @@ const styles = StyleSheet.create({
   },
 })
 
+const API_URL = Platform.OS === 'ios' ? 'http://localhost:19006/Statements' : 'http://220.246.129.225:19006/Statements';
+//http://220.246.129.225:19006/Statements';
+
 const getResultFromApi = () => {
   //fatch api
-  console.log("fetching..");//https://reqres.in/api/products/3
-  return fetch('http://127.0.0.1:19006/statements',{
+  console.log("fetching.."+API_URL);//https://reqres.in/api/products/3
+  return fetch(API_URL,{
     method: 'GET',
     headers: {
         'Accept': 'application/json',

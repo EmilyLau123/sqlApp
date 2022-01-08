@@ -10,10 +10,10 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import StatementsScreen from './Screens/StatementsScreen.js';
-import HomeScreen from './Screens/HomeScreen';
-import AccountScreen from './Screens/AccountScreen';
-import SignInScreen from './Screens/SignInScreen';
+import StatementsScreen from './screens/StatementsScreen.js';
+import HomeScreen from './screens/HomeScreen';
+import AccountScreen from './screens/AccountScreen';
+import SignInScreen from './screens/SignInScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
