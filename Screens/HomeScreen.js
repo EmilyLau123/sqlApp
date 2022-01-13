@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import {
     Text,
-    View,
     Image,
-    SectionList,
     Button,
-    Alert
-    } from 'react-native';
-import { Card } from 'react-native-elements';
+    Alert,
+    Card,
+    FAB 
+    } from 'react-native-elements';
+import { SectionList,View, StyleSheet } from 'react-native';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
@@ -19,6 +19,29 @@ import {QuizScreen} from './QuizScreen';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+const styles = StyleSheet.create({
+  Text: {
+   flex: 1,
+   paddingTop: 0
+  },
+  sectionHeader: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(247,247,247,1.0)',
+  },
+  item: {
+    padding: 5,
+    fontSize: 12,
+    height: 30,
+  },
+  listItem: {
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+    opacity: 0.5,
+  },
+})
 
 
 // class HomeScreen extends Component {
@@ -59,9 +82,16 @@ function homeWelcomeHeader({navigation}){
         <Card.Divider />
         <Text>--Knowledge title--</Text>
         <Text>--Knowledge Content--</Text>
-        <Button title='View Details' onPress={()=>Alert.alert("Jump to the statement's detail page")}></Button>
+        <Button title='View Details' onPress={()=>alert("Jump to the statement's detail page")}></Button>
       </Card>
       <Button title='Quiz' onPress={()=>navigation.navigate("Quiz")}></Button>
+      <FAB
+          visible={true}
+          onPress={() => alert("Request form")}
+          placement="right"
+          icon={{ name: 'add', color: 'white' }}
+          color="#5facdd"
+        />
     </View>
     
   )

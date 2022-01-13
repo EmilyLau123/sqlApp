@@ -2,29 +2,28 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { Component, useState } from 'react';
 import {
     Text,
-    View,
     Image,
     Button,
-    TextInput,
-    StyleSheet,
+    Input,
     onChangeText
-    } from 'react-native';
+    } from 'react-native-elements';
+import {StyleSheet,View} from 'react-native';
+
 import { submitForm } from 'react-native-form-component';
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
     input: {
         height: 50,
         margin: 10,
         borderWidth: 1,
         padding: 5,
         borderRadius: 4,
-
-      },
-      Button:{
-        borderWidth: 1,
-        borderRadius: 4,
-
-      }
+    },
+    button: {
+        alignItems:'center',
+        alignContent:'center'
+        
+    }
 });
 
 function submit(){
@@ -38,21 +37,50 @@ const SignInScreen = ({navigation}) => {
     return(
         <View>
             <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
-            <Text>Username : {username}</Text><TextInput
-                    style={styles.input}
+            <Text>Username : {username}</Text><Input
+                    style={style.input}
                     onChangeText={username => setUsername(username)}
                     defaultValue={username}
                 />
             <Text>Password : {password}</Text>
-            <TextInput
-                   style={styles.input}
+            <Input
+                   style={style.input}
                    onChangeText={password => setPassword(password)}
                    defaultValue={password}
+                   errorStyle={{ color: 'red' }}
+                   errorMessage='Error'
                 /> 
-            <Button title='Login' onPress={username=>alert({username})}></Button>
-            <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
-            <Button title='Sign Up' onPress={()=>navigation.navigate("SignUp")}></Button>
+            <Button title="SIGN IN"
+                // titleStyle={{ color: '#2465a0' }}
+                buttonStyle={{
+                  backgroundColor: '#2465a0',
+                  borderWidth: 2,
+                  borderColor: '#2465a0',
+                  borderRadius: 30,
+                }}
+                containerStyle={{
+                  width: 'auto',
+                  marginHorizontal: 50,
+                  marginVertical: 10,
+                }}
+                titleStyle={{ fontWeight: 'bold' }}
+                 onPress={()=>alert('sign in complete')}/>
 
+            <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
+                <Button title='GO SIGN UP'
+                buttonStyle={{
+                    backgroundColor: '#77afac',
+                    borderWidth: 2,
+                    borderColor: '#77afac',
+                    borderRadius: 30,
+                  }}
+                  containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                  }}
+                  titleStyle={{ fontWeight: 'bold' }}
+                onPress={()=>navigation.navigate("SignUp")}/>
         </View>
     );
 }

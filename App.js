@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {
     Text,
-    View,
     Image,
     SectionList
-    } from 'react-native';
+    } from 'react-native-elements';
+import { View } from 'react-native';
+
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';

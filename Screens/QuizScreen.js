@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import {
     Text,
-    View,
     Image,
-    SectionList,
+    
     Button
-    } from 'react-native';
+    } from 'react-native-elements'; 
+import { SectionList, FlatList,View } from 'react-native';
+
 import { createStackNavigator } from '@react-navigation/stack';
 
 

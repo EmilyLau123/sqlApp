@@ -20,7 +20,7 @@ const statementSchema = new Schema({
     approved_at: { type:Date, default:Date.now },
 });
 //model
-const Statement = mongoose.model('Statement', statementSchema, 'statements');
+export const Statement = mongoose.model('Statement', statementSchema, 'statements');
 
 //CRUD
 //Create
@@ -40,14 +40,7 @@ export const createStatement= (title, author, description, image, approved, subm
     });
     
 }
-//Read
-export const findStatement= () =>{
-  Statement.find({},function(err,docs){
-      if (err) console.log(err);
-      console.log(docs);
-      return docs;
-  });
-}
+
 //update
 export const updateStatement= (Id) =>{
   Statement.findById(Id,function(err,docs){
