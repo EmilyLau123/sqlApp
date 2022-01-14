@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
 const getResultFromApiAsync = async () => {
   try {
     const response = await fetch(
-      'https://reactnative.dev/movies.json'
+      'http://localhost:19009/statements'
     );
     const json = await response.json();
-    return json.movies;
+    return json;
   } catch (error) {
     console.error(error);
   }
@@ -92,21 +92,22 @@ function StatementsSectionList({navigation}){
           <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
                   title:"titlee",
                   description:"description"
-                })}>{item.name}</TouchableOpacity>
+                })}><Text>{item}</Text></TouchableOpacity>
                 </ListItem.Title>
           </ListItem.Content>
       </ListItem>
       );
   var dateSource= getResultFromApiAsync();
+  console.log(dateSource);
   //setDateSource(getResultFromApiAsync());
   // console.log("dateSource",dateSource.then(data => {
   // 	console.log(data)}
   // ));
   
-  var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
-                          {"category": "JOIN", "name": "Join","description": "Join table_name",},
-                          {"category": "DELETE", "name": "Delete","description": "Delete table_name",},
-                  ];
+  // var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
+  //                         {"category": "JOIN", "name": "Join","description": "Join table_name",},
+  //                         {"category": "DELETE", "name": "Delete","description": "Delete table_name",},
+  //                 ];
     
     //loop json
    // var retrievedArray = [];

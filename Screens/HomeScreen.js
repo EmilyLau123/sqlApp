@@ -13,7 +13,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {requestSubmitScreen} from './RequestSubmitScreen';
 import {QuizScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
 
@@ -21,17 +21,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
   Text: {
-   flex: 1,
-   paddingTop: 0
+   padding:5
   },
-  sectionHeader: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: 'bold',
-    backgroundColor: 'rgba(247,247,247,1.0)',
+  Title:{
+    fontWeight:'bold',
+    fontSize:16,
+    padding:10
   },
+  
   item: {
     padding: 5,
     fontSize: 12,
@@ -75,38 +72,54 @@ const styles = StyleSheet.create({
 function homeWelcomeHeader({navigation}){
   return(
     <View>
-      <Text>Welcome User !</Text>
-      <Text>Remember practice makes perfect!</Text>
+      <Text style={styles.Text}>Welcome User !</Text>
+      <Text style={styles.Text}>Remember practice makes perfect!</Text>
       <Card>
-        <Card.Title>Today's Knowledge</Card.Title>
+        <Card.Title> Today's Knowledge</Card.Title>
         <Card.Divider />
-        <Text>--Knowledge title--</Text>
-        <Text>--Knowledge Content--</Text>
-        <Button title='View Details' onPress={()=>alert("Jump to the statement's detail page")}></Button>
+        <Text style={styles.Title}>--Knowledge title--</Text>
+        <Text style={styles.Text}>--Knowledge Content--</Text>
+        <Button title='View Details' 
+                buttonStyle={{
+                  backgroundColor: '#61696f',
+                  borderWidth: 2,
+                  borderColor: '#61696f',
+                  borderRadius: 30,
+                }}
+                containerStyle={{
+                  width: 'auto',
+                  marginHorizontal: 50,
+                  marginVertical: 10,
+                }}
+                titleStyle={{ fontWeight: 'bold' }}
+                onPress={()=>alert("Jump to the statement's detail page")}></Button>
       </Card>
-      <Button title='Quiz' onPress={()=>navigation.navigate("Quiz")}></Button>
+      <Button title='Quiz' 
+              buttonStyle={{
+                backgroundColor: '#77afac',
+                borderWidth: 2,
+                borderColor: '#77afac',
+                borderRadius: 30,
+              }}
+              containerStyle={{
+                width: 'auto',
+                marginHorizontal: 50,
+                marginVertical: 10,
+              }}
+              titleStyle={{ fontWeight: 'bold' }}
+              onPress={()=>navigation.navigate("Quiz")}></Button>
       <FAB
           visible={true}
-          onPress={() => alert("Request form")}
+          onPress={() =>navigation.navigate("RequestSubmit")}
           placement="right"
           icon={{ name: 'add', color: 'white' }}
-          color="#5facdd"
+          color="#d9cc35"
         />
     </View>
     
   )
 }
 
-function DailyKnowledge({navigation}){
-  return(
-    <View>
-      <Text>
-        knowledge
-      </Text>
-    </View>
-    
-  )
-}
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -116,6 +129,7 @@ const HomeScreen=()=>{
     <Stack.Navigator>
       <Stack.Screen name="Home" component={homeWelcomeHeader} optios={{title:"Home"}}/>
       <Stack.Screen name="Quiz" component={QuizScreen} optios={{title:"Quiz"}}/>
+      <Stack.Screen name="RequestSubmit" component={requestSubmitScreen} optios={{title:"Request Form"}}/>
 
     </Stack.Navigator>
   );

@@ -3,7 +3,7 @@ import React, {Component, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 
-function requestFormScreen(){
+export function requestSubmitScreen(){
     return(
         <View>
             <Text>Submit a quiz</Text>
@@ -14,4 +14,3 @@ function requestFormScreen(){
     );
 }
 
-export default requestFormScreen;
