@@ -1,13 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, {Component} from 'react';
-import { Alert,TouchableOpacity, Dimensions, StyleSheet, View, FlatList } from 'react-native';
+import { Alert,TouchableOpacity, Dimensions, StyleSheet, ScrollView, FlatList, SafeAreaView } from 'react-native';
 import {  Text, Button, Card, ListItem, Icon, ListItemProps } from 'react-native-elements';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUpScreen from './SignUpScreen';
 import SignInScreen from './SignInScreen';
 import accountSettingScreen from './AccountSettingScreen';
-
 import StatementDetailScreen from './StatementDetailScreen';
+
+import {COLOURS, SIZES} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
 import {
     LineChart,
@@ -21,7 +22,7 @@ import {
 
 const AccountStack = createStackNavigator();
 function ckeckLogIn(){
-    var userStatus = [true, 'admin'];
+    var userStatus = [true, 'student'];
     return userStatus;
 }
 function logOut(){
@@ -45,60 +46,63 @@ function adminMainAccountScreen({navigation}){
     ];
     const renderItem = ({ item }) => (
         <ListItem>
-            <Icon name="check" size={20} />
+            <Icon name="check" size={SIZES.icon} />
             <ListItem.Content>
-            <ListItem.Title>{item.title}, This thing is checked</ListItem.Title>
+            <Text size={SIZES.text}>{item.title}, This thing is checked</Text>
             </ListItem.Content>
         </ListItem>
         );
     return(
-        <View>
-            <Card>
-                <Card.Title>Your Information</Card.Title>
-                <Card.Divider />
-                <Text>User name</Text>
-                <Text>Number of requests of: 100</Text>
-                <Text></Text>
-            </Card>
-            <Card>
-                <Card.Title>Reqest from teacher</Card.Title>
-                <Card.Divider />
-                <FlatList
-                    data={DATA}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                />
-                {/* <Button title='View Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-            </Card>
-            <Button title='Account Setting'
-                buttonStyle={{
-                    backgroundColor: '#cf8e3f',
-                    borderWidth: 2,
-                    borderColor: '#cf8e3f',
-                    borderRadius: 30,
-                    }}
-                containerStyle={{
-                    width: 'auto',
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                    }}
-                titleStyle={{ fontWeight: 'bold' }}  
-                onPress={()=>navigation.navigate("AccountSetting")}></Button>
-            <Button title='Logout' 
-                buttonStyle={{
-                    backgroundColor: '#35393d',
-                    borderWidth: 2,
-                    borderColor: '#35393d',
-                    borderRadius: 30,
-                    }}
-                containerStyle={{
-                    width: 'auto',
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                    }}
-                titleStyle={{ fontWeight: 'bold' }} 
-                onPress={logOut}></Button>
-        </View>
+        <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+            <ScrollView>
+                <Card borderRadius={SIZES.round}>
+                    <Card.Title>Your Information</Card.Title>
+                    <Card.Divider />
+                    <Text style={{padding:SIZES.padding}}>User name</Text>
+                    <Text style={{padding:SIZES.padding}}>Number of requests of: 100</Text>
+                    <Text></Text>
+                </Card>
+                <Card borderRadius={SIZES.round}>
+                    <Card.Title>Reqest from teacher</Card.Title>
+                    <Card.Divider />
+                    <FlatList
+                        data={DATA}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id}
+                    />
+                    {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
+                </Card>
+                <Button title='Account Setting'
+                    buttonStyle={{
+                        backgroundColor: COLOURS.secondary,
+                        borderWidth: 2,
+                        borderColor: COLOURS.secondary,
+                        borderRadius: 30,
+                        }}
+                    containerStyle={{
+                        width: 'auto',
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                        }}
+                    titleStyle={{ fontWeight: 'bold' }}  
+                    onPress={()=>navigation.navigate("AccountSetting")}></Button>
+                <Button title='Logout' 
+                    buttonStyle={{
+                        backgroundColor: COLOURS.black,
+                        borderWidth: 2,
+                        borderColor: COLOURS.black,
+                        borderRadius: 30,
+                        }}
+                    containerStyle={{
+                        width: 'auto',
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                        }}
+                    titleStyle={{ fontWeight: 'bold' }} 
+                    onPress={logOut}></Button>
+            </ScrollView>
+        </SafeAreaView>
+
     );
 }
 
@@ -127,45 +131,131 @@ function teacherMainAccountScreen({navigation}){
         </ListItem>
         );
     return(
-        <View>
-            <Card>
+        <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+            <ScrollView>
+                <Card borderRadius={SIZES.round}>
+                    <Card.Title>Your Information</Card.Title>
+                    <Card.Divider />
+                    <Text style={{padding:SIZES.padding}}>User name</Text>
+                    <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text>
+                    <Text style={{padding:SIZES.padding}}>Requests you have made : 10</Text>
+                    <Text style={{padding:SIZES.padding}}>Approved Requests: 10/100</Text>
+                </Card>
+                <Card borderRadius={SIZES.round}>
+                    <Card.Title>Record</Card.Title>
+                    <Card.Divider />
+                    <FlatList
+                        data={DATA}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id}
+                    />
+                        
+    
+                    {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
+                </Card>
+                <Button title='Account Setting' 
+                    buttonStyle={{
+                        backgroundColor: COLOURS.secondary,
+                        borderWidth: 2,
+                        borderColor: COLOURS.secondary,
+                        borderRadius: 30,
+                        }}
+                    containerStyle={{
+                        width: 'auto',
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                        }}
+                    titleStyle={{ fontWeight: 'bold' }}  
+                    onPress={()=>navigation.navigate("AccountSetting")}>
+                </Button>
+                <Button title='Logout'
+                    buttonStyle={{
+                        backgroundColor: COLOURS.black,
+                        borderWidth: 2,
+                        borderColor: COLOURS.black,
+                        borderRadius: 30,
+                        }}
+                    containerStyle={{
+                        width: 'auto',
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                        }}
+                    titleStyle={{ fontWeight: 'bold' }} 
+                    onPress={logOut}>
+                </Button>
+            </ScrollView>
+        </SafeAreaView>
+        );
+}
+
+function studnetMainAccountScreen({navigation}){
+    return(
+    <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+        <ScrollView>
+            <Card borderRadius={SIZES.round}>
                 <Card.Title>Your Information</Card.Title>
                 <Card.Divider />
-                <Text>User name</Text>
-                <Text>Using the app for 1 day !!</Text>
-                <Text>Requests you have made : 10</Text>
-                <Text>Approved Requests: 10/100</Text>
+                <Text style={{padding:SIZES.padding}}>User name</Text>
+                <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text>
+                <Text style={{padding:SIZES.padding}}>Quizes done: number</Text>
+                <Text style={{padding:SIZES.padding}}>Quizes average score: floating point</Text>
             </Card>
-            <Card>
-                <Card.Title>Record</Card.Title>
+            <Card borderRadius={SIZES.round}>
+                <Card.Title>Perfromance</Card.Title>
                 <Card.Divider />
-                <FlatList
-                    data={DATA}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                {/* https://github.com/indiespirit/react-native-chart-kit */}
+                <LineChart
+                    data={{
+                    labels: ["January", "February", "March", "April", "May", "June"],
+                    datasets: [
+                        {
+                        data: [
+                            0,
+                            2,
+                            4,
+                            6,
+                            8,
+                            10
+                        ]
+                        }
+                    ]
+                    }}
+                    width= {SIZES.width-55} // from react-native
+                    height={200}
+                    // yAxisLabel="Mark"
+                    yAxisInterval={1} // optional, defaults to 1
+                    chartConfig={{
+                    backgroundColor: COLOURS.primary,
+                    backgroundGradientFrom: COLOURS.primary,
+                    backgroundGradientTo: COLOURS.secondary,
+                    decimalPlaces: 2, // optional, defaults to 2dp
+                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    style: {
+                        borderRadius: 5
+                    },
+                    propsForDots: {
+                        r: "6",
+                        strokeWidth: "2",
+                        stroke: "#ffa726"
+                    }
+                    }}
+                    bezier
+                    style={{
+                    marginVertical: 5,
+                    borderRadius: 16
+                    }}
                 />
-                    
-   
-                {/* <Button title='View Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
+                <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
+                <Text style={{padding:SIZES.padding}}>you are improving!!</Text>
+
+                {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
             </Card>
-            <Button title='Account Setting' 
-            buttonStyle={{
-                backgroundColor: '#cf8e3f',
-                borderWidth: 2,
-                borderColor: '#cf8e3f',
-                borderRadius: 30,
-                  }}
-            containerStyle={{
-                width: 'auto',
-                marginHorizontal: 50,
-                marginVertical: 10,
-                }}
-            titleStyle={{ fontWeight: 'bold' }}  onPress={()=>navigation.navigate("AccountSetting")}></Button>
-            <Button title='Logout'
+            <Button title='Account Setting'
                 buttonStyle={{
-                    backgroundColor: '#35393d',
+                    backgroundColor: COLOURS.secondary,
                     borderWidth: 2,
-                    borderColor: '#35393d',
+                    borderColor: COLOURS.secondary,
                     borderRadius: 30,
                     }}
                 containerStyle={{
@@ -174,102 +264,23 @@ function teacherMainAccountScreen({navigation}){
                     marginVertical: 10,
                     }}
                 titleStyle={{ fontWeight: 'bold' }} 
-            onPress={logOut}></Button>
-        </View>
-        );
-}
-
-function studnetMainAccountScreen({navigation}){
-    return(
-    <View>
-        <Card>
-            <Card.Title>Your Information</Card.Title>
-            <Card.Divider />
-            <Text>User name</Text>
-            <Text>Using the app for 1 day !!</Text>
-            <Text>Quizes done: number</Text>
-            <Text>Quizes average score: floating point</Text>
-        </Card>
-        <Card>
-            <Card.Title>Perfromance</Card.Title>
-            <Card.Divider />
-            {/* https://github.com/indiespirit/react-native-chart-kit */}
-            <LineChart
-                data={{
-                labels: ["January", "February", "March", "April", "May", "June"],
-                datasets: [
-                    {
-                    data: [
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100
-                    ]
-                    }
-                ]
-                }}
-                width= {Dimensions.get('window').width-100} // from react-native
-                height={120}
-                yAxisLabel="$"
-                yAxisSuffix="k"
-                yAxisInterval={1} // optional, defaults to 1
-                chartConfig={{
-                backgroundColor: "#e26a00",
-                backgroundGradientFrom: "#fb8c00",
-                backgroundGradientTo: "#ffa726",
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                    borderRadius: 16
-                },
-                propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: "#ffa726"
-                }
-                }}
-                bezier
-                style={{
-                marginVertical: 8,
-                borderRadius: 16
-                }}
-            />
-            <Text>Comments: you are improving!!</Text>
-
-            {/* <Button title='View Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-        </Card>
-        <Button title='Account Setting'
-            buttonStyle={{
-                backgroundColor: '#cf8e3f',
-                borderWidth: 2,
-                borderColor: '#cf8e3f',
-                borderRadius: 30,
-                  }}
-            containerStyle={{
-                width: 'auto',
-                marginHorizontal: 50,
-                marginVertical: 10,
-                }}
-            titleStyle={{ fontWeight: 'bold' }} 
-            onPress={()=>navigation.navigate("AccountSetting")}/>
-        <Button title='Logout'
-            buttonStyle={{
-                backgroundColor: '#35393d',
-                borderWidth: 2,
-                borderColor: '#35393d',
-                borderRadius: 30,
-                }}
-            containerStyle={{
-                width: 'auto',
-                marginHorizontal: 50,
-                marginVertical: 10,
-                }}
-            titleStyle={{ fontWeight: 'bold' }} 
-            onPress={logOut}/>
-    </View>
+                onPress={()=>navigation.navigate("AccountSetting")}/>
+            <Button title='Logout'
+                buttonStyle={{
+                    backgroundColor: COLOURS.black,
+                    borderWidth: 2,
+                    borderColor: COLOURS.black,
+                    borderRadius: 30,
+                    }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                    }}
+                titleStyle={{ fontWeight: 'bold' }} 
+                onPress={logOut}/>
+        </ScrollView>
+    </SafeAreaView>
     );
 }
 

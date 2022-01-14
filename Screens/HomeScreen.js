@@ -7,7 +7,7 @@ import {
     Card,
     FAB 
     } from 'react-native-elements';
-import { SectionList,View, StyleSheet } from 'react-native';
+import { SectionList,ScrollView, StyleSheet, SafeAreaView, ImageBackground } from 'react-native';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {requestSubmitScreen} from './RequestSubmitScreen';
 import {QuizScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
-
+import {SIZES, COLOURS} from '../components/style/theme';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
@@ -71,19 +71,42 @@ const styles = StyleSheet.create({
 
 function homeWelcomeHeader({navigation}){
   return(
-    <View>
-      <Text style={styles.Text}>Welcome User !</Text>
-      <Text style={styles.Text}>Remember practice makes perfect!</Text>
-      <Card>
-        <Card.Title> Today's Knowledge</Card.Title>
-        <Card.Divider />
-        <Text style={styles.Title}>--Knowledge title--</Text>
-        <Text style={styles.Text}>--Knowledge Content--</Text>
-        <Button title='View Details' 
+    <SafeAreaView style={{flex:1}}>
+          {/* <ImageBackground source={{uri: "https://reactjs.org/logo-og.png"}} resizeMode="cover" style={styles.image}> */}
+
+      
+      <ScrollView style={{backgroundColor:COLOURS.background}}>
+        <Card borderRadius={SIZES.round}>
+        <Card.Title> Welcome</Card.Title>
+          <Card.Divider />
+          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi User !</Text>
+          <Text size={SIZES.text} style={{padding:SIZES.text}}>Remember practice makes perfect!</Text>
+        </Card>
+        <Card borderRadius={SIZES.round}>
+          <Card.Title> Today's Knowledge</Card.Title>
+          <Card.Divider />
+          <Text size={SIZES.title} style={{padding:SIZES.text}}>--Knowledge title--</Text>
+          <Text size={SIZES.text} style={{padding:SIZES.text}}>--Knowledge Content--</Text>
+          <Button title='View Details' 
+                  buttonStyle={{
+                    backgroundColor: COLOURS.primary,
+                    borderWidth: 2,
+                    borderColor: COLOURS.primary,
+                    borderRadius: 30,
+                  }}
+                  containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                  }}
+                  titleStyle={{ fontWeight: 'bold' }}
+                  onPress={()=>alert("Jump to the statement's detail page")}></Button>
+        </Card>
+        <Button title='Quiz' 
                 buttonStyle={{
-                  backgroundColor: '#61696f',
+                  backgroundColor: '#77afac',
                   borderWidth: 2,
-                  borderColor: '#61696f',
+                  borderColor: '#77afac',
                   borderRadius: 30,
                 }}
                 containerStyle={{
@@ -92,31 +115,19 @@ function homeWelcomeHeader({navigation}){
                   marginVertical: 10,
                 }}
                 titleStyle={{ fontWeight: 'bold' }}
-                onPress={()=>alert("Jump to the statement's detail page")}></Button>
-      </Card>
-      <Button title='Quiz' 
-              buttonStyle={{
-                backgroundColor: '#77afac',
-                borderWidth: 2,
-                borderColor: '#77afac',
-                borderRadius: 30,
-              }}
-              containerStyle={{
-                width: 'auto',
-                marginHorizontal: 50,
-                marginVertical: 10,
-              }}
-              titleStyle={{ fontWeight: 'bold' }}
-              onPress={()=>navigation.navigate("Quiz")}></Button>
-      <FAB
-          visible={true}
-          onPress={() =>navigation.navigate("RequestSubmit")}
-          placement="right"
-          icon={{ name: 'add', color: 'white' }}
-          color="#d9cc35"
-        />
-    </View>
-    
+                onPress={()=>navigation.navigate("Quiz")}></Button>
+        
+      </ScrollView>
+        <FAB
+            visible={true}
+            onPress={() =>navigation.navigate("RequestSubmit")}
+            placement="right"
+            icon={{ name: 'add', color: 'white' }}
+            color="#d9cc35"
+          />
+        {/* </ImageBackground> */}
+    </SafeAreaView>
+
   )
 }
 

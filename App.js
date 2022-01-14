@@ -5,7 +5,7 @@ import {
     SectionList
     } from 'react-native-elements';
 import { View } from 'react-native';
-
+import {COLOURS,SIZES} from './components/style/theme';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
@@ -14,11 +14,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import StatementsScreen from './screens/StatementsScreen.js';
 import HomeScreen from './screens/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
-import SignInScreen from './screens/SignInScreen';
-
-import { createStackNavigator } from '@react-navigation/stack';
-
-
 
 // class HomeScreen extends Component {
 //   constructor(props) {
@@ -49,54 +44,41 @@ import { createStackNavigator } from '@react-navigation/stack';
 // }
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
-function MyTab(){
-  return(
-    <Tab.Navigator
-      screenOptions={{
+const App=()=>{
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName="Home" ///the name of the initial screen
+
+        screenOptions={({route}) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = focused
+                ? 'home'
+                : 'home-outline';
+            } else if (route.name === 'Statements') {
+              iconName = focused ? 'book' : 'book-outline';
+            } else {
+              iconName = focused ? 'person' : 'person-outline';
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        tabBarActiveTintColor: COLOURS.background,
+        tabBarInactiveTintColor: COLOURS.black,
         headerShown: false
-      }}
-    >
-      
+
+      })}
+      >
         <Tab.Screen name="Home" component={HomeScreen}/>
         <Tab.Screen name="Statements" component={StatementsScreen}/>
         <Tab.Screen name="Account" component={AccountScreen}/>
 
-    </Tab.Navigator>
-  );
-}
-
-
-const App=()=>{
-  return (
-    <NavigationContainer
-          initialRouteName="Account" ///the name of the initial screen
-
-          screenOptions={({route}) => ({
-        //   tabBarIcon: ({foused, color, size}) => {
-        //     let iconName;
-
-        //     if(route.name==='Home'){
-        //       iconName = './assets/home.png';
-        //     }
-        //     if(route.name==='Statements'){
-        //       iconName = './assets/statement.png';
-        //     }
-        //     if(route.name==='Account'){
-        //       iconName = './assets/account.png';
-        //      }
-          
-        //   return <Image 
-        //             source={require('./assets/account.png')}/>;
-        // },
-          tabBarActiveTintColor: 'blue',
-          tabBarInactiveTintColor: 'gray',
-      })}
-      >
-        
-      <MyTab/>
-      
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }

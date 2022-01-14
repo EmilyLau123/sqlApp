@@ -1,7 +1,7 @@
 import { NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
-import React, {Component} from 'react';
-import { ListItem, Text,  Button } from 'react-native-elements';
-import { View, FlatList, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {Component, useState} from 'react';
+import { ListItem, Text,  Button, SearchBar } from 'react-native-elements';
+import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 const getResultFromApiAsync = async () => {
   try {
     const response = await fetch(
-      'http://localhost:19009/statements'
+      'https://mufyptest.herokuapp.com/statements/'
     );
     const json = await response.json();
     return json;
@@ -92,22 +92,22 @@ function StatementsSectionList({navigation}){
           <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
                   title:"titlee",
                   description:"description"
-                })}><Text>{item}</Text></TouchableOpacity>
+                })}><Text>{item.title}</Text></TouchableOpacity>
                 </ListItem.Title>
           </ListItem.Content>
       </ListItem>
       );
-  var dateSource= getResultFromApiAsync();
-  console.log(dateSource);
+  // var dateSource= getResultFromApiAsync();
+  // console.log(dateSource);
   //setDateSource(getResultFromApiAsync());
   // console.log("dateSource",dateSource.then(data => {
   // 	console.log(data)}
   // ));
   
-  // var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
-  //                         {"category": "JOIN", "name": "Join","description": "Join table_name",},
-  //                         {"category": "DELETE", "name": "Delete","description": "Delete table_name",},
-  //                 ];
+  var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
+                          {"category": "JOIN", "name": "Join","description": "Join table_name",},
+                          {"category": "DELETE", "name": "Delete","description": "Delete table_name",}
+                  ];
     
     //loop json
    // var retrievedArray = [];
@@ -134,7 +134,7 @@ function StatementsSectionList({navigation}){
         <FlatList
           data={dateSource}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.TITLE}
         /> 
     )
 
@@ -143,14 +143,23 @@ function StatementsSectionList({navigation}){
 const Stack = createStackNavigator();
 
 const StatementsScreen = ({navigation}) => {
-
+  const [search, setSearch] = useState("");
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={{flex:1}}>
+        <ScrollView style={styles.container}>
+          <SearchBar 
+            clearIcon={true}
+            placeholder="Type Here..."
+            onChangeText={(value)=>setSearch({value})}
+            // value={search}
+          />
         <Stack.Navigator>
               <Stack.Screen name="StatementsList" component={StatementsSectionList} optios={{title:"Statements List"}}/>
               <Stack.Screen name="StatementDetail" component={StatementDetailScreen} optios={{title:"Statements Detail"}}/>
             </Stack.Navigator>
-      </View>
+      </ScrollView>
+      </SafeAreaView>
+      
     );
 }
 

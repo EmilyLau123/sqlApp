@@ -1,74 +1,82 @@
 import React, {Component, useState} from 'react';
 import { Text,
          Button,
-         
+         Overlay,
          Alert,
          
          
          Input,
          Card
         } from 'react-native-elements';
-import {Modal, Pressable, Dimensions, TouchableOpacity, View,StyleSheet} from 'react-native';
+import {Modal, Pressable, Dimensions, TouchableOpacity, View,StyleSheet, SafeAreaView} from 'react-native';
 import 'react-native-gesture-handler';
+import {COLOURS, SIZES} from '../components/style/theme'
+import { Divider } from 'react-native-elements/dist/divider/Divider';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function changeUserName(){
-  setModalVisible(!modalVisible);
-  return alert("username Changed");
-}
 
 const accountSettingScreen = () =>{
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
     const [nickname,setNickname] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
+    const [newpassword,setNewpassword] = useState('');
+
+    const [overlayVisible, setOverlayVisible] = useState(false);
+
+    const changeUserName=()=>{
+      setOverlayVisible(!overlayVisible);
+      return alert("username Changed");
+    }
+
     return(
-        
+      <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+
         <View>
             {/* https://reactnative.dev/docs/modal */}
+            <Overlay isVisible={overlayVisible} onBackdropPress={()=>setOverlayVisible(true)}>
+              <Text size={SIZES.text}>Change username into:</Text>
+              <Input placeholder="Enter new username"></Input>
+              <Button style={{padding:SIZES.padding}} title="Change" onPress={()=>changeUserName()}/>
+              <Button style={{padding:SIZES.padding}} title="Close" onPress={()=>setOverlayVisible(false)}/>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View>
-          <Text>Change username into:</Text>
-              <Input></Input>
-            <Pressable
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text>Close</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => {setModalVisible(!modalVisible)
-                              return alert("username Changed")}}
-            >
-              <Text>Change</Text>
-            </Pressable>
-        </View>
-      </Modal>
+            </Overlay>
       
-            <Text>Nickname: user's nickname</Text>
+            <Card>
+              <Text size={SIZES.text}>Nickname: user's nickname
                 <Pressable
-                    onPress={() => setModalVisible(true)}
+                    onPress={() => setOverlayVisible(true)}
                 >
-                    <Text>Change username</Text>
-                </Pressable>
-            <Text>Username: user's username</Text>
-            <Text>Password</Text>
-            <Text>Old password:</Text><Input
-                   placeholder="Enter your old password"
-                /> 
-            <Text>New password:</Text><Input
-                   placeholder="Enter your new password"
-                /> 
-            <Text>Confirm new password:</Text><Input
-                   placeholder="Enter your new password again"
-                /> 
+                    <Text size={SIZES.text} style={{color: COLOURS.secondary}}>  Change username</Text>
+                </Pressable></Text>
+              <Text size={SIZES.text}>Username: user's username
+                <Pressable
+                      onPress={() => setOverlayVisible(true)}
+                  >
+                      <Text size={SIZES.text} style={{color: COLOURS.secondary}}>  Change nickname</Text>
+                  </Pressable>
+              </Text>
+            </Card>
+            
+            <Card>
+              <Card.Title>Password 
+                
+                <Ionicons name={"lock-closed-outline"} size={16} color={COLOURS.black} />
+              </Card.Title>
+              <Card.Divider />
+              <Text size={SIZES.text} style={{padding:SIZES.padding, fontWeight:"bold"}}>Old password:</Text><Input
+                    placeholder="Enter your old password"
+                    secureTextEntry={true}
+                  /> 
+              <Text size={SIZES.text} style={{padding:SIZES.padding, fontWeight:"bold"}}>New password:</Text><Input
+                    placeholder="Enter your new password"
+                    secureTextEntry={true}
+                  /> 
+              <Text size={SIZES.text} style={{padding:SIZES.padding, fontWeight:"bold"}}>Confirm new password:</Text><Input
+                    placeholder="Enter your new password again"
+                    secureTextEntry={true}
+                  /> 
+            </Card>
+            
             <Button title='Submit changes'
               buttonStyle={{
                 backgroundColor: '#cf8e3f',
@@ -84,7 +92,7 @@ const accountSettingScreen = () =>{
               titleStyle={{ fontWeight: 'bold' }} 
               onPress={()=>alert("Password should be replaced")}></Button>
         </View>
-        
+      </SafeAreaView>
     );
 }
 export default accountSettingScreen;
