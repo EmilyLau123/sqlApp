@@ -22,20 +22,32 @@ const SignUpScreen = () => {
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
 
-    function submit(username, nickname, password){
-        fetch('http://localhost:8099/api/insertUser/',{
-            method:'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                username: username,
-                password: password,
-                nickname: nickname,
-                role: 'student'
-              })
-        });
+    var submit = async(username, nickname, password) =>{
+        console.log(username);
+        try{
+            let result = await fetch('http://localhost:8099/api/insertUser/',{
+                method:'POST',
+                // headers: {
+                //     Accept: 'application/json',
+                //     'Content-Type': 'application/json'
+                // },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    nickname: nickname,
+                    role: 'student'
+                }),
+            });
+            let resJson = await res.json();
+            if (res.status === 200 ){
+                alert('DONE');
+            }else{
+                alert('FAIL');
+            }
+        }catch(err){
+            alert('error: ',err);
+
+        }
     }
 //https://reactnavigation.org/docs/params passing values
     return(

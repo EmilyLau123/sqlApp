@@ -8,6 +8,8 @@ import SignInScreen from './SignInScreen';
 import accountSettingScreen from './AccountSettingScreen';
 import userListScreen from './UserListScreen';
 import requestListScreen from './RequestListScreen';
+import requestDetailScreen from './RequestDetailScreen';
+import userDetailScreen from './UserDetailScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {COLORS, SIZES, ICONS, STRINGS} from '../components/style/theme.js';
@@ -19,7 +21,7 @@ import {
 
 const AccountStack = createStackNavigator();
 function ckeckLogIn(){
-    var userStatus = [false,'null'];
+    var userStatus = [true,'admin'];
     return userStatus;
 }
 function logOut(){
@@ -421,10 +423,7 @@ const AccountScreen = () => {
                     <AccountStack.Screen name="AdminAccountMain" component={adminMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
                     <AccountStack.Screen name="UserList" component={userListScreen} options={{ title: 'User List' }}/>
-                    
                     <AccountStack.Screen name="RequestList" component={requestListScreen} options={{ title: 'Request List' }}/>
-                   {/*  <AccountStack.Screen name="UserDetail" component={userDetailScreen} options={{ title: 'User Detail' }}/>
-                   <AccountStack.Screen name="RequestDetail" component={requestDetailScreen} options={{ title: 'Request Detail' }}/> */}
 
                 </AccountStack.Navigator>
                 );

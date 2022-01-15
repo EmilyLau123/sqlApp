@@ -1,13 +1,12 @@
 import { NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
 import React, {Component, useState} from 'react';
 import { ListItem, Text,  Button, SearchBar } from 'react-native-elements';
-import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView, View } from 'react-native';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen.js';
 import StatementDetailScreen from './StatementDetailScreen.js';
-import axios from 'axios';
 
 
 
@@ -51,17 +50,17 @@ const styles = StyleSheet.create({
 //     console.log(error.message);
 //   }
 // }
-const getResultFromApiAsync = async () => {
-  try {
-    const response = await fetch(
-      // 'https://mufyptest.herokuapp.com/statements/'
-      'http://localhost:8099/api/retrieveStatements/'
-    );
-    return jsresponseon;
-  } catch (error) {
-    console.error(error);
-  }
-};
+// const getResultFromApiAsync = async () => {
+//   try {
+//     const response = await fetch(
+//       // 'https://mufyptest.herokuapp.com/statements/'
+//       'http://localhost:8099/api/retrieveStatements/'
+//     );
+//     return response.json();
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 // const getResultFromApi = () => {
 //   //fatch api
@@ -81,19 +80,33 @@ const getResultFromApiAsync = async () => {
 //     console.error("error:"+error);
 //   });
 // }
-
-async function StatementsSectionList({navigation}){
-  // const [data, setData] = useState([]);
-  // const renderItems = ({ item }) => (
+const Item = ({ item }) => (
+  <View>
+  <ListItem>
+      <ListItem.Content>
+      <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+              title:"titlee",
+              description:"description"
+            })}><Text>{item.title}</Text></TouchableOpacity>
+      </ListItem.Content>
+  </ListItem>
+  </View>
+   );
+// async function StatementsSectionList({navigation}){
+  function StatementsFlatList({navigation}){
+    const renderItems = ({ item }) => (
   //     <ListItem>
-  //         <ListItem.Content>
-  //         <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-  //                 title:"titlee",
-  //                 description:"description"
-  //               })}><Text>{item.title}</Text></TouchableOpacity>
-  //         </ListItem.Content>
-  //     </ListItem>
-  //      );
+  //     <ListItem.Content>
+  //     <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+  //             title:"titlee",
+  //             description:"description"
+  //           })}><Text>{item.title}</Text></TouchableOpacity>
+  //     </ListItem.Content>
+  // </ListItem>
+ <Text>dsa</Text>
+    );
+  // const [data, setData] = useState([]);
+  
   // var dataSource= getResultFromApiAsync();
   //var data = await getResultFromApiAsync();
   // var s = dataSource.then(function(item){
@@ -111,9 +124,9 @@ async function StatementsSectionList({navigation}){
   // 	console.log(data)}
   // ));
   
-  var data=[{"category": "SELECT","name": "Select","description": "Select .. from table_name"},
-                          {"category": "JOIN", "name": "Join","description": "Join table_name"},
-                          {"category": "DELETE", "name": "Delete","description": "Delete table_name"}
+  var data=[{"category": "SELECT",title: "Select","description": "Select .. from table_name"},
+                          {"category": "JOIN", title: "Join","description": "Join table_name"},
+                          {"category": "DELETE", title: "Delete","description": "Delete table_name"}
                   ];
     
     //loop json
@@ -140,13 +153,20 @@ async function StatementsSectionList({navigation}){
     console.log('data',data);
 
     return(
-      <FlatList
+        <FlatList
         data={data}
-        renderItem={() => {
-          <Text>{item.title}</Text>
-        }}
+        renderItem={({item}) => 
+        <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+          title:"titlee",
+          description:"description"
+        })}>
+        <Text>{item.name}</Text>
+        </TouchableOpacity>}
         keyExtractor={item => item.title}
+        style={{zindex:1}}
       /> 
+        
+      
   )
 
 }
@@ -156,7 +176,6 @@ const Stack = createStackNavigator();
 const StatementsScreen = ({navigation}) => {
   const [search, setSearch] = useState("");
     return (
-      <SafeAreaView style={{flex:1}}>
         <ScrollView >
           <SearchBar 
             clearIcon={true}
@@ -165,11 +184,10 @@ const StatementsScreen = ({navigation}) => {
             // value={search}
           />
         <Stack.Navigator>
-              <Stack.Screen name="StatementsList" component={StatementsSectionList} optios={{title:"Statements List"}}/>
+              <Stack.Screen name="StatementsList" component={StatementsFlatList} optios={{title:"Statements List"}}/>
               <Stack.Screen name="StatementDetail" component={StatementDetailScreen} optios={{title:"Statements Detail"}}/>
             </Stack.Navigator>
       </ScrollView>
-      </SafeAreaView>
       
     );
 }

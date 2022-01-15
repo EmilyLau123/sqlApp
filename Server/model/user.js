@@ -1,20 +1,18 @@
 import mongoose from 'mongoose';
-//const { Schema } = mongoose;
+const { Schema } = mongoose;
 
-const mongoUrl = 'mongodb+srv://emily:emily@cluster0.3i4a2.mongodb.net/user?retryWrites=true&w=majority'
+const mongoUrl = 'mongodb+srv://emily:emily@cluster0.3i4a2.mongodb.net/sqlDb?retryWrites=true&w=majority'
 
 
-function main() {
-    await mongoose.connect('mongodb://localhost/users');
+mongoose.connect(mongoUrl);
 
-}
 
 //Schema of statement
 const userSchema = new Schema({
-    name: String,
-    nickName: String,
-    icon: String,
-    quizDone: [{quizID: Number, quizMark: Number, quizDate: Date}],
+    username: String,
+    nickname: String,
+    password: String,
+    quizDone: [{quizID: Number, quizMark: Number, quizDate: {type:Date, default:Date.now}}],
     role: String,
     approved:Boolean,
     token:String,
@@ -24,4 +22,6 @@ const userSchema = new Schema({
     
 });
 
-export default userSchema;
+export const User = mongoose.model('User', userSchema, 'users');
+
+export default User;
