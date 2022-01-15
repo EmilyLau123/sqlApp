@@ -1,6 +1,6 @@
 import {Dimensions} from 'react-native';
 
-export const COLOURS = {
+export const COLORS = {
     primary:"#5facdd",
     secondary: "#77afac",
 
@@ -20,5 +20,28 @@ export const SIZES = {
     text: 13,
     title: 16,
     padding:5,
+
+}
+
+export const ICONS = {
+    approved: 'checkmark-circle-outline',
+    rejected: 'close-circle-outline',
+    waiting: 'clipboard',
+    banned: 'skull-outline',
+    others: 'help-outline'
+
+}
+
+export const STRINGS = {
+    home: "Home",
+    statements: "Statements",
+    statementDetail: "Statement Detail",
+    account: "Account",
+    accountSetting: "Account Setting",
+    userList: "User List",
+    requestList: "Request List",
+    logOut: "Log Out",
+    login: "Login",
+    signIn: "Sign In",
 
 }

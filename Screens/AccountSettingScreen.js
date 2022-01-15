@@ -10,7 +10,7 @@ import { Text,
         } from 'react-native-elements';
 import {Modal, Pressable, Dimensions, TouchableOpacity, View,StyleSheet, SafeAreaView} from 'react-native';
 import 'react-native-gesture-handler';
-import {COLOURS, SIZES} from '../components/style/theme'
+import {COLORS, SIZES} from '../components/style/theme'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -29,7 +29,7 @@ const accountSettingScreen = () =>{
     }
 
     return(
-      <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+      <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
 
         <View>
             {/* https://reactnative.dev/docs/modal */}
@@ -46,13 +46,13 @@ const accountSettingScreen = () =>{
                 <Pressable
                     onPress={() => setOverlayVisible(true)}
                 >
-                    <Text size={SIZES.text} style={{color: COLOURS.secondary}}>  Change username</Text>
+                    <Text size={SIZES.text} style={{color: COLORS.secondary}}>  Change username</Text>
                 </Pressable></Text>
               <Text size={SIZES.text}>Username: user's username
                 <Pressable
                       onPress={() => setOverlayVisible(true)}
                   >
-                      <Text size={SIZES.text} style={{color: COLOURS.secondary}}>  Change nickname</Text>
+                      <Text size={SIZES.text} style={{color: COLORS.secondary}}>  Change nickname</Text>
                   </Pressable>
               </Text>
             </Card>
@@ -60,7 +60,7 @@ const accountSettingScreen = () =>{
             <Card>
               <Card.Title>Password 
                 
-                <Ionicons name={"lock-closed-outline"} size={16} color={COLOURS.black} />
+                <Ionicons name={"lock-closed-outline"} size={16} color={COLORS.black} />
               </Card.Title>
               <Card.Divider />
               <Text size={SIZES.text} style={{padding:SIZES.padding, fontWeight:"bold"}}>Old password:</Text><Input

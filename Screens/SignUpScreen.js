@@ -20,7 +20,23 @@ const Stack = createStackNavigator();
 const SignUpScreen = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
+    const [nickname, setNickname] = useState("");
+
+    function submit(username, nickname, password){
+        fetch('http://localhost:8099/api/insertUser/',{
+            method:'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                username: username,
+                password: password,
+                nickname: nickname,
+                role: 'student'
+              })
+        });
+    }
 //https://reactnavigation.org/docs/params passing values
     return(
         <SafeAreaView style={{flex:1}}>
@@ -33,8 +49,8 @@ const SignUpScreen = () => {
                     />
                 <Text>Name</Text><Input
                         style={styles.input}
-                        onChangeText={name => setName(name)}
-                        defaultValue={name}
+                        onChangeText={nickname => setNickname(nickname)}
+                        defaultValue={nickname}
                     />
                 <Text>Password*</Text><Input
                         style={styles.input}
@@ -54,7 +70,7 @@ const SignUpScreen = () => {
                             marginVertical: 10,
                         }}
                         titleStyle={{ fontWeight: 'bold' }}
-                        onPress={()=>alert("sign up completed")}/>
+                        onPress={()=>submit(username, nickname, password)}/>
             </View>
         </SafeAreaView>
 

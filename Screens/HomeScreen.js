@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {requestSubmitScreen} from './RequestSubmitScreen';
 import {QuizScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
-import {SIZES, COLOURS} from '../components/style/theme';
+import {SIZES, COLORS} from '../components/style/theme';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
@@ -75,7 +75,7 @@ function homeWelcomeHeader({navigation}){
           {/* <ImageBackground source={{uri: "https://reactjs.org/logo-og.png"}} resizeMode="cover" style={styles.image}> */}
 
       
-      <ScrollView style={{backgroundColor:COLOURS.background}}>
+      <ScrollView style={{backgroundColor:COLORS.background}}>
         <Card borderRadius={SIZES.round}>
         <Card.Title> Welcome</Card.Title>
           <Card.Divider />
@@ -89,9 +89,9 @@ function homeWelcomeHeader({navigation}){
           <Text size={SIZES.text} style={{padding:SIZES.text}}>--Knowledge Content--</Text>
           <Button title='View Details' 
                   buttonStyle={{
-                    backgroundColor: COLOURS.primary,
+                    backgroundColor: COLORS.primary,
                     borderWidth: 2,
-                    borderColor: COLOURS.primary,
+                    borderColor: COLORS.primary,
                     borderRadius: 30,
                   }}
                   containerStyle={{

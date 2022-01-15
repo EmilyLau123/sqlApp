@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import React, { Component, useState, SafeAreaView } from 'react';
+import React, { Component, useState } from 'react';
 import {
     Text,
     Image,
@@ -7,8 +7,8 @@ import {
     Input,
     onChangeText
     } from 'react-native-elements';
-import {StyleSheet,View} from 'react-native';
-
+import {StyleSheet,View,SafeAreaView} from 'react-native';
+import { SIZES, COLORS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
 const style = StyleSheet.create({
@@ -48,8 +48,6 @@ const SignInScreen = ({navigation}) => {
                     style={style.input}
                     onChangeText={password => setPassword(password)}
                     defaultValue={password}
-                    errorStyle={{ color: 'red' }}
-                    errorMessage='Error'
                     /> 
                 <Button title="SIGN IN"
                     // titleStyle={{ color: '#2465a0' }}

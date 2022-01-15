@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
 const getResultFromApiAsync = async () => {
   try {
     const response = await fetch(
-      'https://mufyptest.herokuapp.com/statements/'
+      // 'https://mufyptest.herokuapp.com/statements/'
+      'http://localhost:8099/api/retrieveStatements/'
     );
-    const json = await response.json();
-    return json;
+    return jsresponseon;
   } catch (error) {
     console.error(error);
   }
@@ -82,31 +82,38 @@ const getResultFromApiAsync = async () => {
 //   });
 // }
 
-function StatementsSectionList({navigation}){
-  //const [dateSource, setDateSource] = useState([]);
-  const renderItem = ({ item }) => (
-                
-      <ListItem>
-          <ListItem.Content>
-          <ListItem.Title>
-          <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-                  title:"titlee",
-                  description:"description"
-                })}><Text>{item.title}</Text></TouchableOpacity>
-                </ListItem.Title>
-          </ListItem.Content>
-      </ListItem>
-      );
-  // var dateSource= getResultFromApiAsync();
-  // console.log(dateSource);
+async function StatementsSectionList({navigation}){
+  // const [data, setData] = useState([]);
+  // const renderItems = ({ item }) => (
+  //     <ListItem>
+  //         <ListItem.Content>
+  //         <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+  //                 title:"titlee",
+  //                 description:"description"
+  //               })}><Text>{item.title}</Text></TouchableOpacity>
+  //         </ListItem.Content>
+  //     </ListItem>
+  //      );
+  // var dataSource= getResultFromApiAsync();
+  //var data = await getResultFromApiAsync();
+  // var s = dataSource.then(function(item){
+  //   var data = item;
+  //   return data
+  //   }
+  // ).catch((error)=>{
+  //   console.log(error);
+  // }).finally(() => {
+  //   console.log("done");
+  // });
+
   //setDateSource(getResultFromApiAsync());
   // console.log("dateSource",dateSource.then(data => {
   // 	console.log(data)}
   // ));
   
-  var dateSource=[{"category": "SELECT","name": "Select","description": "Select .. from table_name",},
-                          {"category": "JOIN", "name": "Join","description": "Join table_name",},
-                          {"category": "DELETE", "name": "Delete","description": "Delete table_name",}
+  var data=[{"category": "SELECT","name": "Select","description": "Select .. from table_name"},
+                          {"category": "JOIN", "name": "Join","description": "Join table_name"},
+                          {"category": "DELETE", "name": "Delete","description": "Delete table_name"}
                   ];
     
     //loop json
@@ -114,7 +121,7 @@ function StatementsSectionList({navigation}){
     //var retrievedJson = JSON.stringify(dateSource.assign({}, retrievedArray))
     //console.log("retrievedJson",retrievedJson);
 
-    var sectionArr=[];
+    // var sectionArr=[];
     //push correct datasource object into correct object in sectionArr
     //correct means dataSource.category === sectionArr.title
     // retrievedJson.forEach(jsonElement => {
@@ -130,13 +137,17 @@ function StatementsSectionList({navigation}){
     // const setData = (title,des) => {
     //   this.state.description = "des";
     // }
-      return(
-        <FlatList
-          data={dateSource}
-          renderItem={renderItem}
-          keyExtractor={item => item.TITLE}
-        /> 
-    )
+    console.log('data',data);
+
+    return(
+      <FlatList
+        data={data}
+        renderItem={() => {
+          <Text>{item.title}</Text>
+        }}
+        keyExtractor={item => item.title}
+      /> 
+  )
 
 }
 
@@ -146,11 +157,11 @@ const StatementsScreen = ({navigation}) => {
   const [search, setSearch] = useState("");
     return (
       <SafeAreaView style={{flex:1}}>
-        <ScrollView style={styles.container}>
+        <ScrollView >
           <SearchBar 
             clearIcon={true}
             placeholder="Type Here..."
-            onChangeText={(value)=>setSearch({value})}
+            // onChangeText={(value)=>setSearch({value})}
             // value={search}
           />
         <Stack.Navigator>

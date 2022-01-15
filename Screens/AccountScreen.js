@@ -6,54 +6,122 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignUpScreen from './SignUpScreen';
 import SignInScreen from './SignInScreen';
 import accountSettingScreen from './AccountSettingScreen';
-import StatementDetailScreen from './StatementDetailScreen';
+import userListScreen from './UserListScreen';
+import requestListScreen from './RequestListScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {COLOURS, SIZES} from '../components/style/theme.js';
+import {COLORS, SIZES, ICONS, STRINGS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
 import {
     LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
   } from "react-native-chart-kit";
 
 
 const AccountStack = createStackNavigator();
 function ckeckLogIn(){
-    var userStatus = [true, 'student'];
+    var userStatus = [false,'null'];
     return userStatus;
 }
 function logOut(){
     console.log("Logged out");
     return alert("Logged out");
 }
+
+
+
 function adminMainAccountScreen({navigation}){
-    const DATA = [
+    const USERDATA = [
+        {
+            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+            username: 'loginUsername',
+            nickname: 'qwed',
+            status:'approved'
+          },
+          {
+            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+            username: 'Second Item',
+            nickname: 'no.2',
+            status:'rejected'
+
+          },
+          {
+            id: '58694a0f-3da1-471f-bd96-145571e29d72',
+            username: 'Third Item',
+            nickname: 'loveee',
+            status:'banned'
+
+          },
+          {
+            id: '58694a0f-3da1-471f-bd96-145571e29d72',
+            username: 'Third Item',
+            nickname: 'BB',
+            status:'waiting'
+
+          },
+    ];
+
+    const REQUESTDATA = [
         {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
             title: 'First Item',
+            status:'approved'
           },
           {
             id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
             title: 'Second Item',
+            status:'rejected'
+
           },
           {
             id: '58694a0f-3da1-471f-bd96-145571e29d72',
             title: 'Third Item',
+            status:'waiting'
+
           },
     ];
-    const renderItem = ({ item }) => (
+
+    const userRenderItem = ({ item }) => {
+        var iconName = ICONS.approved;
+        var status = item.status;
+        if(status == 'rejected'){
+            iconName = ICONS.rejected;
+        }else if(status == 'waiting'){
+            iconName = ICONS.waiting;
+        }else{
+            iconName = ICONS.others;
+        }
+        return(
+            <ListItem>
+                <Ionicons name={iconName} size={SIZES.icon} />
+                <ListItem.Content>
+                <Text size={SIZES.text}>{item.username} ({item.nickname})</Text>
+                
+                </ListItem.Content>
+            </ListItem>
+            );
+    }
+    const requestRenderItem = ({ item }) => {
+        var iconName = ICONS.approved;
+        var status = item.status;
+        if(status === 'rejected'){
+            iconName = ICONS.rejected;
+        }else if(status === 'waiting'){
+            iconName = ICONS.waiting;
+        }else{
+            iconName = ICONS.others;
+        }
+        return(
         <ListItem>
-            <Icon name="check" size={SIZES.icon} />
+            <Ionicons name={iconName} size={SIZES.icon} />
             <ListItem.Content>
             <Text size={SIZES.text}>{item.title}, This thing is checked</Text>
             </ListItem.Content>
         </ListItem>
         );
+    }
+
     return(
-        <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+        <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
             <ScrollView>
                 <Card borderRadius={SIZES.round}>
                     <Card.Title>Your Information</Card.Title>
@@ -62,21 +130,64 @@ function adminMainAccountScreen({navigation}){
                     <Text style={{padding:SIZES.padding}}>Number of requests of: 100</Text>
                     <Text></Text>
                 </Card>
+                
+                    <Card borderRadius={SIZES.round}>
+                        <Card.Title>User list</Card.Title>
+                        <Card.Divider />
+                        <FlatList
+                            data={USERDATA}
+                            renderItem={userRenderItem}
+                            keyExtractor={item => item.id}
+                        />
+                    
+                        <Button title='View'
+                            buttonStyle={{
+                                backgroundColor: COLORS.primary,
+                                borderWidth: 2,
+                                borderColor: COLORS.primary,
+                                borderRadius: 30,
+                                }}
+                            containerStyle={{
+                                width: 'auto',
+                                marginHorizontal: 50,
+                                marginVertical: 10,
+                                }}
+                            titleStyle={{ fontWeight: 'bold' }}  
+                         onPress={()=>navigation.navigate("UserList")}/>
+                    
+                        {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
+                    </Card>
                 <Card borderRadius={SIZES.round}>
                     <Card.Title>Reqest from teacher</Card.Title>
+
                     <Card.Divider />
                     <FlatList
-                        data={DATA}
-                        renderItem={renderItem}
+                        data={REQUESTDATA}
+                        renderItem={requestRenderItem}
                         keyExtractor={item => item.id}
                     />
+                    <Button title='View'
+                            buttonStyle={{
+                                backgroundColor: COLORS.primary,
+                                borderWidth: 2,
+                                borderColor: COLORS.primary,
+                                borderRadius: 30,
+                                }}
+                            containerStyle={{
+                                width: 'auto',
+                                marginHorizontal: 50,
+                                marginVertical: 10,
+                                }}
+                            titleStyle={{ fontWeight: 'bold' }}  
+                         onPress={()=>navigation.navigate("RequestList")}/>
+
                     {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
                 </Card>
-                <Button title='Account Setting'
+                <Button title={STRINGS.accountSetting}
                     buttonStyle={{
-                        backgroundColor: COLOURS.secondary,
+                        backgroundColor: COLORS.secondary,
                         borderWidth: 2,
-                        borderColor: COLOURS.secondary,
+                        borderColor: COLORS.secondary,
                         borderRadius: 30,
                         }}
                     containerStyle={{
@@ -85,12 +196,14 @@ function adminMainAccountScreen({navigation}){
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}  
-                    onPress={()=>navigation.navigate("AccountSetting")}></Button>
-                <Button title='Logout' 
+                    onPress={()=>navigation.navigate("AccountSetting")}>
+                </Button>
+
+                <Button title={STRINGS.logOut}
                     buttonStyle={{
-                        backgroundColor: COLOURS.black,
+                        backgroundColor: COLORS.black,
                         borderWidth: 2,
-                        borderColor: COLOURS.black,
+                        borderColor: COLORS.black,
                         borderRadius: 30,
                         }}
                     containerStyle={{
@@ -131,7 +244,7 @@ function teacherMainAccountScreen({navigation}){
         </ListItem>
         );
     return(
-        <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+        <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
             <ScrollView>
                 <Card borderRadius={SIZES.round}>
                     <Card.Title>Your Information</Card.Title>
@@ -153,11 +266,11 @@ function teacherMainAccountScreen({navigation}){
     
                     {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
                 </Card>
-                <Button title='Account Setting' 
+                <Button title={STRINGS.accountSetting}
                     buttonStyle={{
-                        backgroundColor: COLOURS.secondary,
+                        backgroundColor: COLORS.secondary,
                         borderWidth: 2,
-                        borderColor: COLOURS.secondary,
+                        borderColor: COLORS.secondary,
                         borderRadius: 30,
                         }}
                     containerStyle={{
@@ -168,11 +281,11 @@ function teacherMainAccountScreen({navigation}){
                     titleStyle={{ fontWeight: 'bold' }}  
                     onPress={()=>navigation.navigate("AccountSetting")}>
                 </Button>
-                <Button title='Logout'
+                <Button title={STRINGS.logOut}
                     buttonStyle={{
-                        backgroundColor: COLOURS.black,
+                        backgroundColor: COLORS.black,
                         borderWidth: 2,
-                        borderColor: COLOURS.black,
+                        borderColor: COLORS.black,
                         borderRadius: 30,
                         }}
                     containerStyle={{
@@ -190,7 +303,7 @@ function teacherMainAccountScreen({navigation}){
 
 function studnetMainAccountScreen({navigation}){
     return(
-    <SafeAreaView style={{flex:1,backgroundColor:COLOURS.background}}>
+    <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
         <ScrollView>
             <Card borderRadius={SIZES.round}>
                 <Card.Title>Your Information</Card.Title>
@@ -225,9 +338,9 @@ function studnetMainAccountScreen({navigation}){
                     // yAxisLabel="Mark"
                     yAxisInterval={1} // optional, defaults to 1
                     chartConfig={{
-                    backgroundColor: COLOURS.primary,
-                    backgroundGradientFrom: COLOURS.primary,
-                    backgroundGradientTo: COLOURS.secondary,
+                    backgroundColor: COLORS.primary,
+                    backgroundGradientFrom: COLORS.primary,
+                    backgroundGradientTo: COLORS.secondary,
                     decimalPlaces: 2, // optional, defaults to 2dp
                     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -251,11 +364,11 @@ function studnetMainAccountScreen({navigation}){
 
                 {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
             </Card>
-            <Button title='Account Setting'
+            <Button title={STRINGS.accountSetting}
                 buttonStyle={{
-                    backgroundColor: COLOURS.secondary,
+                    backgroundColor: COLORS.secondary,
                     borderWidth: 2,
-                    borderColor: COLOURS.secondary,
+                    borderColor: COLORS.secondary,
                     borderRadius: 30,
                     }}
                 containerStyle={{
@@ -265,11 +378,11 @@ function studnetMainAccountScreen({navigation}){
                     }}
                 titleStyle={{ fontWeight: 'bold' }} 
                 onPress={()=>navigation.navigate("AccountSetting")}/>
-            <Button title='Logout'
+            <Button title={STRINGS.logOut}
                 buttonStyle={{
-                    backgroundColor: COLOURS.black,
+                    backgroundColor: COLORS.black,
                     borderWidth: 2,
-                    borderColor: COLOURS.black,
+                    borderColor: COLORS.black,
                     borderRadius: 30,
                     }}
                 containerStyle={{
@@ -307,6 +420,12 @@ const AccountScreen = () => {
                 <AccountStack.Navigator>
                     <AccountStack.Screen name="AdminAccountMain" component={adminMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
+                    <AccountStack.Screen name="UserList" component={userListScreen} options={{ title: 'User List' }}/>
+                    
+                    <AccountStack.Screen name="RequestList" component={requestListScreen} options={{ title: 'Request List' }}/>
+                   {/*  <AccountStack.Screen name="UserDetail" component={userDetailScreen} options={{ title: 'User Detail' }}/>
+                   <AccountStack.Screen name="RequestDetail" component={requestDetailScreen} options={{ title: 'Request Detail' }}/> */}
+
                 </AccountStack.Navigator>
                 );
         }

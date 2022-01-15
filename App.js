@@ -5,7 +5,7 @@ import {
     SectionList
     } from 'react-native-elements';
 import { View } from 'react-native';
-import {COLOURS,SIZES} from './components/style/theme';
+import {COLORS,SIZES} from './components/style/theme';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
@@ -68,8 +68,8 @@ const App=()=>{
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-        tabBarActiveTintColor: COLOURS.background,
-        tabBarInactiveTintColor: COLOURS.black,
+        tabBarActiveTintColor: COLORS.background,
+        tabBarInactiveTintColor: COLORS.black,
         headerShown: false
 
       })}
