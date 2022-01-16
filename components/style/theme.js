@@ -45,3 +45,9 @@ export const STRINGS = {
     signIn: "Sign In",
 
 }
+
+export const STATUS = {
+    approved: 1,
+    rejected: 2,
+    banned: 3,
+}

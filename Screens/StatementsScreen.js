@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen.js';
 import StatementDetailScreen from './StatementDetailScreen.js';
+import { COLORS } from '../components/style/theme.js';
 
 
 
@@ -80,30 +81,24 @@ const styles = StyleSheet.create({
 //     console.error("error:"+error);
 //   });
 // }
-const Item = ({ item }) => (
-  <View>
-  <ListItem>
-      <ListItem.Content>
-      <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-              title:"titlee",
-              description:"description"
-            })}><Text>{item.title}</Text></TouchableOpacity>
-      </ListItem.Content>
-  </ListItem>
-  </View>
-   );
+
 // async function StatementsSectionList({navigation}){
   function StatementsFlatList({navigation}){
+    const [search, setSearch] = useState("");
+
     const renderItems = ({ item }) => (
-  //     <ListItem>
-  //     <ListItem.Content>
-  //     <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-  //             title:"titlee",
-  //             description:"description"
-  //           })}><Text>{item.title}</Text></TouchableOpacity>
-  //     </ListItem.Content>
-  // </ListItem>
- <Text>dsa</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+        title:item.title,
+        category: item.category,
+        description:item.description
+      })}>
+        <ListItem>
+          <ListItem.Content>
+          <Text>{item.title}</Text>
+          </ListItem.Content>
+        </ListItem>
+      </TouchableOpacity>
+//  <Text>dsa</Text>
     );
   // const [data, setData] = useState([]);
   
@@ -153,19 +148,27 @@ const Item = ({ item }) => (
     console.log('data',data);
 
     return(
+      <SafeAreaView style={{backgroundColor:COLORS.background}}>
+      <SearchBar 
+            clearIcon={true}
+            placeholder="Type Here..."
+            // onChangeText={(value)=>setSearch({value})}
+            // value={search}
+          />
         <FlatList
         data={data}
-        renderItem={({item}) => 
-        <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-          title:"titlee",
-          description:"description"
-        })}>
-        <Text>{item.name}</Text>
-        </TouchableOpacity>}
+         renderItem= {renderItems}
+        //{({item}) => 
+        //   <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+        //     title:"titlee",
+        //     description:"description"
+        //   })}>
+        //   <Text>{item.title}</Text>
+        //   </TouchableOpacity>}
         keyExtractor={item => item.title}
-        style={{zindex:1}}
-      /> 
         
+      /> 
+      </SafeAreaView>
       
   )
 
@@ -174,20 +177,12 @@ const Item = ({ item }) => (
 const Stack = createStackNavigator();
 
 const StatementsScreen = ({navigation}) => {
-  const [search, setSearch] = useState("");
     return (
-        <ScrollView >
-          <SearchBar 
-            clearIcon={true}
-            placeholder="Type Here..."
-            // onChangeText={(value)=>setSearch({value})}
-            // value={search}
-          />
+      
         <Stack.Navigator>
-              <Stack.Screen name="StatementsList" component={StatementsFlatList} optios={{title:"Statements List"}}/>
-              <Stack.Screen name="StatementDetail" component={StatementDetailScreen} optios={{title:"Statements Detail"}}/>
+              <Stack.Screen name="StatementsList" component={StatementsFlatList} options={{title:"Statements List"}}/>
+              <Stack.Screen name="StatementDetail" component={StatementDetailScreen} options={{title:"Statements Detail"}}/>
             </Stack.Navigator>
-      </ScrollView>
       
     );
 }

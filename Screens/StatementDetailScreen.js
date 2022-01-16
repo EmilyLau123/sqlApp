@@ -10,7 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const DetailStack = createStackNavigator();
 
 const StatementDetailScreen = ({route}) => {  
-  const { title, description } = route.params;
+  const { title, description, category } = route.params;
   // const [description, setDes] = useState("");
   // const [title, setTitle] = useState("");
 
@@ -26,6 +26,7 @@ const StatementDetailScreen = ({route}) => {
    return (
     <View>
       <Text>title: {title}</Text>
+      <Text>category: {category}</Text>
       <Text>description: {description}</Text>
     </View>
       );

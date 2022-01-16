@@ -14,7 +14,7 @@ const userSchema = new Schema({
     password: String,
     quizDone: [{quizID: Number, quizMark: Number, quizDate: {type:Date, default:Date.now}}],
     role: String,
-    approved:Boolean,
+    status:Number,
     token:String,
     last_access:{type:Date, default:Date.now},
     approved_at: { type:Date, default:Date.now },

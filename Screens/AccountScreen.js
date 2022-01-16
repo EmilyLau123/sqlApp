@@ -6,10 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignUpScreen from './SignUpScreen';
 import SignInScreen from './SignInScreen';
 import accountSettingScreen from './AccountSettingScreen';
-import userListScreen from './UserListScreen';
-import requestListScreen from './RequestListScreen';
-import requestDetailScreen from './RequestDetailScreen';
-import userDetailScreen from './UserDetailScreen';
+import { userList,userDetail } from './UserListScreen';
+import {requestList,requestDetail} from './RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {COLORS, SIZES, ICONS, STRINGS} from '../components/style/theme.js';
@@ -422,9 +420,10 @@ const AccountScreen = () => {
                 <AccountStack.Navigator>
                     <AccountStack.Screen name="AdminAccountMain" component={adminMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
-                    <AccountStack.Screen name="UserList" component={userListScreen} options={{ title: 'User List' }}/>
-                    <AccountStack.Screen name="RequestList" component={requestListScreen} options={{ title: 'Request List' }}/>
-
+                    <AccountStack.Screen name="UserList" component={userList} options={{ title: 'User List' }}/>
+                    <AccountStack.Screen name="RequestList" component={requestList} options={{ title: 'Request List' }}/> 
+                    <AccountStack.Screen name="UserDetail" component={userDetail} options={{ title: 'User List' }}/>
+                    <AccountStack.Screen name="RequestDetail" component={requestDetail} options={{ title: 'Request List' }}/>
                 </AccountStack.Navigator>
                 );
         }
