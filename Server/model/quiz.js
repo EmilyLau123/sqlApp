@@ -13,8 +13,8 @@ function main() {
 const quizeSchema = new Schema({
     question: String,
     difficulty: {type: String, enum:['Easy', 'Medium','Hard']},
-    answer:String,
-    options:[{A:String, B: String, C: String, D:String}],
+    answer:{type: Number, enum:[0,1,2,3]},
+    options:[String, String, String, String],
     images: String,
     author: String,
     status:Number,

@@ -10,8 +10,8 @@ export function requestList({navigation}){
         {
             question: 'What is SQL? ',
             difficulty: 'Easy',
-            answer:'A',
-            options:[{A:'language', B: 'thing', C: 'idk', D:'sdasd'}],
+            answer:1,
+            options:['language', 'thing', 'idk', 'sdasd'],
             images: 'imagesss',
             author: 'admin',
             status:1,
@@ -19,8 +19,8 @@ export function requestList({navigation}){
           {
             question: 'What is IDE? ',
             difficulty: 'Easy',
-            answer:'D',
-            options:[{A:'language', B: 'thing', C: 'idk', D:'sdasd'}],
+            answer:3,
+            options:['language', 'thing', 'idk', 'sdasd'],
             images: 'imagesss',
             author: 'avc',
             status:4,
@@ -28,8 +28,8 @@ export function requestList({navigation}){
           {
             question: 'What is SELECT? ',
             difficulty: 'Medium',
-            answer:'B',
-            options:[{A:'language', B: 'thing', C: 'idk', D:'sdasd'}],
+            answer:0,
+            options:['language', 'thing', 'idk', 'sdasd'],
             images: 'imagesss',
             author: 'dsq',
             status:2,
@@ -40,8 +40,8 @@ export function requestList({navigation}){
         var statusString = STATUS.approved;
         var status = item.status;
         if(status == STATUS.rejected){
-            statusString = STATUS.rejected;
-            iconName = 'Rejected';
+            statusString = 'Rejected';
+            iconName = ICONS.rejected;
         }else if(status == STATUS.waiting){
             statusString = 'Waiting';
             iconName = ICONS.waiting;
@@ -94,47 +94,25 @@ export function requestDetail({route}){
                     <Text style={{padding:SIZES.padding, fontSize:SIZES.text}}>Status: {statusString}</Text>
                     <Text style={{padding:SIZES.padding}}>Question: {question}</Text>
                     <Text style={{padding:SIZES.padding}}>Difficulty: {difficulty}</Text>
-                    <Text style={{padding:SIZES.padding}}>Answer: {answer}</Text>
-                    {/* <View  style={{padding:SIZES.padding, borderRadius: 10,
-                                    borderWidth: 2,
-                                    borderColor: COLORS.primary,
-                                    backgroundColor: COLORS.secondary,
-                                    opacity:0.5,
-                                    color:"white",
-                                    marginBottom:SIZES.margin}}>{options[0].answer}</View> */}
-                    <Text>Options: </Text>
+                    <Text style={{padding:SIZES.padding}}>Answer: </Text>
                     <View  style={{padding:SIZES.padding, borderRadius: 10,
-                                    borderWidth: 2,
-                                    borderColor: COLORS.primary,
-                                    backgroundColor: COLORS.black,
-                                    opacity:0.5,
-                                    color:"white",
-                                    fontWeight:"bold",
-                                    marginBottom:SIZES.margin}}>{options[0].A}</View>
-                    <View  style={{padding:SIZES.padding, borderRadius: 10,
-                                    borderWidth: 2,
-                                    borderColor: COLORS.primary,
-                                    backgroundColor: COLORS.black,
-                                    opacity:0.5,
-                                    color:"white",
-                                    fontWeight:"bold",
-                                    marginBottom:SIZES.margin}}>{options[0].B}</View>
-                    <View  style={{padding:SIZES.padding, borderRadius: 10,
-                                    borderWidth: 2,
-                                    borderColor: COLORS.primary,
-                                    backgroundColor: COLORS.black,
-                                    opacity:0.5,
-                                    color:"white",
-                                    fontWeight:"bold",
-                                    marginBottom:SIZES.margin}}>{options[0].C}</View>
-                    <View  style={{padding:SIZES.padding, borderRadius: 10,
-                                    borderWidth: 2,
-                                    borderColor: COLORS.primary,
-                                    backgroundColor: COLORS.black,
-                                    opacity:0.5,
-                                    color:"white",
-                                    fontWeight:"bold",
-                                    marginBottom:SIZES.margin}}>{options[0].D}</View>
+                            borderWidth: 2,
+                            borderColor: COLORS.primary,
+                            backgroundColor: COLORS.primary,
+                            marginBottom:SIZES.margin}}>
+                            <Text style={{fontWeight:"bold",color:"white"}}>{options[answer]}</Text>
+                        </View>
+                    <Text style={{padding:SIZES.padding}}>Options: </Text>
+
+                    {options.map(item => (
+                        <View  style={{padding:SIZES.padding, borderRadius: 10,
+                            borderWidth: 2,
+                            borderColor: COLORS.primary,
+                            backgroundColor: COLORS.primary,
+                            marginBottom:SIZES.margin}}>
+                            <Text style={{fontWeight:"bold",color:"white"}}>{item}</Text>
+                        </View>
+                    ))}
                     <Text style={{padding:SIZES.padding}}>Images: should be image element{images}</Text>
                     <Text style={{padding:SIZES.padding}}>Author: {author}</Text>
                     <Text style={{padding:SIZES.padding}}>Created_at: {created_at}</Text>

@@ -10,7 +10,7 @@ import { userList,userDetail } from './UserListScreen';
 import {requestList,requestDetail} from './RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {COLORS, SIZES, ICONS, STRINGS} from '../components/style/theme.js';
+import {COLORS, SIZES, ICONS, STRINGS, STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
 import {
     LineChart,
@@ -62,21 +62,31 @@ function adminMainAccountScreen({navigation}){
 
     const REQUESTDATA = [
         {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            title: 'First Item',
-            status:'approved'
+            question: 'What is SQL? ',
+            difficulty: 'Easy',
+            answer:1,
+            options:['language', 'thing', 'idk', 'sdasd'],
+            images: 'imagesss',
+            author: 'admin',
+            status:1,
           },
           {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            title: 'Second Item',
-            status:'rejected'
-
+            question: 'What is IDE? ',
+            difficulty: 'Easy',
+            answer:3,
+            options:['language', 'thing', 'idk', 'sdasd'],
+            images: 'imagesss',
+            author: 'avc',
+            status:4,
           },
           {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Third Item',
-            status:'waiting'
-
+            question: 'What is SELECT? ',
+            difficulty: 'Medium',
+            answer:0,
+            options:['language', 'thing', 'idk', 'sdasd'],
+            images: 'imagesss',
+            author: 'dsq',
+            status:2,
           },
     ];
 
@@ -101,9 +111,9 @@ function adminMainAccountScreen({navigation}){
     const requestRenderItem = ({ item }) => {
         var iconName = ICONS.approved;
         var status = item.status;
-        if(status === 'rejected'){
+        if(status == STATUS.rejected){
             iconName = ICONS.rejected;
-        }else if(status === 'waiting'){
+        }else if(status == STATUS.waiting){
             iconName = ICONS.waiting;
         }
         // else{
@@ -113,7 +123,7 @@ function adminMainAccountScreen({navigation}){
         <ListItem>
             <Ionicons name={iconName} size={SIZES.icon} />
             <ListItem.Content>
-            <Text size={SIZES.text}>{item.title}, This thing is checked</Text>
+            <Text size={SIZES.text}>{item.question}</Text>
             </ListItem.Content>
         </ListItem>
         );
