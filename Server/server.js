@@ -119,9 +119,11 @@ app.get('/api/deleteUser/', function(){
 });
 //others
 app.get('/', function(req,res){
-    res.status(200).end('home');
+    res.json("home");
 });
-
+app.get('/api/', function(req,res){
+    res.json("api");
+});
 
 
 app.get('/api/test/',function(req,res){
@@ -136,8 +138,8 @@ app.get('/api/test/',function(req,res){
 
 
 // })
-
-app.listen(process.env.PORT || 8099);
+//process.env.PORT || 
+app.listen(8099);
 console.log(process.env.PORT);
 // const server = app.listen(process.env.PORT || 8099, () => {
 // const port = server.address().port;
