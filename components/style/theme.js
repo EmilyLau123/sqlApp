@@ -20,6 +20,7 @@ export const SIZES = {
     text: 13,
     title: 16,
     padding:5,
+    margin:5
 
 }
 
@@ -50,4 +51,5 @@ export const STATUS = {
     approved: 1,
     rejected: 2,
     banned: 3,
+    waiting: 4
 }

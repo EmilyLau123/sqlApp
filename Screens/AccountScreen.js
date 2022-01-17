@@ -87,8 +87,6 @@ function adminMainAccountScreen({navigation}){
             iconName = ICONS.rejected;
         }else if(status == 'waiting'){
             iconName = ICONS.waiting;
-        }else{
-            iconName = ICONS.others;
         }
         return(
             <ListItem>
@@ -107,9 +105,10 @@ function adminMainAccountScreen({navigation}){
             iconName = ICONS.rejected;
         }else if(status === 'waiting'){
             iconName = ICONS.waiting;
-        }else{
-            iconName = ICONS.others;
         }
+        // else{
+        //     iconName = ICONS.others;
+        // }
         return(
         <ListItem>
             <Ionicons name={iconName} size={SIZES.icon} />

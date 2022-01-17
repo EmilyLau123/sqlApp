@@ -11,14 +11,13 @@ function main() {
 
 //Schema of statement
 const quizeSchema = new Schema({
-    category: String,
     question: String,
     difficulty: {type: String, enum:['Easy', 'Medium','Hard']},
     answer:String,
-    format:String,
-    image: String,
+    options:[{A:String, B: String, C: String, D:String}],
+    images: String,
     author: String,
-    approved:Boolean,
+    status:Number,
     submited_at: { type:Date, default:Date.now },
     approved_at: { type:Date, default:Date.now },
 });

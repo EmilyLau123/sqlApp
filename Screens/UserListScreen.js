@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { FlatList, ScrollView, SafeAreaView } from 'react-native';
-import {COLORS, SIZES, ICONS, STRINGS} from '../components/style/theme.js';
+import {COLORS, SIZES, ICONS, STRINGS, STATUS} from '../components/style/theme.js';
 import {  Text, Button, ListItem, Card } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from "@react-navigation/native";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -42,23 +43,41 @@ export function userList({navigation}){
             token:'String',
           },
     ];
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }) => {
+        var iconName = ICONS.approved;
+        var statusString = STATUS.approved;
+        var status = item.status;
+        if(status == STATUS.rejected){
+            statusString = 'Rejected';
+            iconName = ICONS.waiting;
+        }else if(status == STATUS.waiting){
+            statusString = 'Waiting';
+            iconName = ICONS.waiting;
+        }else if(status == STATUS.banned){
+            statusString = 'Banned';
+            iconName = ICONS.banned;
+        }
+    return(
         <TouchableOpacity onPress={()=>navigation.navigate("UserDetail",{
             status:item.status,
             username: item.username,
             nickname:item.nickname,
             created_at:item.created_at,
             approved_at:item.approved_at,
-
+            statusString: statusString,
+            iconName : iconName,
           })}>
             <ListItem>
+            <Ionicons name={iconName} size={SIZES.icon} />
             <ListItem.Content>
-            <ListItem.Title>{item.title}, This thing is checked</ListItem.Title>
+            <ListItem.Title>{item.username} ({item.nickname})</ListItem.Title>
+            <Text>{item.created_at}</Text>
             </ListItem.Content>
         </ListItem>
         </TouchableOpacity>
         
         );
+    }
     return(
 
         <FlatList 
@@ -71,14 +90,15 @@ export function userList({navigation}){
     );
 }
 
-export function userDetail({route}){
-    const { status, username, nickname, created_at, approved_at } = route.params;
 
+export function userDetail({route}){
+    const { iconName, statusString, username, nickname, created_at, approved_at } = route.params;
     return(
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
             <ScrollView>
                 <Card borderRadius={SIZES.round}>
-                    <Text style={{padding:SIZES.padding}}>Status: {status} </Text>
+                    <Ionicons name={iconName} size={SIZES.icon} />
+                    <Text style={{padding:SIZES.padding}}>Status: {statusString} </Text>
                     <Text style={{padding:SIZES.padding}}>Username: {username} </Text>
                     <Text style={{padding:SIZES.padding}}>Nickname: {nickname} </Text>
                     <Text style={{padding:SIZES.padding}}>Created_at: {created_at} </Text>
