@@ -5,36 +5,30 @@ import {  Text, Button, ListItem, Card } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export function requestList({navigation}){
-    const DATA = [
-        {
-            question: 'What is SQL? ',
-            difficulty: 'Easy',
-            answer:1,
-            options:['language', 'thing', 'idk', 'sdasd'],
-            images: 'imagesss',
-            author: 'admin',
-            status:1,
-          },
-          {
-            question: 'What is IDE? ',
-            difficulty: 'Easy',
-            answer:3,
-            options:['language', 'thing', 'idk', 'sdasd'],
-            images: 'imagesss',
-            author: 'avc',
-            status:4,
-          },
-          {
-            question: 'What is SELECT? ',
-            difficulty: 'Medium',
-            answer:0,
-            options:['language', 'thing', 'idk', 'sdasd'],
-            images: 'imagesss',
-            author: 'dsq',
-            status:2,
-          },
-    ];
+const getStatementsFromApi = () => {
+      //fatch api
+      const API_URL = 'http://localhost:8099/api/retrieveStatements/';
+
+      console.log("fetching.."+API_URL);//https://reqres.in/api/products/3
+      return fetch(API_URL,{
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        }
+      })//
+              .then((response) => response.json())
+              .then((json) => {
+        return json;
+      })
+        .catch((error) => {
+        console.error("error:"+error);
+      });
+    }
+
+export async function requestList({navigation}){
+    const DATA = await getStatementsFromApi();
+    console.log("DATA",DATA);
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
         var statusString = STATUS.approved;

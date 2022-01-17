@@ -1,10 +1,15 @@
-import express from 'express';
-const app = express();
+
 import {Statement} from './model/statement.js';
 import {User} from './model/user.js';
-import mongoose from 'mongoose';
+
+const User = require('./model/user');
+
 const { Schema } = mongoose;
-import bodyParser from 'body-parser';
+const express = require('express');
+const mongoose = require("mongoose");
+const bodyParser = require('body-parser');
+
+const app = express();
 
 // parse application/x-www-form-urlencoded
 // app.use(express.urlencoded({ extended: true }));

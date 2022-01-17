@@ -63,27 +63,32 @@ const styles = StyleSheet.create({
 //   }
 // };
 
-// const getResultFromApi = () => {
-//   //fatch api
-//   console.log("fetching.."+API_URL);//https://reqres.in/api/products/3
-//   return fetch(API_URL,{
-//     method: 'GET',
-//     headers: {
-//         'Accept': 'application/json',
-//         'Content-type': 'application/json'
-//     }
-//   })//
-//           .then((response) => response.json())
-//           .then((json) => {
-//     return json;
-//   })
-//     .catch((error) => {
-//     console.error("error:"+error);
-//   });
-// }
+function init(resolve, reject) {  // resolve, reject 是兩個 function ，用來決定這個 Promise 裡的資料內容
+  resolve('Hello');  //  當需要回傳資料的時候，就 call resolve
+  reject('error~~~');   //  當需要觸發錯誤的時候，就 call reject
+}
 
+
+async function getStatementsFromApi(){
+  //fatch api
+  const API_URL = 'http://localhost:8099/api/retrieveStatements/';
+
+  console.log("fetching.."+API_URL);//https://reqres.in/api/products/3
+  var re = fetch(API_URL,{
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+    }
+      
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
+
+    
+  }
 // async function StatementsSectionList({navigation}){
-  function StatementsFlatList({navigation}){
+ function StatementsFlatList({navigation}){
     const [search, setSearch] = useState("");
 
     const renderItems = ({ item }) => (
@@ -103,8 +108,25 @@ const styles = StyleSheet.create({
   // const [data, setData] = useState([]);
   
   // var dataSource= getResultFromApiAsync();
-  //var data = await getResultFromApiAsync();
-  // var s = dataSource.then(function(item){
+  var data = getStatementsFromApi();
+
+  const API_URL = 'http://localhost:8099/api/retrieveStatements/';
+
+
+  const [fin,setFin] = useState("");
+    
+    var dataa = data.then(success => {
+      console.log(success);
+    })
+    // 失敗的行為一律交給了 catch
+    .catch(fail => {
+      console.log(fail);
+    }).finally(() => {
+      console.log('done');
+      return success;
+
+    });
+      // var s = dataSource.then(function(item){
   //   var data = item;
   //   return data
   //   }
@@ -119,10 +141,10 @@ const styles = StyleSheet.create({
   // 	console.log(data)}
   // ));
   
-  var data=[{"category": "SELECT",title: "Select","description": "Select .. from table_name"},
-                          {"category": "JOIN", title: "Join","description": "Join table_name"},
-                          {"category": "DELETE", title: "Delete","description": "Delete table_name"}
-                  ];
+  // var data=[{"category": "SELECT",title: "Select","description": "Select .. from table_name"},
+  //                         {"category": "JOIN", title: "Join","description": "Join table_name"},
+  //                         {"category": "DELETE", title: "Delete","description": "Delete table_name"}
+  //                 ];
     
     //loop json
    // var retrievedArray = [];
@@ -145,7 +167,9 @@ const styles = StyleSheet.create({
     // const setData = (title,des) => {
     //   this.state.description = "des";
     // }
-    console.log('data',data);
+    console.log('data',dataa);
+    console.log('fin',myPromise);
+
 
     return(
       <SafeAreaView style={{backgroundColor:COLORS.background}}>
