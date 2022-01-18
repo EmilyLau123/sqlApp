@@ -1,4 +1,5 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
+
 
 export const COLORS = {
     primary:"#5facdd",
@@ -51,5 +52,18 @@ export const STATUS = {
     approved: 1,
     rejected: 2,
     banned: 3,
-    waiting: 4
+    waiting: 4,
+    admin: 9,
+    teacher: 8,
+    student: 7
 }
+
+export const STYLES = StyleSheet.create({
+    input: {
+      height: 50,
+      margin: 10,
+      borderWidth: 1,
+      padding: 5,
+      borderRadius: 4,
+  },
+  });

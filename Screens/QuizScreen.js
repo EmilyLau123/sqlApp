@@ -178,7 +178,7 @@ function Quiz({route}){
   const getQuestions = async () => {
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/retrieveQuestions/';
+    const API_URL = 'http://localhost:8099/api/find/questions/';
 
     try {
       const response = await fetch(API_URL);

@@ -15,7 +15,7 @@ export function requestList({navigation}){
     const getRequests = async () => {
       //https://reactnative.dev/movies.json
       //http://localhost:8099/api/retrieveStatements/
-      const API_URL = 'http://localhost:8099/api/retrieveRequests/';
+      const API_URL = 'http://localhost:8099/api/find/requests/';
   
       try {
        const response = await fetch(API_URL);

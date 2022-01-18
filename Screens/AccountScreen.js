@@ -19,7 +19,7 @@ import {
 
 const AccountStack = createStackNavigator();
 function ckeckLogIn(){
-    var userStatus = [true,'admin'];
+    var userStatus = [false,''];
     return userStatus;
 }
 function logOut(){
@@ -410,14 +410,14 @@ function studnetMainAccountScreen({navigation}){
 const AccountScreen = () => {
     var isLoggedIn = ckeckLogIn();
     if(isLoggedIn[0]== true){
-        if(isLoggedIn[1] == 'teacher'){
+        if(isLoggedIn[1] == STATUS.teacher){
             return(
                 <AccountStack.Navigator>
                     <AccountStack.Screen name="TeacherAccountMain" component={teacherMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
                 </AccountStack.Navigator>
             );
-        }else if(isLoggedIn[1] == 'student'){
+        }else if(isLoggedIn[1] == STATUS.student){
             return(
             <AccountStack.Navigator>
                 <AccountStack.Screen name="StudnetAccountMain" component={studnetMainAccountScreen} options={{ title: 'Your Account' }}/>

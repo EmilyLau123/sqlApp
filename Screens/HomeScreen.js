@@ -69,7 +69,11 @@ const styles = StyleSheet.create({
 //   }
 // }
 
-function homeWelcomeHeader({navigation}){
+function checkLogIn(){
+
+}
+
+function homeWelcomeHeader({route,navigation}){
   return(
     <SafeAreaView style={{flex:1}}>
           {/* <ImageBackground source={{uri: "https://reactjs.org/logo-og.png"}} resizeMode="cover" style={styles.image}> */}

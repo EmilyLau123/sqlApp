@@ -18,7 +18,7 @@ export function userList({navigation}){
     const getUsers = async () => {
       //https://reactnative.dev/movies.json
       //http://localhost:8099/api/retrieveStatements/
-      const API_URL = 'http://localhost:8099/api/retrieveUsers/';
+      const API_URL = 'http://localhost:8099/api/find/users/';
   
       try {
        const response = await fetch(API_URL);

@@ -8,17 +8,11 @@ import {
     onChangeText
     } from 'react-native-elements';
 import {StyleSheet,View,SafeAreaView} from 'react-native';
-import { SIZES, COLORS } from '../components/style/theme';
+import { STYLES,SIZES, COLORS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
 const style = StyleSheet.create({
-    input: {
-        height: 50,
-        margin: 10,
-        borderWidth: 1,
-        padding: 5,
-        borderRadius: 4,
-    },
+   
     button: {
         alignItems:'center',
         alignContent:'center'
@@ -39,13 +33,13 @@ const SignInScreen = ({navigation}) => {
             <View height={SIZES.height}>
                 <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
                 <Text>Username : {username}</Text><Input
-                        style={style.input}
+                        style={STYLES.input}
                         onChangeText={username => setUsername(username)}
                         defaultValue={username}
                     />
                 <Text>Password : {password}</Text>
                 <Input
-                    style={style.input}
+                    style={STYLES.input}
                     onChangeText={password => setPassword(password)}
                     defaultValue={password}
                     /> 

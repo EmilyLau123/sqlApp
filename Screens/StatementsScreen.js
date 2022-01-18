@@ -116,7 +116,7 @@ async function getStatementsFromApi(){
   const getStatements = async () => {
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/retrieveStatements/';
+    const API_URL = 'http://localhost:8099/api/find/statements/';
 
     try {
      const response = await fetch(API_URL);
