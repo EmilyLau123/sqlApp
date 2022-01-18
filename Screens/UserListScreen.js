@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { FlatList, ScrollView, SafeAreaView } from 'react-native';
+import React, {Component, useState, useEffect} from 'react';
+import { FlatList, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS} from '../components/style/theme.js';
 import {  Text, Button, ListItem, Card } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -11,41 +11,67 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export function userList({navigation}){
 
-    const DATA = [
-        {
-            username: 'asdf123',
-            nickname: 'sdfgb',
-            password: 'dsadas',
-            quizDone: [{quizID: 1, quizMark: 6},
-                        {quizID: 3, quizMark: 5}],
-            role: 'student',
-            status: 1,//approved
-            token:'String',
-          },
-          {
-            username: 'kitty123',
-            nickname: 'kitty123',
-            password: 'dsadas',
-            quizDone: [{quizID: 1, quizMark: 6},
-                        {quizID: 1, quizMark: 5}],
-            role: 'teacher',
-            status: 2,//rejected
-            token:'String',
-          },
-          {
-            username: 'fuxk',
-            nickname: 'shxt',
-            password: 'dsadas',
-            quizDone: [{quizID: 1, quizMark: 6},
-                        {quizID: 1, quizMark: 5}],
-            role: 'student',
-            status: 3,//banned
-            token:'String',
-          },
-    ];
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+    const [search, setSearch] = useState("");
+  
+    const getUsers = async () => {
+      //https://reactnative.dev/movies.json
+      //http://localhost:8099/api/retrieveStatements/
+      const API_URL = 'http://localhost:8099/api/retrieveUsers/';
+  
+      try {
+       const response = await fetch(API_URL);
+       const json = await response.json();
+       console.log(json);
+       setData(json);
+     } catch (error) {
+       console.error(error);
+     } finally {
+      setLoading(false);
+      console.log("done");
+     }
+   }
+  
+   useEffect(() => {
+    getUsers();
+   }, []);
+
+    // const DATA = [
+    //     {
+    //         username: 'asdf123',
+    //         nickname: 'sdfgb',
+    //         password: 'dsadas',
+    //         quizDone: [{quizID: 1, quizMark: 6},
+    //                     {quizID: 3, quizMark: 5}],
+    //         role: 'student',
+    //         status: 1,//approved
+    //         token:'String',
+    //       },
+    //       {
+    //         username: 'kitty123',
+    //         nickname: 'kitty123',
+    //         password: 'dsadas',
+    //         quizDone: [{quizID: 1, quizMark: 6},
+    //                     {quizID: 1, quizMark: 5}],
+    //         role: 'teacher',
+    //         status: 2,//rejected
+    //         token:'String',
+    //       },
+    //       {
+    //         username: 'fuxk',
+    //         nickname: 'shxt',
+    //         password: 'dsadas',
+    //         quizDone: [{quizID: 1, quizMark: 6},
+    //                     {quizID: 1, quizMark: 5}],
+    //         role: 'student',
+    //         status: 3,//banned
+    //         token:'String',
+    //       },
+    // ];
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
-        var statusString = STATUS.approved;
+        var statusString = 'Approved';
         var status = item.status;
         if(status == STATUS.rejected){
             statusString = 'Rejected';
@@ -79,14 +105,15 @@ export function userList({navigation}){
         );
     }
     return(
-
-        <FlatList 
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-
-        />
-            
+        <SafeAreaView>
+            {isLoading?<ActivityIndicator/>:(
+                <FlatList
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                /> 
+            )}
+        </SafeAreaView>
     );
 }
 

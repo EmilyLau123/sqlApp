@@ -12,12 +12,13 @@ mongoose.connect(mongoUrl);
 //Schema of statement
 const statementSchema = new Schema({
     title: String,
-    author: String,
     description: String,
-    image: String,
-    approved:Boolean,
-    submited_at: { type:Date, default:Date.now },
-    approved_at: { type:Date, default:Date.now },
+    images: String,
+    hidden:{type:Number, enum:[0,1]},
+    // submited_at: { type:Date, default:Date.now },
+    // approved_at: { type:Date, default:Date.now },
+    // author: String,
+
 });
 //model
 export const Statement = mongoose.model('Statement', statementSchema, 'statements');

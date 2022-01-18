@@ -1,37 +1,41 @@
-import React, {Component} from 'react';
-import { FlatList, ScrollView, SafeAreaView, View } from 'react-native';
+import React, {Component, useEffect, useState} from 'react';
+import { FlatList, ScrollView, SafeAreaView, View, ActivityIndicator } from 'react-native';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS} from '../components/style/theme.js';
 import {  Text, Button, ListItem, Card } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const getStatementsFromApi = () => {
-      //fatch api
-      const API_URL = 'http://localhost:8099/api/retrieveStatements/';
 
-      console.log("fetching.."+API_URL);//https://reqres.in/api/products/3
-      return fetch(API_URL,{
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json'
-        }
-      })//
-              .then((response) => response.json())
-              .then((json) => {
-        return json;
-      })
-        .catch((error) => {
-        console.error("error:"+error);
-      });
-    }
+export function requestList({navigation}){
 
-export async function requestList({navigation}){
-    const DATA = await getStatementsFromApi();
-    console.log("DATA",DATA);
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+    const [search, setSearch] = useState("");
+  
+    const getRequests = async () => {
+      //https://reactnative.dev/movies.json
+      //http://localhost:8099/api/retrieveStatements/
+      const API_URL = 'http://localhost:8099/api/retrieveRequests/';
+  
+      try {
+       const response = await fetch(API_URL);
+       const json = await response.json();
+       console.log(json);
+       setData(json);
+     } catch (error) {
+       console.error(error);
+     } finally {
+      setLoading(false);
+      console.log("done");
+     }
+   }
+  
+   useEffect(() => {
+    getRequests();
+   }, []);
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
-        var statusString = STATUS.approved;
+        var statusString = 'Approved';
         var status = item.status;
         if(status == STATUS.rejected){
             statusString = 'Rejected';
@@ -66,13 +70,15 @@ export async function requestList({navigation}){
         );
     }
     return(
+        
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
-            <FlatList 
-                data={DATA}
+            {isLoading?<ActivityIndicator/>:(
+                <FlatList
+                data={data}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
-
-            />
+                /> 
+            )}
         </SafeAreaView>
     );
 }

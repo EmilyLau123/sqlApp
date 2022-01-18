@@ -89,13 +89,14 @@ async function getStatementsFromApi(){
   }
 // async function StatementsSectionList({navigation}){
  function StatementsFlatList({navigation}){
-    const [search, setSearch] = useState("");
 
     const renderItems = ({ item }) => (
       <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
         title:item.title,
-        category: item.category,
-        description:item.description
+        description:item.description,
+        images:item.images,
+        author:item.author
+
       })}>
         <ListItem>
           <ListItem.Content>
@@ -110,6 +111,7 @@ async function getStatementsFromApi(){
   // var dataSource= getResultFromApiAsync();
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
 
   const getStatements = async () => {
     //https://reactnative.dev/movies.json
@@ -133,6 +135,10 @@ async function getStatementsFromApi(){
   getStatements();
  }, []);
 
+ const searchButton = (searchText) => {
+   setSearch(searchText);
+   console.log(search);
+ }
 
   // const [fin,setFin] = useState("");
     
@@ -196,22 +202,19 @@ async function getStatementsFromApi(){
       //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
         <SearchBar 
-                      clearIcon={true}
-                      placeholder="Type Here..."
-                      // onChangeText={(value)=>setSearch({value})}
-                      // value={search}
-                    />
+          searchIcon={true}
+          clearIcon={true}
+          placeholder="Type Here..."
+          onChangeText={(value)=>searchButton(value)}
+          value={search}
+        />
         {isLoading?<ActivityIndicator/>:(
-          
-                  <FlatList
-                  data={data}
-                  renderItem= {renderItems}
-                  keyExtractor={item => item.title}
-                  /> 
+          <FlatList
+          data={data}
+          renderItem= {renderItems}
+          keyExtractor={item => item.title}
+          /> 
         )}
-      
-        
-      
       </SafeAreaView>
       
   )

@@ -140,16 +140,16 @@ function adminMainAccountScreen({navigation}){
                     <Text></Text>
                 </Card>
                 
-                    <Card borderRadius={SIZES.round}>
+                    {/* <Card borderRadius={SIZES.round}>
                         <Card.Title>User list</Card.Title>
                         <Card.Divider />
                         <FlatList
                             data={USERDATA}
                             renderItem={userRenderItem}
                             keyExtractor={item => item.id}
-                        />
+                        /> */}
                     
-                        <Button title='View'
+                        <Button title='View User List'
                             buttonStyle={{
                                 backgroundColor: COLORS.primary,
                                 borderWidth: 2,
@@ -165,8 +165,8 @@ function adminMainAccountScreen({navigation}){
                          onPress={()=>navigation.navigate("UserList")}/>
                     
                         {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-                    </Card>
-                <Card borderRadius={SIZES.round}>
+                    {/* </Card> */}
+                {/* <Card borderRadius={SIZES.round}>
                     <Card.Title>Reqest from teacher</Card.Title>
 
                     <Card.Divider />
@@ -174,8 +174,8 @@ function adminMainAccountScreen({navigation}){
                         data={REQUESTDATA}
                         renderItem={requestRenderItem}
                         keyExtractor={item => item.id}
-                    />
-                    <Button title='View'
+                    /> */}
+                    <Button title='View Request List'
                             buttonStyle={{
                                 backgroundColor: COLORS.primary,
                                 borderWidth: 2,
@@ -191,7 +191,7 @@ function adminMainAccountScreen({navigation}){
                          onPress={()=>navigation.navigate("RequestList")}/>
 
                     {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-                </Card>
+                {/* </Card> */}
                 <Button title={STRINGS.accountSetting}
                     buttonStyle={{
                         backgroundColor: COLORS.secondary,
