@@ -7,17 +7,17 @@ import {
     Button
     } from 'react-native-elements'; 
 import { SectionList, FlatList,View, ActivityIndicator } from 'react-native';
-
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
-import ThemedListItem from 'react-native-elements/dist/list/ListItem';
+import {ANSWER} from '../components/style/theme.js';
 
-function congratScreen({route}){
+function congratScreen({route,navigation}){
   const {score} = route.params;
   return(
     <View>
-      <Text>Score: {score}</Text>
-      <Button title="Back to Home" />
+      <Text>Score: {score} / 10</Text>
+      <Button title="Back to Home" 
+              onPress={()=>navigation.navigate("Home")}/>
     </View>
   );
 }
@@ -144,7 +144,7 @@ function congratScreen({route}){
 //     );
 //   }
 // }
-function Quiz({route}){
+function Quiz({route, navigation}){
   //   var totalQuestion = 9;
   //   var modelAnswer=DATA[0].answer;
   const [isLoading, setLoading] = useState(true);
@@ -155,13 +155,15 @@ function Quiz({route}){
   const difficulty = route.params.difficulty;
 
   const nextQuestion = (key) => {
+      var oldScore = score;
+      var oldQuestionIndex = questionIndex;
       if(questionIndex >= totalQuestion){
-        alert("end");
+        navigation.navigate("Congrats",{
+          score:score
+        });
       }else{
         if(data[questionIndex].answer==key){
           // alert(this.DATA[this.state.questionNumberIndex].answer);
-          var oldScore = score;
-          var oldQuestionIndex = questionIndex;
           setScore(oldScore + 1);
           setQuestionIndex(oldQuestionIndex + 1);
 
@@ -196,7 +198,10 @@ function Quiz({route}){
   useEffect(() => {
     getQuestions();
   }, []);
-console.log(data);
+  
+console.log('data',data);
+console.log('index',questionIndex);
+
   return(
     <View>
         {isLoading?<ActivityIndicator/>:(
@@ -206,7 +211,7 @@ console.log(data);
 
         <Divider></Divider>
          <Text>Q: {data[questionIndex].question}</Text>
-
+          
  {/* {this.DATA[this.state.questionNumberIndex].options.map((item,key) => (
              <Button title={item} onPress={()=>this.nextQuestion({item})}/>
            ))} */}
@@ -263,6 +268,9 @@ export function QuizScreen(){
       <QuizStack.Navigator>
         <QuizStack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose"}}/>
         <QuizStack.Screen name="Quiz" component={Quiz} options={{title:"Quiz"}}/>
+        <QuizStack.Screen name="Congrats" component={congratScreen} options={{title:"congrats"}}/>
+
+        
       </QuizStack.Navigator>
       // </QuizStack.Navigator>
       // <View>

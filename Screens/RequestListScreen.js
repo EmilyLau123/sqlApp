@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import { FlatList, ScrollView, SafeAreaView, View, ActivityIndicator } from 'react-native';
-import {COLORS, SIZES, ICONS, STRINGS, STATUS} from '../components/style/theme.js';
+import {COLORS, SIZES, ICONS, STRINGS, REQUEST_STATUS, STYLES} from '../components/style/theme.js';
 import {  Text, Button, ListItem, Card } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -37,10 +37,10 @@ export function requestList({navigation}){
         var iconName = ICONS.approved;
         var statusString = 'Approved';
         var status = item.status;
-        if(status == STATUS.rejected){
+        if(status == REQUEST_STATUS.rejected){
             statusString = 'Rejected';
             iconName = ICONS.rejected;
-        }else if(status == STATUS.waiting){
+        }else if(status == REQUEST_STATUS.waiting){
             statusString = 'Waiting';
             iconName = ICONS.waiting;
         }

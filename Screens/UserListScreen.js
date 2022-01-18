@@ -1,6 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import { FlatList, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
-import {COLORS, SIZES, ICONS, STRINGS, STATUS} from '../components/style/theme.js';
+import {COLORS, SIZES, ICONS, STRINGS, USER_STATUS} from '../components/style/theme.js';
 import {  Text, Button, ListItem, Card } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -73,13 +73,13 @@ export function userList({navigation}){
         var iconName = ICONS.approved;
         var statusString = 'Approved';
         var status = item.status;
-        if(status == STATUS.rejected){
+        if(status == USER_STATUS.rejected){
             statusString = 'Rejected';
             iconName = ICONS.waiting;
-        }else if(status == STATUS.waiting){
+        }else if(status == USER_STATUS.waiting){
             statusString = 'Waiting';
             iconName = ICONS.waiting;
-        }else if(status == STATUS.banned){
+        }else if(status == USER_STATUS.banned){
             statusString = 'Banned';
             iconName = ICONS.banned;
         }

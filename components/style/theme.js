@@ -48,14 +48,40 @@ export const STRINGS = {
 
 }
 
-export const STATUS = {
+export const USER_STATUS = {
     approved: 1,
     rejected: 2,
-    banned: 3,
-    waiting: 4,
-    admin: 9,
-    teacher: 8,
-    student: 7
+    waiting: 3,
+    banned: 4
+
+}
+
+export const USER_ROLE = {
+    admin: 1,
+    teacher: 2,
+    student: 3
+    
+}
+
+export const REQUEST_STATUS = {
+    approved: 1,
+    rejected: 2,
+    waiting: 3,
+
+}
+
+export const DIFFICULTY = {
+    easy: 0,
+    medium: 1,
+    hard: 2,
+
+}
+
+export const ANSWER = {
+    option1: 0,
+    option2: 1,
+    option3: 2,
+    option4: 3,
 }
 
 export const STYLES = StyleSheet.create({

@@ -10,7 +10,7 @@ import { userList,userDetail } from './UserListScreen';
 import {requestList,requestDetail} from './RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {COLORS, SIZES, ICONS, STRINGS, STATUS} from '../components/style/theme.js';
+import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
 import {
     LineChart,
@@ -410,14 +410,14 @@ function studnetMainAccountScreen({navigation}){
 const AccountScreen = () => {
     var isLoggedIn = ckeckLogIn();
     if(isLoggedIn[0]== true){
-        if(isLoggedIn[1] == STATUS.teacher){
+        if(isLoggedIn[1] == USER_ROLE.teacher){
             return(
                 <AccountStack.Navigator>
                     <AccountStack.Screen name="TeacherAccountMain" component={teacherMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
                 </AccountStack.Navigator>
             );
-        }else if(isLoggedIn[1] == STATUS.student){
+        }else if(isLoggedIn[1] == USER_ROLE.student){
             return(
             <AccountStack.Navigator>
                 <AccountStack.Screen name="StudnetAccountMain" component={studnetMainAccountScreen} options={{ title: 'Your Account' }}/>
