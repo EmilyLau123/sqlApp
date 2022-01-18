@@ -119,7 +119,7 @@ function homeWelcomeHeader({route,navigation}){
                   marginVertical: 10,
                 }}
                 titleStyle={{ fontWeight: 'bold' }}
-                onPress={()=>navigation.navigate("Quiz")}></Button>
+                onPress={()=>navigation.navigate("QuizScreen")}></Button>
         
       </ScrollView>
         <FAB
@@ -142,9 +142,10 @@ const Stack = createStackNavigator();
 const HomeScreen=()=>{
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={homeWelcomeHeader} optios={{title:"Home"}}/>
-      <Stack.Screen name="Quiz" component={QuizScreen} optios={{title:"Quiz"}}/>
-      <Stack.Screen name="RequestSubmit" component={requestSubmitScreen} optios={{title:"Request Form"}}/>
+      <Stack.Screen name="Home" component={homeWelcomeHeader} options={{title:"Home"}}/>
+      <Stack.Screen name="QuizScreen" component={QuizScreen} options={{title:"Quiz"}}/>
+      
+      <Stack.Screen name="RequestSubmit" component={requestSubmitScreen} options={{title:"Request Form"}}/>
 
     </Stack.Navigator>
   );

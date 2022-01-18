@@ -3,13 +3,13 @@ import React, { Component,useState, useEffect } from 'react';
 import {
     Text,
     Image,
-    
+    Card,
     Button
     } from 'react-native-elements'; 
-import { SectionList, FlatList,View, ActivityIndicator } from 'react-native';
+import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
-import {ANSWER} from '../components/style/theme.js';
+import {ANSWER,COLORS,SIZES} from '../components/style/theme.js';
 
 function congratScreen({route,navigation}){
   const {score} = route.params;
@@ -151,26 +151,53 @@ function Quiz({route, navigation}){
   const [data, setData] = useState("");
   const [score, setScore] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
+  const [storingData, setStoringData] = useState([]);
+
   const totalQuestion = 9;
-  const difficulty = route.params.difficulty;
+  const {difficulty} = route.params;
 
   const nextQuestion = (key) => {
       var oldScore = score;
       var oldQuestionIndex = questionIndex;
+
+    console.log(storingData);
+
       if(questionIndex >= totalQuestion){
+        //Add result to the user's quizeDone array[obj_id, mark(1/0)]
+        // const API_URL = 'http://localhost:8099/api/update/user/';
+
+        // try {
+        //   const response = await fetch(API_URL);
+        //   const json = await response.json();
+        //   console.log(json);
+        //   setData(json);
+        // } catch (error) {
+        //   console.error(error);
+        // } finally {
+        //   setLoading(false);
+        //   console.log("done");
+        // }
+    
         navigation.navigate("Congrats",{
           score:score
         });
+      
       }else{
         if(data[questionIndex].answer==key){
           // alert(this.DATA[this.state.questionNumberIndex].answer);
+          storingData.push({question_id:"dasd2dw34", point: 1});
           setScore(oldScore + 1);
           setQuestionIndex(oldQuestionIndex + 1);
+          setStoringData(storingData);
 
             
           
         }else{
+          storingData.push({question_id:"dasd2dw34", point: 0});
+
           setQuestionIndex(oldQuestionIndex + 1);
+          setStoringData(storingData);
+
 
         }
         
@@ -199,33 +226,85 @@ function Quiz({route, navigation}){
     getQuestions();
   }, []);
   
-console.log('data',data);
-console.log('index',questionIndex);
+// console.log('data',data);
+// console.log('index',questionIndex);
+console.log('storingData',storingData);
+
+
 
   return(
-    <View>
+    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
         {isLoading?<ActivityIndicator/>:(
-          <View>
-            <Text>{questionIndex+1} / 10</Text>
-         <Text>Score: {score} / 10</Text>
+          <Card borderRadius={SIZES.round}>
+            <Text style={{alignSelf:"flex-end", fontSize:16}}>Score: {score} / 10</Text>
+            <Text style={{fontWeight:"bold", alignSelf:"center", fontSize:24, paddingBottom:SIZES.padding}}>{questionIndex+1} / 10</Text>
+            
 
-        <Divider></Divider>
-         <Text>Q: {data[questionIndex].question}</Text>
+            <Card.Divider />
+            <Text style={{fontSize:16, alignSelf:"center", paddingBottom:10}}>Q: {data[questionIndex].question}</Text>
           
  {/* {this.DATA[this.state.questionNumberIndex].options.map((item,key) => (
              <Button title={item} onPress={()=>this.nextQuestion({item})}/>
            ))} */}
 
-         <Button title={data[questionIndex].options[0]} onPress={()=>nextQuestion(0)}/>
-         <Button title={data[questionIndex].options[1]} onPress={()=>nextQuestion(1)}/>
-         <Button title={data[questionIndex].options[2]} onPress={()=>nextQuestion(2)}/>
-         <Button title={data[questionIndex].options[3]} onPress={()=>nextQuestion(3)}/>
+         <Button title={data[questionIndex].options[0]}
+                  buttonStyle={{
+                    backgroundColor: COLORS.primary,
+                    borderWidth: 2,
+                    borderColor: COLORS.primary,
+                    borderRadius: 30,
+                }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                }}
+                  onPress={()=>nextQuestion(0)}/>
+         <Button title={data[questionIndex].options[1]}
+                    buttonStyle={{
+                      backgroundColor: COLORS.primary,
+                      borderWidth: 2,
+                      borderColor: COLORS.primary,
+                      borderRadius: 30,
+                  }}
+                  containerStyle={{
+                      width: 'auto',
+                      marginHorizontal: 50,
+                      marginVertical: 10,
+                  }}
+                  onPress={()=>nextQuestion(1)}/>
+         <Button title={data[questionIndex].options[2]}
+                  buttonStyle={{
+                    backgroundColor: COLORS.primary,
+                    borderWidth: 2,
+                    borderColor: COLORS.primary,
+                    borderRadius: 30,
+                }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                }}
+                  onPress={()=>nextQuestion(2)}/>
+         <Button title={data[questionIndex].options[3]}
+                  buttonStyle={{
+                    backgroundColor: COLORS.primary,
+                    borderWidth: 2,
+                    borderColor: COLORS.primary,
+                    borderRadius: 30,
+                }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                }}
+                  onPress={()=>nextQuestion(3)}/>
 
-          </View>
+          </Card>
          
       
         )}
-      </View>
+      </SafeAreaView>
   );
 
 }
@@ -233,17 +312,53 @@ console.log('index',questionIndex);
         
 function quizChooseScreen({navigation}){
   return(
-    <View>
-      <Button title="Easy" onPress={()=>navigation.navigate("Quiz",{
+    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
+      <Button title="Easy"
+        buttonStyle={{
+          backgroundColor: COLORS.primary,
+          borderWidth: 2,
+          borderColor: COLORS.primary,
+          borderRadius: 30,
+      }}
+      containerStyle={{
+          width: 'auto',
+          marginHorizontal: 50,
+          marginVertical: 10,
+      }}
+      onPress={()=>navigation.navigate("Quiz",{
         difficulty:'Easy'
       })}/>
-      <Button title="Medium" onPress={()=>navigation.navigate("Quiz",{
+      <Button title="Medium"
+        buttonStyle={{
+          backgroundColor: COLORS.primary,
+          borderWidth: 2,
+          borderColor: COLORS.primary,
+          borderRadius: 30,
+      }}
+      containerStyle={{
+          width: 'auto',
+          marginHorizontal: 50,
+          marginVertical: 10,
+      }}
+      onPress={()=>navigation.navigate("Quiz",{
         difficulty:'Medium'
       })}/>
-      <Button title="Hard" onPress={()=>navigation.navigate("Quiz",{
+      <Button title="Hard" 
+        buttonStyle={{
+          backgroundColor: COLORS.primary,
+          borderWidth: 2,
+          borderColor: COLORS.primary,
+          borderRadius: 30,
+      }}
+      containerStyle={{
+          width: 'auto',
+          marginHorizontal: 50,
+          marginVertical: 10,
+      }}
+        onPress={()=>navigation.navigate("Quiz",{
         difficulty:'Hard'
       })}/>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -266,9 +381,9 @@ export function QuizScreen(){
   
       // </QuizStack.Navigator>
       <QuizStack.Navigator>
-        <QuizStack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose"}}/>
-        <QuizStack.Screen name="Quiz" component={Quiz} options={{title:"Quiz"}}/>
-        <QuizStack.Screen name="Congrats" component={congratScreen} options={{title:"congrats"}}/>
+        <QuizStack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose", headerShown: false}}/>
+        <QuizStack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
+        <QuizStack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>
 
         
       </QuizStack.Navigator>
