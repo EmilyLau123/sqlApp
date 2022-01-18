@@ -1,7 +1,7 @@
 import { NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import { ListItem, Text,  Button, SearchBar } from 'react-native-elements';
-import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView, View } from 'react-native';
+import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView, View, ActivityIndicator } from 'react-native';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -108,24 +108,45 @@ async function getStatementsFromApi(){
   // const [data, setData] = useState([]);
   
   // var dataSource= getResultFromApiAsync();
-  var data = getStatementsFromApi();
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
 
-  const API_URL = 'http://localhost:8099/api/retrieveStatements/';
+  const getStatements = async () => {
+    //https://reactnative.dev/movies.json
+    //http://localhost:8099/api/retrieveStatements/
+    const API_URL = 'http://localhost:8099/api/retrieveStatements/';
+
+    try {
+     const response = await fetch(API_URL);
+     const json = await response.json();
+     console.log(json);
+     setData(json);
+   } catch (error) {
+     console.error(error);
+   } finally {
+    setLoading(false);
+    console.log("done");
+   }
+ }
+
+ useEffect(() => {
+  getStatements();
+ }, []);
 
 
-  const [fin,setFin] = useState("");
+  // const [fin,setFin] = useState("");
     
-    var dataa = data.then(success => {
-      console.log(success);
-    })
-    // 失敗的行為一律交給了 catch
-    .catch(fail => {
-      console.log(fail);
-    }).finally(() => {
-      console.log('done');
-      return success;
+  //   var dataa = data.then(success => {
+  //     console.log(success);
+  //   })
+  //   // 失敗的行為一律交給了 catch
+  //   .catch(fail => {
+  //     console.log(fail);
+  //   }).finally(() => {
+  //     console.log('done');
+  //     return success;
 
-    });
+  //   });
       // var s = dataSource.then(function(item){
   //   var data = item;
   //   return data
@@ -167,31 +188,30 @@ async function getStatementsFromApi(){
     // const setData = (title,des) => {
     //   this.state.description = "des";
     // }
-    console.log('data',dataa);
-    console.log('fin',myPromise);
+    console.log('data',data);
+    // console.log('fin',myPromise);
 
 
     return(
-      <SafeAreaView style={{backgroundColor:COLORS.background}}>
-      <SearchBar 
-            clearIcon={true}
-            placeholder="Type Here..."
-            // onChangeText={(value)=>setSearch({value})}
-            // value={search}
-          />
-        <FlatList
-        data={data}
-         renderItem= {renderItems}
-        //{({item}) => 
-        //   <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-        //     title:"titlee",
-        //     description:"description"
-        //   })}>
-        //   <Text>{item.title}</Text>
-        //   </TouchableOpacity>}
-        keyExtractor={item => item.title}
+      //style={{backgroundColor:COLORS.background}}
+      <SafeAreaView>
+        <SearchBar 
+                      clearIcon={true}
+                      placeholder="Type Here..."
+                      // onChangeText={(value)=>setSearch({value})}
+                      // value={search}
+                    />
+        {isLoading?<ActivityIndicator/>:(
+          
+                  <FlatList
+                  data={data}
+                  renderItem= {renderItems}
+                  keyExtractor={item => item.title}
+                  /> 
+        )}
+      
         
-      /> 
+      
       </SafeAreaView>
       
   )
