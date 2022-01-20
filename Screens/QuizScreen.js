@@ -160,7 +160,7 @@ export function Quiz({route, navigation}){
 
 
   const updateUser = async (user_id, storingData, score, {navigation}) => {
-    console.log(question, difficulty, answer, options, author);
+    console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'http://localhost:8099/api/update/user/';
@@ -194,7 +194,7 @@ export function Quiz({route, navigation}){
  }
 
 
-  const nextQuestion = (key) => {
+  function nextQuestion(key){
       var oldScore = score;
       var oldQuestionIndex = questionIndex;
 
@@ -214,15 +214,42 @@ export function Quiz({route, navigation}){
         //   setLoading(false);
         //   console.log("done");
         // }
-    
-
-        updateUser("61e676a817b1701f87c00711",storingData, score);
-
+        if(questionIndex == totalQuestion){
+          if(data[questionIndex].answer==key){
+            console.log("right");
+  
+            // alert(this.DATA[this.state.questionNumberIndex].answer);
+            storingData.push({question_id:data[questionIndex]._id, 
+                              point: 1,
+                              answerTime:Date.now()
+                            });
+            setScore(oldScore + 1);
+            setStoringData(storingData);
+          }else{
+            console.log("wrong");
+            storingData.push({question_id:data[questionIndex]._id, 
+                              point: 0, 
+                              answerTime:Date.now()
+                            });
+  
+            setStoringData(storingData);
+  
+          }
+        }
+        
+        var result = updateUser("61e676a817b1701f87c00711",storingData, score,{navigation});
+        result.then(function(){
+          console.log("success")}
+        ).catch(function(err){
+          console.log("Fail:",err)}
+        );
 
         
       
       }else{
         if(data[questionIndex].answer==key){
+          console.log("right");
+
           // alert(this.DATA[this.state.questionNumberIndex].answer);
           storingData.push({question_id:data[questionIndex]._id, 
                             point: 1,
@@ -231,10 +258,8 @@ export function Quiz({route, navigation}){
           setScore(oldScore + 1);
           setQuestionIndex(oldQuestionIndex + 1);
           setStoringData(storingData);
-
-            
-          
         }else{
+          console.log("wrong");
           storingData.push({question_id:data[questionIndex]._id, 
                             point: 0, 
                             answerTime:Date.now()
@@ -242,7 +267,6 @@ export function Quiz({route, navigation}){
 
           setQuestionIndex(oldQuestionIndex + 1);
           setStoringData(storingData);
-
 
         }
         

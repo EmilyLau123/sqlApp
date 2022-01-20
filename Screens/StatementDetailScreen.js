@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     Text
     } from 'react-native-elements';
-import { View} from 'react-native';
+import { SafeAreaView} from 'react-native';
     //import{Stacks} from './SqlSectionList';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -24,11 +24,11 @@ const StatementDetailScreen = ({route}) => {
   //const car = this.props.navigation.getParam("name", "novalue");
  //const car = this.props.navigation.getParam("name", "novalue)
    return (
-    <View>
+    <SafeAreaView>
       <Text>title: {title}</Text>
       <Text>category: {category}</Text>
       <Text>description: {description}</Text>
-    </View>
+    </SafeAreaView>
       );
  
 }
