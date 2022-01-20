@@ -14,7 +14,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {requestSubmitScreen} from './RequestSubmitScreen';
-import {QuizScreen} from './QuizScreen';
+import {Quiz, quizChooseScreen, congratScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
 import {SIZES, COLORS} from '../components/style/theme';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -119,7 +119,7 @@ function homeWelcomeHeader({route,navigation}){
                   marginVertical: 10,
                 }}
                 titleStyle={{ fontWeight: 'bold' }}
-                onPress={()=>navigation.navigate("QuizScreen")}></Button>
+                onPress={()=>navigation.navigate("Choose")}></Button>
         
       </ScrollView>
         <FAB
@@ -143,8 +143,9 @@ const HomeScreen=()=>{
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={homeWelcomeHeader} options={{title:"Home"}}/>
-      <Stack.Screen name="QuizScreen" component={QuizScreen} options={{title:"Quiz"}}/>
-      
+      <Stack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose a difficulty"}}/>
+        <Stack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
+        <Stack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>
       <Stack.Screen name="RequestSubmit" component={requestSubmitScreen} options={{title:"Request Form"}}/>
 
     </Stack.Navigator>

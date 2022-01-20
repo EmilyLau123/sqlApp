@@ -2,8 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, {Component, useState} from 'react';
 import {View, StyleSheet, Alert} from 'react-native';
 import { Text, Button, Input,ButtonGroup, Card } from 'react-native-elements';
-import { Divider } from 'react-native-elements/dist/divider/Divider';
-import { color } from 'react-native-elements/dist/helpers';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../components/style/theme.js';
 // import customButton from '../components/customButton.js';
@@ -19,6 +17,7 @@ const styles = StyleSheet.create({
     }
 );
 
+
 export function requestSubmitScreen({navigation}){
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [selectedIndexAnswer, setSelectedIndexAnswer] = useState(0);
@@ -31,11 +30,26 @@ export function requestSubmitScreen({navigation}){
     const [option3 , setOption3] = useState("");
     const [option4 , setOption4] = useState("");
 
+    function refresh(){
+        setQuestion("");
+        setDifficulty(0);
+        setAnswer(0);
+        setSelectedIndexAnswer(0);
+        setSelectedIndex(0);
+        setOption1("");
+        setOption2("");
+        setOption3("");
+        setOption4("");
+
+
+    }
+    
+
     const insertQuiz = async (question, difficulty, answer, options, author) => {
         console.log(question, difficulty, answer, options, author);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/insert/quiz/';
+        const API_URL = 'http://localhost:8099/api/insert/question/';
     
         try {
          const response = await fetch(API_URL,{
@@ -60,13 +74,18 @@ export function requestSubmitScreen({navigation}){
             Alert.alert("Success","Submit success",
             [
                 {
-                  text: "Close",
+                  text: "Back to home",
                   onPress: () => navigation.navigate("Home",{
                       role:1,
                       status:true,
                   }),
                   style: "close",
                 },
+                {
+                    text: "Continue Adding",
+                    onPress: () => refresh(),
+                    style: "close",
+                  },
               ]
             );
          }

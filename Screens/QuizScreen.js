@@ -9,16 +9,17 @@ import {
 import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
-import {ANSWER,COLORS,SIZES} from '../components/style/theme.js';
+import {ANSWER,COLORS,SIZES,DIFFICULTY} from '../components/style/theme.js';
+import { now } from 'mongoose';
 
-function congratScreen({route,navigation}){
+export function congratScreen({route,navigation}){
   const {score} = route.params;
   return(
-    <View>
+    <SafeAreaView>
       <Text>Score: {score} / 10</Text>
       <Button title="Back to Home" 
               onPress={()=>navigation.navigate("Home")}/>
-    </View>
+    </SafeAreaView>
   );
 }
 // export function Quiz(props){
@@ -144,7 +145,7 @@ function congratScreen({route,navigation}){
 //     );
 //   }
 // }
-function Quiz({route, navigation}){
+export function Quiz({route, navigation}){
   //   var totalQuestion = 9;
   //   var modelAnswer=DATA[0].answer;
   const [isLoading, setLoading] = useState(true);
@@ -155,12 +156,48 @@ function Quiz({route, navigation}){
 
   const totalQuestion = 9;
   const {difficulty} = route.params;
+  console.log(difficulty);
+
+
+  const updateUser = async (user_id, storingData, score, {navigation}) => {
+    console.log(question, difficulty, answer, options, author);
+    //https://reactnative.dev/movies.json
+    //http://localhost:8099/api/retrieveStatements/
+    const API_URL = 'http://localhost:8099/api/update/user/';
+
+    try {
+     const response = await fetch(API_URL,{
+         method:'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+         body: JSON.stringify({
+            user_id: user_id,
+            quizDone: storingData,
+        }),
+        
+     });
+     const json = await response.json();
+     if(response.status == 200){
+        console.log("json",json);
+        navigation.navigate("Congrats",{
+          score:score
+        });
+     }
+   } catch (error) {
+     console.error(error);
+   } finally {
+    // setLoading(false);
+    console.log("done");
+   }
+ }
+
 
   const nextQuestion = (key) => {
       var oldScore = score;
       var oldQuestionIndex = questionIndex;
 
-    console.log(storingData);
 
       if(questionIndex >= totalQuestion){
         //Add result to the user's quizeDone array[obj_id, mark(1/0)]
@@ -178,14 +215,19 @@ function Quiz({route, navigation}){
         //   console.log("done");
         // }
     
-        navigation.navigate("Congrats",{
-          score:score
-        });
+
+        updateUser("61e676a817b1701f87c00711",storingData, score);
+
+
+        
       
       }else{
         if(data[questionIndex].answer==key){
           // alert(this.DATA[this.state.questionNumberIndex].answer);
-          storingData.push({question_id:"dasd2dw34", point: 1});
+          storingData.push({question_id:data[questionIndex]._id, 
+                            point: 1,
+                            answerTime:Date.now()
+                          });
           setScore(oldScore + 1);
           setQuestionIndex(oldQuestionIndex + 1);
           setStoringData(storingData);
@@ -193,7 +235,10 @@ function Quiz({route, navigation}){
             
           
         }else{
-          storingData.push({question_id:"dasd2dw34", point: 0});
+          storingData.push({question_id:data[questionIndex]._id, 
+                            point: 0, 
+                            answerTime:Date.now()
+                          });
 
           setQuestionIndex(oldQuestionIndex + 1);
           setStoringData(storingData);
@@ -204,16 +249,27 @@ function Quiz({route, navigation}){
       }
     }
 
-  const getQuestions = async () => {
+  const getQuestions = async (difficulty) => {
+    console.log('difficulty:',difficulty);
+
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/find/questions/';
+    var intDifficulty = DIFFICULTY.easy
+    if(difficulty == "Medium"){
+      intDifficulty = DIFFICULTY.medium;
+    }else if(difficulty == "Hard"){
+      intDifficulty = DIFFICULTY.hard;
+    }
 
+    const API_URL = 'http://localhost:8099/api/find/questions/difficulty/'+intDifficulty;
+console.log(API_URL);
     try {
       const response = await fetch(API_URL);
       const json = await response.json();
       console.log(json);
+      if(response.status == 200){
       setData(json);
+    }
     } catch (error) {
       console.error(error);
     } finally {
@@ -223,23 +279,43 @@ function Quiz({route, navigation}){
   }
 
   useEffect(() => {
-    getQuestions();
+    getQuestions(difficulty);
   }, []);
   
-// console.log('data',data);
+console.log('data',data[questionIndex]);
 // console.log('index',questionIndex);
-console.log('storingData',storingData);
+console.log("storingData: ",storingData);
 
 
-
+if(data == ""){
+  return(
+    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height, }}>
+      <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center", paddingTop:40 }}>Oops!</Text> 
+      <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center"}}>No questions found!</Text> 
+      <Button title="Back to Home"
+                  buttonStyle={{
+                    backgroundColor: COLORS.attention,
+                    borderWidth: 2,
+                    borderColor: COLORS.attention,
+                    borderRadius: 30,
+                }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                }}
+                  onPress={()=>navigation.navigate("Home")}/>
+    </SafeAreaView>
+  );
+}else{
   return(
     <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
+
         {isLoading?<ActivityIndicator/>:(
           <Card borderRadius={SIZES.round}>
             <Text style={{alignSelf:"flex-end", fontSize:16}}>Score: {score} / 10</Text>
             <Text style={{fontWeight:"bold", alignSelf:"center", fontSize:24, paddingBottom:SIZES.padding}}>{questionIndex+1} / 10</Text>
             
-
             <Card.Divider />
             <Text style={{fontSize:16, alignSelf:"center", paddingBottom:10}}>Q: {data[questionIndex].question}</Text>
           
@@ -306,11 +382,11 @@ console.log('storingData',storingData);
         )}
       </SafeAreaView>
   );
-
+}
 }
 
         
-function quizChooseScreen({navigation}){
+export function quizChooseScreen({navigation}){
   return(
     <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
       <Button title="Easy"
@@ -362,36 +438,36 @@ function quizChooseScreen({navigation}){
   );
 }
 
-const QuizStack = createStackNavigator();
+// const QuizStack = createStackNavigator();
 
 
-export function QuizScreen(){
-    return (
-      // <QuizStack.Navigator>
-      //   <QuizStack.Screen name="Easy" component={Quiz} 
-      //     // initialParams={{DATA:{questions: ['Q1','Q2','Q3'],
-      //     // difficulty: 'Easy',
-      //     // answer:1,
-      //     // options:['option A', 'option B', 'option C', 'option D'],
-      //     // images: '',
-      //     // author: 'Admin'}}}
-      //    optios={{title:"Home"}}/>
-      //   <QuizStack.Screen name="Medium" component={Quiz} optios={{title:"Daily Knowledge"}}/>
-      //   <QuizStack.Screen name="Hard" component={Quiz} optios={{title:"Quiz"}}/>
+// export function QuizScreen(){
+//     return (
+//       // <QuizStack.Navigator>
+//       //   <QuizStack.Screen name="Easy" component={Quiz} 
+//       //     // initialParams={{DATA:{questions: ['Q1','Q2','Q3'],
+//       //     // difficulty: 'Easy',
+//       //     // answer:1,
+//       //     // options:['option A', 'option B', 'option C', 'option D'],
+//       //     // images: '',
+//       //     // author: 'Admin'}}}
+//       //    optios={{title:"Home"}}/>
+//       //   <QuizStack.Screen name="Medium" component={Quiz} optios={{title:"Daily Knowledge"}}/>
+//       //   <QuizStack.Screen name="Hard" component={Quiz} optios={{title:"Quiz"}}/>
   
-      // </QuizStack.Navigator>
-      <QuizStack.Navigator>
-        <QuizStack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose", headerShown: false}}/>
-        <QuizStack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
-        <QuizStack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>
+//       // </QuizStack.Navigator>
+//       <QuizStack.Navigator>
+//         <QuizStack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose", headerShown: false}}/>
+//         <QuizStack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
+//         <QuizStack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>
 
         
-      </QuizStack.Navigator>
-      // </QuizStack.Navigator>
-      // <View>
-      //   <Button title="Easy" />
-      //   <Button title="Medium" />
-      //   <Button title="Hard" />
-      // </View>
-    );
-}
+//       </QuizStack.Navigator>
+//       // </QuizStack.Navigator>
+//       // <View>
+//       //   <Button title="Easy" />
+//       //   <Button title="Medium" />
+//       //   <Button title="Hard" />
+//       // </View>
+//     );
+// }
