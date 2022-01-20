@@ -5,7 +5,8 @@ import {
     Image,
     Button,
     Input,
-    onChangeText
+    onChangeText,
+    Card
     } from 'react-native-elements';
 import {StyleSheet,View,SafeAreaView} from 'react-native';
 import { STYLES,SIZES, COLORS } from '../components/style/theme';
@@ -29,8 +30,8 @@ const SignInScreen = ({navigation}) => {
     const [password,setPassword] = useState('');
 
     return(
-        <SafeAreaView style={{flex:1}}>
-            <View height={SIZES.height}>
+        <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
+            <Card borderRadius={SIZES.round}>
                 <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
                 <Text>Username : {username}</Text><Input
                         style={STYLES.input}
@@ -42,6 +43,7 @@ const SignInScreen = ({navigation}) => {
                     style={STYLES.input}
                     onChangeText={password => setPassword(password)}
                     defaultValue={password}
+                    secureTextEntry={true}
                     /> 
                 <Button title="SIGN IN"
                     // titleStyle={{ color: '#2465a0' }}
@@ -74,7 +76,7 @@ const SignInScreen = ({navigation}) => {
                         }}
                         titleStyle={{ fontWeight: 'bold' }}
                         onPress={()=>navigation.navigate("SignUp")}/>
-            </View>
+            </Card>
         </SafeAreaView>
     );
 }

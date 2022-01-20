@@ -10,7 +10,6 @@ import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView } from 'rea
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import {ANSWER,COLORS,SIZES,DIFFICULTY} from '../components/style/theme.js';
-import { now } from 'mongoose';
 
 export function congratScreen({route,navigation}){
   const {score} = route.params;
@@ -297,6 +296,9 @@ console.log(API_URL);
     } catch (error) {
       console.error(error);
     } finally {
+      // if(typeof(data)=='undefined'){
+      //   setData(null);
+      // }
       setLoading(false);
       console.log("done");
     }
@@ -311,31 +313,36 @@ console.log('data',data[questionIndex]);
 console.log("storingData: ",storingData);
 
 
-if(data == ""){
-  return(
-    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height, }}>
-      <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center", paddingTop:40 }}>Oops!</Text> 
-      <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center"}}>No questions found!</Text> 
-      <Button title="Back to Home"
-                  buttonStyle={{
-                    backgroundColor: COLORS.attention,
-                    borderWidth: 2,
-                    borderColor: COLORS.attention,
-                    borderRadius: 30,
-                }}
-                containerStyle={{
-                    width: 'auto',
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                }}
-                  onPress={()=>navigation.navigate("Home")}/>
-    </SafeAreaView>
-  );
-}else{
+// if(data == ""){
+//   return(
+//     <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height, }}>
+//       <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center", paddingTop:40 }}>Oops!</Text> 
+//       <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center"}}>No questions found!</Text> 
+//       <Button title="Back to Home"
+//                   buttonStyle={{
+//                     backgroundColor: COLORS.attention,
+//                     borderWidth: 2,
+//                     borderColor: COLORS.attention,
+//                     borderRadius: 30,
+//                 }}
+//                 containerStyle={{
+//                     width: 'auto',
+//                     marginHorizontal: 50,
+//                     marginVertical: 10,
+//                 }}
+//                   onPress={()=>navigation.navigate("Home")}/>
+//     </SafeAreaView>
+//   );
+// }else{
+  //For making questions show randomly
+  const dataLength = data.length;
+  var usedIndex = [];
+
   return(
     <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
 
         {isLoading?<ActivityIndicator/>:(
+        <View>
           <Card borderRadius={SIZES.round}>
             <Text style={{alignSelf:"flex-end", fontSize:16}}>Score: {score} / 10</Text>
             <Text style={{fontWeight:"bold", alignSelf:"center", fontSize:24, paddingBottom:SIZES.padding}}>{questionIndex+1} / 10</Text>
@@ -401,13 +408,32 @@ if(data == ""){
                   onPress={()=>nextQuestion(3)}/>
 
           </Card>
-         
+          </View>
+              // :
+              // <View style={{backgroundColor:COLORS.background, height:SIZES.height, }}>
+              //       <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center", paddingTop:40 }}>Oops!</Text> 
+              //        <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center"}}>No questions found!</Text> 
+              //        <Button title="Back to Home"
+              //                   buttonStyle={{
+              //                     backgroundColor: COLORS.attention,
+              //                     borderWidth: 2,
+              //                     borderColor: COLORS.attention,
+              //                     borderRadius: 30,
+              //                 }}
+              //                 containerStyle={{
+              //                     width: 'auto',
+              //                     marginHorizontal: 50,
+              //                     marginVertical: 10,
+              //                 }}
+              //                   onPress={()=>navigation.navigate("Home")}/>
+              //     </View>
+            
       
         )}
       </SafeAreaView>
   );
 }
-}
+// }
 
         
 export function quizChooseScreen({navigation}){

@@ -4,6 +4,7 @@ import {View, StyleSheet, Alert} from 'react-native';
 import { Text, Button, Input,ButtonGroup, Card } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../components/style/theme.js';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // import customButton from '../components/customButton.js';
 
@@ -97,6 +98,27 @@ export function requestSubmitScreen({navigation}){
         console.log("done");
        }
      }
+//to upload image NOT DONE
+ const choosePic= async()=>{
+     const [response, setResponse] = useState(null);
+     try{
+
+        const result = await launchImageLibrary({mediaType:'photo'},((response) =>{
+            alert(response);
+
+        }));
+            alert(result);
+     }catch(error){
+         alert("err: ",error);
+     }
+    
+    // result.then(function(item){
+    //     console.log(item);
+    // }).catch(function(error){
+    //     alert("choosePic Error:",error)
+    // });
+
+}
 
     return(
         <ScrollView style={{backgroundColor:COLORS.background}}>
@@ -110,6 +132,7 @@ export function requestSubmitScreen({navigation}){
                 style={STYLES.input}
                 onChangeText={question => setQuestion(question)}
                 defaultValue={question}
+                multiline={true}
             />
             <Text>Difficulty *</Text>
             <ButtonGroup
@@ -138,22 +161,45 @@ export function requestSubmitScreen({navigation}){
                 onChangeText={option1 => setOption1(option1)}
                 defaultValue={option1}
                 placeholder="Enter value for option 1"
+                multiline={true}
             /><Input
                 style={STYLES.input}
                 onChangeText={option2 => setOption2(option2)}
                 defaultValue={option2}
                 placeholder="Enter value for option 2"
+                multiline={true}
             /><Input
                 style={STYLES.input}
                 onChangeText={option3 => setOption3(option3)}
                 defaultValue={option3}
                 placeholder="Enter value for option 3"
+                multiline={true}
             /><Input
                 style={STYLES.input}
                 onChangeText={option4 => setOption4(option4)}
                 defaultValue={option4}
                 placeholder="Enter value for option 4"
+                multiline={true}
 
+            />
+            <Button 
+                buttonStyle={{
+                    backgroundColor: '#77afac',
+                    borderWidth: 2,
+                    borderColor: '#77afac',
+                    borderRadius: 30,
+                }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                }}
+                titleStyle={{ fontWeight: 'bold' }}
+                style={{paddingTop:SIZES.padding}}
+                title="Upload images"
+                onPress={()=>choosePic()}
+                // onPress={()=>choosePic().then(function(){alert("success")})
+                // .catch(function(err){alert("fail: ",err)})}
             />
             </Card>
             <Button 
@@ -176,7 +222,7 @@ export function requestSubmitScreen({navigation}){
                                 difficulty,
                                 answer,
                                 [option1,option2,option3,option4],
-                                "Admin"
+                                1//"Admin"
                             )}
             /> 
         </ScrollView>

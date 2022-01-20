@@ -1,6 +1,6 @@
 import { NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
 import React, {Component, useState, useEffect} from 'react';
-import { ListItem, Text,  Button, SearchBar } from 'react-native-elements';
+import { ListItem, Text,  Button, SearchBar, FAB } from 'react-native-elements';
 import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView, View, ActivityIndicator } from 'react-native';
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen.js';
 import StatementDetailScreen from './StatementDetailScreen.js';
 import { COLORS } from '../components/style/theme.js';
+import { statementSubmitScreen } from './Form/StatementCreateForm.js';
 
 
 
@@ -212,9 +213,18 @@ async function getStatementsFromApi(){
           <FlatList
           data={data}
           renderItem= {renderItems}
-          keyExtractor={item => item.title}
+          keyExtractor={item => item._id}
           /> 
         )}
+        <View>
+        <FAB
+            visible={true}
+            onPress={() =>navigation.navigate("StatementSubmit")}
+            placement="right"
+            icon={{ name: 'add', color: 'white' }}
+            color="#d9cc35"
+          />
+          </View>
       </SafeAreaView>
       
   )
@@ -223,13 +233,14 @@ async function getStatementsFromApi(){
 
 const Stack = createStackNavigator();
 
-const StatementsScreen = ({navigation}) => {
+const StatementsScreen = () => {
     return (
       
         <Stack.Navigator>
               <Stack.Screen name="StatementsList" component={StatementsFlatList} options={{title:"Statements List"}}/>
               <Stack.Screen name="StatementDetail" component={StatementDetailScreen} options={{title:"Statements Detail"}}/>
-            </Stack.Navigator>
+              <Stack.Screen name="StatementSubmit" component={statementSubmitScreen} options={{title:"Statements Submit"}}/> 
+        </Stack.Navigator>
       
     );
 }

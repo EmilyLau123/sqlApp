@@ -10,7 +10,7 @@ import { userList,userDetail } from './UserListScreen';
 import {requestList,requestDetail} from './RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE} from '../components/style/theme.js';
+import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
 import {
     LineChart,
@@ -30,66 +30,7 @@ function logOut(){
 
 
 function adminMainAccountScreen({navigation}){
-    const USERDATA = [
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            username: 'loginUsername',
-            nickname: 'qwed',
-            status:'approved'
-          },
-          {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            username: 'Second Item',
-            nickname: 'no.2',
-            status:'rejected'
-
-          },
-          {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            username: 'Third Item',
-            nickname: 'loveee',
-            status:'banned'
-
-          },
-          {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            username: 'Third Item',
-            nickname: 'BB',
-            status:'waiting'
-
-          },
-    ];
-
-    const REQUESTDATA = [
-        {
-            question: 'What is SQL? ',
-            difficulty: 'Easy',
-            answer:1,
-            options:['language', 'thing', 'idk', 'sdasd'],
-            images: 'imagesss',
-            author: 'admin',
-            status:1,
-          },
-          {
-            question: 'What is IDE? ',
-            difficulty: 'Easy',
-            answer:3,
-            options:['language', 'thing', 'idk', 'sdasd'],
-            images: 'imagesss',
-            author: 'avc',
-            status:4,
-          },
-          {
-            question: 'What is SELECT? ',
-            difficulty: 'Medium',
-            answer:0,
-            options:['language', 'thing', 'idk', 'sdasd'],
-            images: 'imagesss',
-            author: 'dsq',
-            status:2,
-          },
-    ];
-
+ 
     const userRenderItem = ({ item }) => {
         var iconName = ICONS.approved;
         var status = item.status;
@@ -108,26 +49,26 @@ function adminMainAccountScreen({navigation}){
             </ListItem>
             );
     }
-    const requestRenderItem = ({ item }) => {
-        var iconName = ICONS.approved;
-        var status = item.status;
-        if(status == STATUS.rejected){
-            iconName = ICONS.rejected;
-        }else if(status == STATUS.waiting){
-            iconName = ICONS.waiting;
-        }
+    // const requestRenderItem = ({ item }) => {
+    //     var iconName = ICONS.approved;
+    //     var status = item.status;
+    //     if(status == STATUS.rejected){
+    //         iconName = ICONS.rejected;
+    //     }else if(status == STATUS.waiting){
+    //         iconName = ICONS.waiting;
+    //     }
         // else{
         //     iconName = ICONS.others;
         // }
-        return(
-        <ListItem>
-            <Ionicons name={iconName} size={SIZES.icon} />
-            <ListItem.Content>
-            <Text size={SIZES.text}>{item.question}</Text>
-            </ListItem.Content>
-        </ListItem>
-        );
-    }
+    //     return(
+    //     <ListItem>
+    //         <Ionicons name={iconName} size={SIZES.icon} />
+    //         <ListItem.Content>
+    //         <Text size={SIZES.text}>{item.question}</Text>
+    //         </ListItem.Content>
+    //     </ListItem>
+    //     );
+    // }
 
     return(
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>

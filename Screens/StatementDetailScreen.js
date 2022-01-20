@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import {
-    Text
+  Card,
+    Text,
+    Image
     } from 'react-native-elements';
 import { SafeAreaView} from 'react-native';
     //import{Stacks} from './SqlSectionList';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { SIZES,COLORS } from '../components/style/theme';
 
 const DetailStack = createStackNavigator();
 
@@ -24,10 +26,13 @@ const StatementDetailScreen = ({route}) => {
   //const car = this.props.navigation.getParam("name", "novalue");
  //const car = this.props.navigation.getParam("name", "novalue)
    return (
-    <SafeAreaView>
-      <Text>title: {title}</Text>
-      <Text>category: {category}</Text>
-      <Text>description: {description}</Text>
+    <SafeAreaView style={{height:SIZES.height, backgroundColor:COLORS.background}}>
+      <Card>
+        <Card.Title style={{fontSize:20}}>{title}</Card.Title>
+        <Card.Divider></Card.Divider>
+        <Image></Image>
+       <Text style={{fontSize:18}}>description: {description}</Text>
+      </Card>
     </SafeAreaView>
       );
  
