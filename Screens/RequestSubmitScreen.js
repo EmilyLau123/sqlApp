@@ -4,6 +4,7 @@ import {View, StyleSheet, Alert} from 'react-native';
 import { Text, Button, Input,ButtonGroup, Card } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../components/style/theme.js';
+
 // import customButton from '../components/customButton.js';
 
 const styles = StyleSheet.create({
@@ -64,7 +65,7 @@ export function requestSubmitScreen({navigation}){
                 answer: answer,
                 options: options,
                 author: author,
-                role: 1 // admin
+                role: 1 ,// admin,
             }),
             
          });
