@@ -74,6 +74,11 @@ function checkLogIn(){
 }
 
 function homeWelcomeHeader({route,navigation}){
+  const username = "User";
+
+  if(route.params != null){
+      username = route.params;
+  }
   return(
     <SafeAreaView style={{flex:1}}>
           {/* <ImageBackground source={{uri: "https://reactjs.org/logo-og.png"}} resizeMode="cover" style={styles.image}> */}
@@ -83,7 +88,7 @@ function homeWelcomeHeader({route,navigation}){
         <Card borderRadius={SIZES.round}>
         <Card.Title> Welcome</Card.Title>
           <Card.Divider />
-          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi User !</Text>
+          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi {username} !</Text>
           <Text size={SIZES.text} style={{padding:SIZES.text}}>Remember practice makes perfect!</Text>
         </Card>
         <Card borderRadius={SIZES.round}>
