@@ -64,30 +64,7 @@ const styles = StyleSheet.create({
 //   }
 // };
 
-function init(resolve, reject) {  // resolve, reject 是兩個 function ，用來決定這個 Promise 裡的資料內容
-  resolve('Hello');  //  當需要回傳資料的時候，就 call resolve
-  reject('error~~~');   //  當需要觸發錯誤的時候，就 call reject
-}
 
-
-async function getStatementsFromApi(){
-  //fatch api
-  const API_URL = 'http://localhost:8099/api/retrieveStatements/';
-
-  console.log("fetching.."+API_URL);//https://reqres.in/api/products/3
-  var re = fetch(API_URL,{
-    method: 'GET',
-    headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-    }
-      
-    }).then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(response => console.log('Success:', response));
-
-    
-  }
 // async function StatementsSectionList({navigation}){
  function StatementsFlatList({navigation}){
 
@@ -114,10 +91,10 @@ async function getStatementsFromApi(){
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
 
-  const getStatements = async () => {
+  const getStatements = async (searchText) => {
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/statements/find/';
+    const API_URL = 'http://localhost:8099/api/statements/find/'+searchText;
 
     try {
      const response = await fetch(API_URL);
@@ -133,11 +110,13 @@ async function getStatementsFromApi(){
  }
 
  useEffect(() => {
-  getStatements();
+  getStatements("");
  }, []);
 
  const searchButton = (searchText) => {
    setSearch(searchText);
+   getStatements(searchText);
+
    console.log(search);
  }
 
@@ -195,36 +174,42 @@ async function getStatementsFromApi(){
     // const setData = (title,des) => {
     //   this.state.description = "des";
     // }
-    console.log('data',data);
+    // console.log('data',data);
     // console.log('fin',myPromise);
 
 
     return(
       //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
-        <SearchBar 
+        
+        {isLoading?<ActivityIndicator/>:(
+          <View>
+          <SearchBar 
           searchIcon={true}
           clearIcon={true}
           placeholder="Type Here..."
           onChangeText={(value)=>searchButton(value)}
           value={search}
         />
-        {isLoading?<ActivityIndicator/>:(
           <FlatList
           data={data}
           renderItem= {renderItems}
           keyExtractor={item => item._id}
+          onRefresh={() => getStatements("")}
+          refreshing={isLoading}
           /> 
-        )}
+        
         <View>
         <FAB
             visible={true}
             onPress={() =>navigation.navigate("StatementSubmit")}
             placement="right"
             icon={{ name: 'add', color: 'white' }}
-            color="#d9cc35"
+            color={COLORS.attention}
           />
           </View>
+          </View>
+          )}
       </SafeAreaView>
       
   )

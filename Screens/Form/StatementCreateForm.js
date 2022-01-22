@@ -33,11 +33,11 @@ export function statementSubmitScreen({navigation}){
     }
     
 
-    const insertStatement = async (title, description, images) => {
-        console.log(question, difficulty, answer, options, author);
+    const insertStatement = async (title, description) => {
+        // console.log(question, difficulty, answer, options, author);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/insert/statement/';
+        const API_URL = 'http://localhost:8099/api/statement/insert/';
     
         try {
          const response = await fetch(API_URL,{
@@ -49,7 +49,7 @@ export function statementSubmitScreen({navigation}){
              body: JSON.stringify({
                 title: title,
                 description: description,
-                images: images
+                // images: images
             }),
             
          });
@@ -161,7 +161,7 @@ export function statementSubmitScreen({navigation}){
                 titleStyle={{ fontWeight: 'bold' }}
                 style={{paddingTop:SIZES.padding}}
                 title="Submit"
-                onPress={()=>insertStatement(title, des, images)}
+                onPress={()=>insertStatement(title, des)}
             /> 
         </ScrollView>
 

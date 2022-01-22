@@ -284,7 +284,7 @@ export function Quiz({route, navigation}){
       intDifficulty = DIFFICULTY.hard;
     }
 
-    const API_URL = 'http://localhost:8099/api/find/questions/difficulty/'+intDifficulty;
+    const API_URL = 'http://localhost:8099/api/questions/find/difficulty/'+intDifficulty;
 console.log(API_URL);
     try {
       const response = await fetch(API_URL);

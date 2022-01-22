@@ -2,17 +2,17 @@ import React, {Component, useState} from 'react';
 import { Text,
          Button,
          Overlay,
-         Alert,
          
          
          Input,
          Card
         } from 'react-native-elements';
-import {Modal, Pressable, Dimensions, TouchableOpacity, View,StyleSheet, SafeAreaView} from 'react-native';
+import {Modal, Pressable, Dimensions, TouchableOpacity, View,StyleSheet, SafeAreaView, Alert} from 'react-native';
 import 'react-native-gesture-handler';
 import {COLORS, SIZES} from '../components/style/theme'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 const accountSettingScreen = () =>{
@@ -22,6 +22,52 @@ const accountSettingScreen = () =>{
     const [newpassword,setNewpassword] = useState('');
 
     const [overlayVisible, setOverlayVisible] = useState(false);
+
+//ban a user
+const updateUser = async(user_id, username, password, nickname, newpassword) => {
+  console.log(request_id);
+  //https://reactnative.dev/movies.json
+  //http://localhost:8099/api/retrieveStatements/
+  const API_URL = 'http://localhost:8099/api/user/update/';
+
+  try {
+   const response = await fetch(API_URL,{
+       method:"POST",
+          headers: {
+              'Content-Type':'application/json',
+              'Accept':'application/json'
+          },
+       body: JSON.stringify({
+          user_id: user_id,
+          username: username,
+          password: password,
+          nickname: nickname,
+          newpassword: newpassword,
+          // updated_at: Danow(),
+      }),
+      
+   });
+   const json = await response.json();
+   if(response.status == 200){
+      console.log("json",json);
+      Alert.alert("Success","Your information are updated",
+      [
+          {
+            text: "Close",
+            onPress: () => navigation.navigate("Account"),
+            style: "close",
+          },
+        ]
+      );
+   }
+ } catch (error) {
+   console.error(error);
+ } finally {
+  // setLoading(false);
+  console.log("done");
+ }
+}
+
 
     const changeUserName=()=>{
       setOverlayVisible(!overlayVisible);
@@ -42,19 +88,12 @@ const accountSettingScreen = () =>{
             </Overlay>
       
             <Card>
-              <Text size={SIZES.text}>Nickname: user's nickname
-                <Pressable
-                    onPress={() => setOverlayVisible(true)}
-                >
-                    <Text size={SIZES.text} style={{color: COLORS.secondary}}>  Change username</Text>
-                </Pressable></Text>
-              <Text size={SIZES.text}>Username: user's username
-                <Pressable
-                      onPress={() => setOverlayVisible(true)}
-                  >
-                      <Text size={SIZES.text} style={{color: COLORS.secondary}}>  Change nickname</Text>
-                  </Pressable>
-              </Text>
+              <Text size={SIZES.text}>Nickname: user's nickname</Text>
+
+              <Input placeholder="Current nickname"></Input>                  
+              <Text size={SIZES.text}>Username: user's username</Text>
+
+                <Input placeholder="Current username"></Input>                  
             </Card>
             
             <Card>
@@ -90,7 +129,7 @@ const accountSettingScreen = () =>{
                 marginVertical: 10,
                 }}
               titleStyle={{ fontWeight: 'bold' }} 
-              onPress={()=>alert("Password should be replaced")}></Button>
+              onPress={()=>changeUserName()}></Button>
         </View>
       </SafeAreaView>
     );
