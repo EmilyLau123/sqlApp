@@ -169,8 +169,8 @@ export function userDetail({route,navigation}){
      }
      
 //ban a user
-const changeUserStatus = async(user_id, status) => {
-    console.log(user_id);
+const changeUserStatus = async(request_id, status) => {
+    console.log(request_id);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'http://localhost:8099/api/user/status/change';
@@ -183,7 +183,7 @@ const changeUserStatus = async(user_id, status) => {
                 'Accept':'application/json'
             },
          body: JSON.stringify({
-            user_id: user_id,
+            request_id: request_id,
             status: status,
             // updated_at: Danow(),
         }),
@@ -218,12 +218,12 @@ const changeUserStatus = async(user_id, status) => {
                     <Text style={{padding:SIZES.padding}}>Status: {statusString} </Text>
                     <Text style={{padding:SIZES.padding}}>Username: {username} </Text>
                     <Text style={{padding:SIZES.padding}}>Nickname: {nickname} </Text>
-                    <Text style={{padding:SIZES.padding}}>Submitted_at: {submitted_at} </Text>
-                    <Text style={{padding:SIZES.padding}}>Updated_at: {updated_at} </Text>
+                    <Text style={{padding:SIZES.padding}}>Submitted At: {submitted_at} </Text>
+                    <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
                 </Card>
             {/* <Button
                 title="Edit"
-                onPress={()=>}
+                onPress={()=>} 
             /> */}
             {statusString == "Approved"?(
                 <View>
@@ -242,7 +242,7 @@ const changeUserStatus = async(user_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>deleteUser(user_id)}
+                    onPress={()=>deleteUser(request_id)}
                 />
                 <Button
                     title="Ban"
@@ -257,7 +257,7 @@ const changeUserStatus = async(user_id, status) => {
                         marginHorizontal: 50,
                         marginVertical: 10,
                         }}
-                    onPress={()=>changeUserStatus(user_id, USER_STATUS.banned)}
+                    onPress={()=>changeUserStatus(request_id, USER_STATUS.banned)}
                 />
                 </View>
             ):(<View></View>)}
@@ -279,7 +279,7 @@ const changeUserStatus = async(user_id, status) => {
                     marginVertical: 10,
                     }}
                 titleStyle={{ fontWeight: 'bold' }}
-                onPress={()=>changeUserStatus(user_id, USER_STATUS.approved)}
+                onPress={()=>changeUserStatus(request_id, USER_STATUS.approved)}
                 />
                 <Button
                     title="Delete"
@@ -297,7 +297,7 @@ const changeUserStatus = async(user_id, status) => {
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>deleteUser(user_id)}
+                    onPress={()=>deleteUser(request_id)}
                 />
                 
                 </View>
@@ -320,7 +320,7 @@ const changeUserStatus = async(user_id, status) => {
                     marginVertical: 10,
                     }}
                 titleStyle={{ fontWeight: 'bold' }}
-                onPress={()=>changeUserStatus(user_id, USER_STATUS.approved)}
+                onPress={()=>changeUserStatus(request_id, USER_STATUS.approved)}
                 />
                 <Button
                     title="reject"
@@ -337,7 +337,7 @@ const changeUserStatus = async(user_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>changeUserStatus(user_id, USER_STATUS.rejected)}
+                    onPress={()=>changeUserStatus(request_id, USER_STATUS.rejected)}
                 />
                 </View>
             ):(<View></View>)}
@@ -359,7 +359,7 @@ const changeUserStatus = async(user_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>deleteUser(user_id)}
+                    onPress={()=>deleteUser(request_id)}
                 />
                 <Button
                     title="Unban"
@@ -376,7 +376,7 @@ const changeUserStatus = async(user_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>changeUserStatus(user_id, USER_STATUS.approved)}
+                    onPress={()=>changeUserStatus(request_id, USER_STATUS.approved)}
                 />
                 </View>
             ):(<View></View>)}
