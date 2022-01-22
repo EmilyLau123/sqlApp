@@ -162,7 +162,7 @@ export function Quiz({route, navigation}){
     console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/update/user/';
+    const API_URL = 'http://localhost:8099/api/user/update/';
 
     try {
      const response = await fetch(API_URL,{
@@ -200,7 +200,7 @@ export function Quiz({route, navigation}){
 
       if(questionIndex >= totalQuestion){
         //Add result to the user's quizeDone array[obj_id, mark(1/0)]
-        // const API_URL = 'http://localhost:8099/api/update/user/';
+        // const API_URL = 'http://localhost:8099/api/user/update/';
 
         // try {
         //   const response = await fetch(API_URL);

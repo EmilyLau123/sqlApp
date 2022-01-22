@@ -147,7 +147,7 @@ const Stack = createStackNavigator();
 const HomeScreen=()=>{
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={homeWelcomeHeader} options={{title:"Home"}}/>
+      <Stack.Screen name="HomePage" component={homeWelcomeHeader} options={{title:"Home"}}/>
       <Stack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose a difficulty"}}/>
         <Stack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
         <Stack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>

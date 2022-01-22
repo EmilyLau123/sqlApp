@@ -22,7 +22,7 @@ const SignUpScreen = ({navigation}) => {
         console.log(username,password,nickname, role);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/insert/user/';
+        const API_URL = 'http://localhost:8099/api/user/insert/';
     
         try {
          const response = await fetch(API_URL,{

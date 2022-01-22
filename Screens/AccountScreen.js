@@ -19,7 +19,7 @@ import {
 
 const AccountStack = createStackNavigator();
 function ckeckLogIn(){
-    var userStatus = [false,''];
+    var userStatus = [true,USER_ROLE.admin];
     return userStatus;
 }
 function logOut(){

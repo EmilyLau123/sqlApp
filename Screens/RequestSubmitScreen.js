@@ -51,7 +51,7 @@ export function requestSubmitScreen({navigation}){
         console.log(question, difficulty, answer, options, author);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/insert/question/';
+        const API_URL = 'http://localhost:8099/api//question/insert/';
     
         try {
          const response = await fetch(API_URL,{
