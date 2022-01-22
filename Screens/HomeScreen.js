@@ -144,7 +144,7 @@ function homeWelcomeHeader({route,navigation}){
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const HomeScreen=()=>{
+const HomeScreen=({route})=>{
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={homeWelcomeHeader} options={{title:"Home"}}/>

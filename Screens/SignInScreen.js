@@ -14,6 +14,12 @@ import {StyleSheet,Alert,SafeAreaView} from 'react-native';
 import { STYLES,SIZES, COLORS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
+const AuthContext = React.createContext();
+
+
+const { signIn } = React.useContext(AuthContext);
+
+
 const style = StyleSheet.create({
    
     button: {
@@ -32,50 +38,50 @@ const SignInScreen = ({navigation}) => {
     const [index,setIndex] = useState(0);
 
 
-    const loginUser = async () => {
-        console.log(username,password, role);
-        //https://reactnative.dev/movies.json
-        //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/user/login/';
+    // const loginUser = async () => {
+    //     console.log(username,password, role);
+    //     //https://reactnative.dev/movies.json
+    //     //http://localhost:8099/api/retrieveStatements/
+    //     const API_URL = 'http://localhost:8099/api/user/login/';
     
-        try {
-         const response = await fetch(API_URL,{
-             method:"POST",
-                headers: {
-                    'Content-Type':'application/json',
-                    'Accept':'application/json'
-                },
-             body: JSON.stringify({
-                username: username,
-                password: password,
-                role: role
-            }),
+    //     try {
+    //      const response = await fetch(API_URL,{
+    //          method:"POST",
+    //             headers: {
+    //                 'Content-Type':'application/json',
+    //                 'Accept':'application/json'
+    //             },
+    //          body: JSON.stringify({
+    //             username: username,
+    //             password: password,
+    //             role: role
+    //         }),
             
-         });
-         const json = await response.json();
-         if(response.status == 200){
-            console.log("json",json);
-            Alert.alert("Success","Sign In success",
-            [
-                {
-                  text: "Close",
-                  onPress: () => navigation.navigate("Home",{
-                      role:json[0].role,
-                      status:true,
-                      nickname:json[0].nickname,
-                  }),
-                  style: "close",
-                },
-              ]
-            );
-         }
-       } catch (error) {
-         console.error(error);
-       } finally {
-        // setLoading(false);
-        console.log("done");
-       }
-     }
+    //      });
+    //      const json = await response.json();
+    //      if(response.status == 200){
+    //         console.log("json",json);
+    //         Alert.alert("Success","Sign In success",
+    //         [
+    //             {
+    //               text: "Close",
+    //               onPress: () => navigation.navigate("Home",{
+    //                   role:json[0].role,
+    //                   status:true,
+    //                   nickname:json[0].nickname,
+    //               }),
+    //               style: "close",
+    //             },
+    //           ]
+    //         );
+    //      }
+    //    } catch (error) {
+    //      console.error(error);
+    //    } finally {
+    //     // setLoading(false);
+    //     console.log("done");
+    //    }
+     
 
     return(
         <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
@@ -129,7 +135,7 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
-                            onPress={()=>loginUser(username,password,role)}/>
+                            onPress={()=>signIn(username,password,role)}/>
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'
@@ -177,7 +183,7 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
-                            onPress={()=>loginUser(username,password,role)}/>
+                            onPress={()=>signIn(username,password,role)}/>
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'

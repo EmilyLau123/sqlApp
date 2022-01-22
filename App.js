@@ -15,6 +15,9 @@ import StatementsScreen from './screens/StatementsScreen.js';
 import HomeScreen from './screens/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
 
+import * as SecureStore from 'expo-secure-store';
+
+
 // class HomeScreen extends Component {
 //   constructor(props) {
 //     super(props);
@@ -42,12 +45,132 @@ import AccountScreen from './screens/AccountScreen';
 //     );
 //   }
 // }
+const AuthContext = React.createContext();
+
 
 const Tab = createBottomTabNavigator();
 
 const App=()=>{
+
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    }
+  );
+
+  React.useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      let userToken;
+
+      try {
+        userToken = await SecureStore.getItemAsync('userToken');
+      } catch (e) {
+        // Restoring token failed
+      }
+
+      // After restoring token, we may need to validate it in production apps
+
+      // This will switch to the App screen or Auth screen and this loading
+      // screen will be unmounted and thrown away.
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+    };
+
+    bootstrapAsync();
+  }, []);
+
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async data => {
+        
+      console.log(username,password, role);
+      //https://reactnative.dev/movies.json
+      //http://localhost:8099/api/retrieveStatements/
+      const API_URL = 'http://localhost:8099/api/user/login/';
+  
+      try {
+       const response = await fetch(API_URL,{
+           method:"POST",
+              headers: {
+                  'Content-Type':'application/json',
+                  'Accept':'application/json'
+              },
+           body: JSON.stringify({
+              username: username,
+              password: password,
+              role: role,
+              token:userToken
+          }),
+          
+       });
+       const json = await response.json();
+       if(response.status == 200){
+          console.log("json",json);
+          Alert.alert("Success","Sign In success",
+          [
+              {
+                text: "Close",
+                onPress: () => navigation.navigate("Home",{
+                    role:json[0].role,
+                    status:true,
+                    nickname:json[0].nickname,
+                }),
+                style: "close",
+              },
+            ]
+          );
+       }
+     } catch (error) {
+       console.error(error);
+     } finally {
+      // setLoading(false);
+      console.log("done");
+     }
+
+        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      },
+      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signUp: async data => {
+        // In a production app, we need to send user data to server and get a token
+        // We will also need to handle errors if sign up failed
+        // After getting token, we need to persist the token using `SecureStore`
+        // In the example, we'll use a dummy token
+
+        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      },
+    }),
+    []
+  );
+
   return (
+    <AuthContext.Provider value={authContext}>
+
     <NavigationContainer>
+      {/* {state.userToken == null ? ():()} */}
       <Tab.Navigator
         initialRouteName="Home" ///the name of the initial screen
 
@@ -80,6 +203,8 @@ const App=()=>{
 
       </Tab.Navigator>
     </NavigationContainer>
+    </AuthContext.Provider>
+
   );
 }
 export default App;
