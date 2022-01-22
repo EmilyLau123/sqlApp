@@ -10,6 +10,7 @@ import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView } from 'rea
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import {ANSWER,COLORS,SIZES,DIFFICULTY} from '../components/style/theme.js';
+import moment from 'moment';
 
 export function congratScreen({route,navigation}){
   const {score} = route.params;
@@ -220,7 +221,7 @@ export function Quiz({route, navigation}){
             // alert(this.DATA[this.state.questionNumberIndex].answer);
             storingData.push({question_id:data[questionIndex]._id, 
                               point: 1,
-                              answerTime:Date.now()
+                              answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                             });
             setScore(oldScore + 1);
             setStoringData(storingData);
@@ -228,7 +229,7 @@ export function Quiz({route, navigation}){
             console.log("wrong");
             storingData.push({question_id:data[questionIndex]._id, 
                               point: 0, 
-                              answerTime:Date.now()
+                              answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                             });
   
             setStoringData(storingData);
@@ -252,7 +253,7 @@ export function Quiz({route, navigation}){
           // alert(this.DATA[this.state.questionNumberIndex].answer);
           storingData.push({question_id:data[questionIndex]._id, 
                             point: 1,
-                            answerTime:Date.now()
+                            answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                           });
           setScore(oldScore + 1);
           setQuestionIndex(oldQuestionIndex + 1);
@@ -261,7 +262,7 @@ export function Quiz({route, navigation}){
           console.log("wrong");
           storingData.push({question_id:data[questionIndex]._id, 
                             point: 0, 
-                            answerTime:Date.now()
+                            answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                           });
 
           setQuestionIndex(oldQuestionIndex + 1);

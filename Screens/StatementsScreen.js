@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen.js';
 import StatementDetailScreen from './StatementDetailScreen.js';
-import { COLORS } from '../components/style/theme.js';
+import { COLORS, SIZES } from '../components/style/theme.js';
 import { statementSubmitScreen } from './Form/StatementCreateForm.js';
 
 
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
         
         {isLoading?<ActivityIndicator/>:(
           <View>
+          <View>
           <SearchBar 
           searchIcon={true}
           clearIcon={true}
@@ -197,16 +198,22 @@ const styles = StyleSheet.create({
           keyExtractor={item => item._id}
           onRefresh={() => getStatements("")}
           refreshing={isLoading}
+          height={SIZES.height-400}
+
           /> 
+          <FAB
+                visible={true}
+                onPress={() =>navigation.navigate("StatementSubmit")}
+                placement="right"
+                icon={{ name: 'add', color: 'white' }}
+                color={COLORS.attention}
+                style={{zIndex:1, position:"absolute"}}
+                />
         
-        <View>
-        <FAB
-            visible={true}
-            onPress={() =>navigation.navigate("StatementSubmit")}
-            placement="right"
-            icon={{ name: 'add', color: 'white' }}
-            color={COLORS.attention}
-          />
+          </View>
+          <View>
+
+          
           </View>
           </View>
           )}

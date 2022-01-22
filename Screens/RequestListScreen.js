@@ -85,6 +85,7 @@ export function requestList({navigation}){
                 keyExtractor={item => item._id}
                 onRefresh={() => getRequests()}
                 refreshing={isLoading}
+                height={SIZES.height}
                 /> 
             )}
         </SafeAreaView>

@@ -117,6 +117,7 @@ export function userList({navigation}){
                 keyExtractor={item => item._id}
                 onRefresh={() => getUsers()}
                 refreshing={isLoading}
+                height={SIZES.height}
                 /> 
             )}
         </SafeAreaView>
