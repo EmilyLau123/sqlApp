@@ -57,10 +57,9 @@ export const USER_STATUS = {
 }
 
 export const USER_ROLE = {
-    admin: 1,
-    teacher: 2,
-    student: 3
-    
+    student: 0,
+    teacher: 1,
+    admin: 2
 }
 
 export const REQUEST_STATUS = {
