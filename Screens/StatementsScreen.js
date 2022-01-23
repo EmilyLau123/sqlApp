@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
         title:item.title,
         description:item.description,
         images:item.images,
-        author:item.author
+        author:item.author, 
+        images: item.images
 
       })}>
         <ListItem>

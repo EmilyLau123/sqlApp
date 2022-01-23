@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c1ad2ef3-c44d-4522-97c0-c514e796854d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/AccountScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/AccountScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/HomeScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/SignInScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/SignInScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/SignUpScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/SignUpScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/Form/StatementCreateForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/Form/StatementCreateForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Screens/StatementDetailScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/StatementDetailScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/StatementsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/StatementsScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/model/quiz.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/model/quiz.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/model/statement.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/model/statement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/model/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/model/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +23,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="21j1epA4bYgVG3mYXVwxUKaFDh3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -30,6 +34,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -42,19 +47,5 @@
       <updated>1638439780915</updated>
     </task>
     <servers />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="422" y="-906" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1638439885042">
-      <screen x="8" y="-1080" width="1920" height="1040" />
-    </state>
-    <state x="422" y="-906" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/8.-1080.1920.1040@8.-1080.1920.1040" timestamp="1638439885042" />
-    <state x="100" y="-988" width="1736" height="856" key="AVDManager" timestamp="1638687992578">
-      <screen x="8" y="-1080" width="1920" height="1040" />
-    </state>
-    <state x="100" y="-988" width="1736" height="856" key="AVDManager/0.0.1280.680/8.-1080.1920.1040@8.-1080.1920.1040" timestamp="1638687992578" />
-    <state x="469" y="-916" key="SettingsEditor" timestamp="1638440787699">
-      <screen x="8" y="-1080" width="1920" height="1040" />
-    </state>
-    <state x="469" y="-916" key="SettingsEditor/0.0.1280.680/8.-1080.1920.1040@8.-1080.1920.1040" timestamp="1638440787699" />
   </component>
 </project>

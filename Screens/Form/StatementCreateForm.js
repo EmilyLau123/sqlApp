@@ -1,10 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import React, {Component, useState} from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
-import { Text, Button, Input,ButtonGroup, Card } from 'react-native-elements';
+import React, {Component, useState,useEffect} from 'react';
+import {View, StyleSheet, Alert, ActivityIndicator} from 'react-native';
+import { Text, Button, Input,ButtonGroup, Card, Image } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STYLES} from '../../components/style/theme';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 // import customButton from '../components/customButton.js';
 
@@ -24,20 +25,21 @@ export function statementSubmitScreen({navigation}){
    
     const [title, setTitle] = useState("");
     const [des, setDes] = useState("");
-   
+    const [images, setImages] = useState([]);
+
 
     function refresh(){
         setDes("");
         setTitle("");
-
+        setImages([]);
     }
-    
 
-    const insertStatement = async (title, description) => {
+    const insertStatement = async (title, description,images) => {
         // console.log(question, difficulty, answer, options, author);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/statement/insert/';
+        //https://mufyptest.herokuapp.com/
+        const API_URL = 'https://mufyptest.herokuapp.com/api/statement/insert/';
     
         try {
          const response = await fetch(API_URL,{
@@ -49,7 +51,7 @@ export function statementSubmitScreen({navigation}){
              body: JSON.stringify({
                 title: title,
                 description: description,
-                // images: images
+                images: images
             }),
             
          });
@@ -82,18 +84,45 @@ export function statementSubmitScreen({navigation}){
        }
      }
 //to upload image NOT DONE
- const choosePic= async()=>{
-     const [response, setResponse] = useState(null);
-     try{
 
-        const result = await launchImageLibrary({mediaType:'photo'},((response) =>{
-            alert(response);
+const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-        }));
-            alert(result);
-     }catch(error){
-         alert("err: ",error);
-     }
+    console.log(result);
+
+    if (!result.cancelled) {
+        images.push(result.uri)
+        setImages(images);
+        console.log(images);
+    }
+  };
+//NOT WORKING
+//  const choosePic = async ()=>{
+      
+//      try{
+//         const result = await launchImageLibrary();
+
+        // launchImageLibrary({mediaType:'photo'},(response=>{
+        //     alert(response);
+
+        // })).then(
+        //     alert('dsa')
+        // ).catch(
+        //     console.log('error')
+        // ).finally(
+        //     console.log("done")
+        // );
+        //     alert(result);
+    //  }catch(error){
+    //      alert("err: ",error);
+    //      console.log(error);
+    //  }
     
     // result.then(function(item){
     //     console.log(item);
@@ -101,7 +130,7 @@ export function statementSubmitScreen({navigation}){
     //     alert("choosePic Error:",error)
     // });
 
-}
+//}
 
     return(
         <ScrollView style={{backgroundColor:COLORS.background}}>
@@ -126,6 +155,14 @@ export function statementSubmitScreen({navigation}){
                 placeholder="Enter statement details"
                 multiline={true}
             />
+            <Text>
+            {images.forEach(image => {
+          <Image  source={{ uri: image }}
+                style={{ width: 200, height: 200 }}
+                PlaceholderContent={<ActivityIndicator />}>
+          </Image>
+        })}
+            </Text>
             <Button 
                 buttonStyle={{
                     backgroundColor: '#77afac',
@@ -141,7 +178,7 @@ export function statementSubmitScreen({navigation}){
                 titleStyle={{ fontWeight: 'bold' }}
                 style={{paddingTop:SIZES.padding}}
                 title="Upload images"
-                onPress={()=>choosePic()}
+                onPress={()=>pickImage()}
                 // onPress={()=>choosePic().then(function(){alert("success")})
                 // .catch(function(err){alert("fail: ",err)})}
             />
