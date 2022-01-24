@@ -36,7 +36,7 @@ const SignInScreen = ({navigation}) => {
         console.log(username,password, role);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/user/login/';
+        const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
     
         try {
          const response = await fetch(API_URL,{

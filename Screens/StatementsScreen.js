@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 //   try {
 //     const response = await fetch(
 //       // 'https://mufyptest.herokuapp.com/statements/'
-//       'http://localhost:8099/api/retrieveStatements/'
+//       'https://mufyptest.herokuapp.com/api/retrieveStatements/'
 //     );
 //     return response.json();
 //   } catch (error) {
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   const getStatements = async (searchText) => {
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/statements/find/'+searchText;
+    const API_URL = 'https://mufyptest.herokuapp.com/api/statements/find/'+searchText;
 
     try {
      const response = await fetch(API_URL);
@@ -193,16 +193,18 @@ const styles = StyleSheet.create({
           placeholder="Type Here..."
           onChangeText={(value)=>searchButton(value)}
           value={search}
-        />
+        /><View style={{paddingBottom:SIZES.tabBarheight+170}}>
           <FlatList
           data={data}
           renderItem= {renderItems}
           keyExtractor={item => item._id}
           onRefresh={() => getStatements("")}
           refreshing={isLoading}
-          height={SIZES.height-400}
+          // height={SIZES.height-400}
 
           /> 
+        </View>
+          
           <FAB
                 visible={true}
                 onPress={() =>navigation.navigate("StatementSubmit")}

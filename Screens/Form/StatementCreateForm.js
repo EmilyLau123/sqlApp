@@ -39,7 +39,7 @@ export function statementSubmitScreen({navigation}){
         //https://reactnative.dev/movies.json
         //localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com/
-        const API_URL = 'http://localhost:8099/api/statement/insert/';
+        const API_URL = 'https://mufyptest.herokuapp.com/api/statement/insert/';
     
         try {
          const response = await fetch(API_URL,{

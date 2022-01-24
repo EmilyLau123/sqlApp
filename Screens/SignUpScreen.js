@@ -22,7 +22,7 @@ const SignUpScreen = ({navigation}) => {
         console.log(username,password,nickname, role);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/user/insert/';
+        const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/';
     
         try {
          const response = await fetch(API_URL,{
@@ -70,7 +70,7 @@ const SignUpScreen = ({navigation}) => {
     // var submit = async(username, nickname, password) =>{
     //     console.log(username);
     //     try{
-    //         let result = await fetch('http://localhost:8099/api/insertUser/',{
+    //         let result = await fetch('https://mufyptest.herokuapp.com/api/insertUser/',{
     //             method:'POST',
     //             // headers: {
     //             //     Accept: 'application/json',

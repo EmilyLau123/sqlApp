@@ -19,7 +19,7 @@ export function requestList({navigation}){
     const getRequests = async () => {
       //https://reactnative.dev/movies.json
       //http://localhost:8099/api/retrieveStatements/
-      const API_URL = 'http://localhost:8099/api/requests/find/';
+      const API_URL = 'https://mufyptest.herokuapp.com/api/requests/find/';
   
       try {
        const response = await fetch(API_URL);
@@ -77,7 +77,7 @@ export function requestList({navigation}){
     }
     return(
         
-        <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
+        <SafeAreaView style={{flex:1,backgroundColor:COLORS.background, paddingBottom:SIZES.tabBarheight}}>
             {isLoading?<ActivityIndicator/>:(
                 <FlatList
                 data={data}
@@ -85,7 +85,6 @@ export function requestList({navigation}){
                 keyExtractor={item => item._id}
                 onRefresh={() => getRequests()}
                 refreshing={isLoading}
-                height={SIZES.height}
                 /> 
             )}
         </SafeAreaView>
@@ -100,7 +99,7 @@ const deleteQuestion = async(question_id) => {
     console.log(question_id);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/question/delete/';
+    const API_URL = 'https://mufyptest.herokuapp.com/api/question/delete/';
 
     try {
      const response = await fetch(API_URL,{
@@ -140,7 +139,7 @@ const changeQuestionStatus = async(question_id, status) => {
     console.log(question_id);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/question/status/change/';
+    const API_URL = 'https://mufyptest.herokuapp.com/api/question/status/change/';
 
     try {
      const response = await fetch(API_URL,{

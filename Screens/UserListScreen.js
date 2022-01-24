@@ -21,7 +21,7 @@ export function userList({navigation}){
     const getUsers = async () => {
       //https://reactnative.dev/movies.json
       //http://localhost:8099/api/retrieveStatements/
-      const API_URL = 'http://localhost:8099/api/find/users/';
+      const API_URL = 'https://mufyptest.herokuapp.com/api/find/users/';
   
       try {
        const response = await fetch(API_URL);
@@ -101,7 +101,7 @@ export function userDetail({route,navigation}){
         console.log(user_id);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'http://localhost:8099/api/user/delete';
+        const API_URL = 'https://mufyptest.herokuapp.com/api/user/delete';
     
         try {
          const response = await fetch(API_URL,{
@@ -137,11 +137,11 @@ export function userDetail({route,navigation}){
      }
      
 //ban a user
-const changeUserStatus = async(request_id, status) => {
-    console.log(request_id);
+const changeUserStatus = async(user_id, status) => {
+    console.log(user_id);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/user/status/change';
+    const API_URL = 'https://mufyptest.herokuapp.com/api/user/status/change';
 
     try {
      const response = await fetch(API_URL,{
@@ -151,12 +151,38 @@ const changeUserStatus = async(request_id, status) => {
                 'Accept':'application/json'
             },
          body: JSON.stringify({
-            request_id: request_id,
+            user_id: user_id,
             status: status,
             // updated_at: Danow(),
         }),
         
      });
+     if(status == USER_STATUS.approved){
+        const EMAIL_API_URL = 'https://mufyptest.herokuapp.com/api/sendEmail/';
+        
+        const emailResponse = await fetch(EMAIL_API_URL,{
+            method:"POST",
+               headers: {
+                   'Content-Type':'application/json',
+                   'Accept':'application/json'
+               },
+            body: JSON.stringify({
+               message: "Your registration is approved",
+            //    status: status,
+               // updated_at: Danow(),
+           }),
+           
+        });
+     
+     const emailJson = await emailResponse.json();
+     if(response.status == 200){
+        console.log('emailJson: ',emailJson);
+
+     }else{
+        console.log('ERROR: ', emailJson);
+
+     }
+     }
      const json = await response.json();
      if(response.status == 200){
         console.log("json",json);
@@ -210,7 +236,7 @@ const changeUserStatus = async(request_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>deleteUser(request_id)}
+                    onPress={()=>deleteUser(user_id)}
                 />
                 <Button
                     title="Ban"
@@ -225,7 +251,7 @@ const changeUserStatus = async(request_id, status) => {
                         marginHorizontal: 50,
                         marginVertical: 10,
                         }}
-                    onPress={()=>changeUserStatus(request_id, USER_STATUS.banned)}
+                    onPress={()=>changeUserStatus(user_id, USER_STATUS.banned)}
                 />
                 </View>
             ):(<View></View>)}
@@ -247,7 +273,7 @@ const changeUserStatus = async(request_id, status) => {
                     marginVertical: 10,
                     }}
                 titleStyle={{ fontWeight: 'bold' }}
-                onPress={()=>changeUserStatus(request_id, USER_STATUS.approved)}
+                onPress={()=>changeUserStatus(user_id, USER_STATUS.approved)}
                 />
                 <Button
                     title="Delete"
@@ -265,7 +291,7 @@ const changeUserStatus = async(request_id, status) => {
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>deleteUser(request_id)}
+                    onPress={()=>deleteUser(user_id)}
                 />
                 
                 </View>
@@ -288,7 +314,7 @@ const changeUserStatus = async(request_id, status) => {
                     marginVertical: 10,
                     }}
                 titleStyle={{ fontWeight: 'bold' }}
-                onPress={()=>changeUserStatus(request_id, USER_STATUS.approved)}
+                onPress={()=>changeUserStatus(user_id, USER_STATUS.approved)}
                 />
                 <Button
                     title="reject"
@@ -305,7 +331,7 @@ const changeUserStatus = async(request_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>changeUserStatus(request_id, USER_STATUS.rejected)}
+                    onPress={()=>changeUserStatus(user_id, USER_STATUS.rejected)}
                 />
                 </View>
             ):(<View></View>)}
@@ -327,7 +353,7 @@ const changeUserStatus = async(request_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>deleteUser(request_id)}
+                    onPress={()=>deleteUser(user_id)}
                 />
                 <Button
                     title="Unban"
@@ -344,7 +370,7 @@ const changeUserStatus = async(request_id, status) => {
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }}
-                    onPress={()=>changeUserStatus(request_id, USER_STATUS.approved)}
+                    onPress={()=>changeUserStatus(user_id, USER_STATUS.approved)}
                 />
                 </View>
             ):(<View></View>)}

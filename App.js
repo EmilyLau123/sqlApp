@@ -70,8 +70,8 @@ const App=()=>{
           },
         tabBarActiveTintColor: COLORS.background,
         tabBarInactiveTintColor: COLORS.black,
-        headerShown: false
-
+        headerShown: false,
+        tabBarStyle: { height: SIZES.tabBarheight }
       })}
       >
         <Tab.Screen name="Home" component={HomeScreen}/>

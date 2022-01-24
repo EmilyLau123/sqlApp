@@ -163,7 +163,7 @@ export function Quiz({route, navigation}){
     console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'http://localhost:8099/api/user/update/';
+    const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
 
     try {
      const response = await fetch(API_URL,{
@@ -201,7 +201,7 @@ export function Quiz({route, navigation}){
 
       if(questionIndex >= totalQuestion){
         //Add result to the user's quizeDone array[obj_id, mark(1/0)]
-        // const API_URL = 'http://localhost:8099/api/user/update/';
+        // const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
 
         // try {
         //   const response = await fetch(API_URL);
@@ -285,7 +285,7 @@ export function Quiz({route, navigation}){
       intDifficulty = DIFFICULTY.hard;
     }
 
-    const API_URL = 'http://localhost:8099/api/questions/find/difficulty/'+intDifficulty;
+    const API_URL = 'https://mufyptest.herokuapp.com/api/questions/find/difficulty/'+intDifficulty;
 console.log(API_URL);
     try {
       const response = await fetch(API_URL);

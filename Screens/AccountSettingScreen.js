@@ -28,7 +28,7 @@ const updateUser = async(user_id, username, password, nickname, newpassword) => 
   console.log(request_id);
   //https://reactnative.dev/movies.json
   //http://localhost:8099/api/retrieveStatements/
-  const API_URL = 'http://localhost:8099/api/user/update/';
+  const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
 
   try {
    const response = await fetch(API_URL,{
