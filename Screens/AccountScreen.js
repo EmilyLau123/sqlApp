@@ -9,6 +9,7 @@ import accountSettingScreen from './AccountSettingScreen';
 import { userList,userDetail } from './UserListScreen';
 import {requestList,requestDetail} from './RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {StatementsFullList, StatementsFullDetail} from './AdminStatementList';
 
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
@@ -130,7 +131,20 @@ function adminMainAccountScreen({navigation}){
                                 }}
                             titleStyle={{ fontWeight: 'bold' }}  
                          onPress={()=>navigation.navigate("RequestList")}/>
-
+                    <Button title='View Statement List'
+                            buttonStyle={{
+                                backgroundColor: COLORS.primary,
+                                borderWidth: 2,
+                                borderColor: COLORS.primary,
+                                borderRadius: 30,
+                                }}
+                            containerStyle={{
+                                width: 'auto',
+                                marginHorizontal: 50,
+                                marginVertical: 10,
+                                }}
+                            titleStyle={{ fontWeight: 'bold' }}  
+                         onPress={()=>navigation.navigate("StatementsFullList")}/>     
                     {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
                 {/* </Card> */}
                 <Button title={STRINGS.accountSetting}
@@ -374,6 +388,10 @@ const AccountScreen = () => {
                     <AccountStack.Screen name="RequestList" component={requestList} options={{ title: 'Request List' }}/> 
                     <AccountStack.Screen name="UserDetail" component={userDetail} options={{ title: 'User List' }}/>
                     <AccountStack.Screen name="RequestDetail" component={requestDetail} options={{ title: 'Request List' }}/>
+                    <AccountStack.Screen name="StatementsFullList" component={StatementsFullList} options={{ title: 'All Statements' }}/>
+   
+                    <AccountStack.Screen name="StatementFullDetail" component={StatementsFullDetail} options={{ title: 'Statement Detail' }}/>
+    
                 </AccountStack.Navigator>
                 );
         }

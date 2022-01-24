@@ -40,38 +40,6 @@ export function userList({navigation}){
     getUsers();
    }, []);
 
-    // const DATA = [
-    //     {
-    //         username: 'asdf123',
-    //         nickname: 'sdfgb',
-    //         password: 'dsadas',
-    //         quizDone: [{quizID: 1, quizMark: 6},
-    //                     {quizID: 3, quizMark: 5}],
-    //         role: 'student',
-    //         status: 1,//approved
-    //         token:'String',
-    //       },
-    //       {
-    //         username: 'kitty123',
-    //         nickname: 'kitty123',
-    //         password: 'dsadas',
-    //         quizDone: [{quizID: 1, quizMark: 6},
-    //                     {quizID: 1, quizMark: 5}],
-    //         role: 'teacher',
-    //         status: 2,//rejected
-    //         token:'String',
-    //       },
-    //       {
-    //         username: 'fuxk',
-    //         nickname: 'shxt',
-    //         password: 'dsadas',
-    //         quizDone: [{quizID: 1, quizMark: 6},
-    //                     {quizID: 1, quizMark: 5}],
-    //         role: 'student',
-    //         status: 3,//banned
-    //         token:'String',
-    //       },
-    // ];
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
         var statusString = 'Approved';

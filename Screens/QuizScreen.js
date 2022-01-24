@@ -354,12 +354,12 @@ console.log("storingData: ",storingData);
  {/* {this.DATA[this.state.questionNumberIndex].options.map((item,key) => (
              <Button title={item} onPress={()=>this.nextQuestion({item})}/>
            ))} */}
-           {images.forEach(image => {
-          <Image  source={{ uri: image }}
-                style={{ width: 200, height: 200 }}
+           {/* {images.forEach(image => { */}
+            <Image  source={{ uri: data[questionIndex].images[0] }}
+                style={{ width: 300, height: 200 }}
                 PlaceholderContent={<ActivityIndicator />}>
           </Image>
-        })}
+        {/* })} */}
 
          <Button title={data[questionIndex].options[0]}
                   buttonStyle={{

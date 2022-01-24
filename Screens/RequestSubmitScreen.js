@@ -4,7 +4,7 @@ import {View, StyleSheet, Alert} from 'react-native';
 import { Text, Button, Input,ButtonGroup, Card } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../components/style/theme.js';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 // import customButton from '../components/customButton.js';
 
@@ -31,6 +31,7 @@ export function requestSubmitScreen({navigation}){
     const [option2 , setOption2] = useState("");
     const [option3 , setOption3] = useState("");
     const [option4 , setOption4] = useState("");
+    const [images, setImages] = useState([]);
 
     function refresh(){
         setQuestion("");
@@ -67,6 +68,7 @@ export function requestSubmitScreen({navigation}){
                 options: options,
                 author: author,
                 role: 1 ,// admin,
+                images:images
             }),
             
          });
@@ -99,26 +101,23 @@ export function requestSubmitScreen({navigation}){
        }
      }
 //to upload image NOT DONE
- const choosePic= async()=>{
-     const [response, setResponse] = useState(null);
-     try{
-
-        const result = await launchImageLibrary({mediaType:'photo'},((response) =>{
-            alert(response);
-
-        }));
-            alert(result);
-     }catch(error){
-         alert("err: ",error);
-     }
-    
-    // result.then(function(item){
-    //     console.log(item);
-    // }).catch(function(error){
-    //     alert("choosePic Error:",error)
-    // });
-
-}
+const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64:true
+    });
+    // console.log(result);
+    if (!result.cancelled) {
+        var base64 = 'data:image/jpg;base64,' + result.base64;
+        images.push(base64);
+        setImages(images);
+        console.log(images);
+    }
+  };
 
     return(
         <ScrollView style={{backgroundColor:COLORS.background}}>
@@ -197,7 +196,7 @@ export function requestSubmitScreen({navigation}){
                 titleStyle={{ fontWeight: 'bold' }}
                 style={{paddingTop:SIZES.padding}}
                 title="Upload images"
-                onPress={()=>choosePic()}
+                onPress={()=>pickImage()}
                 // onPress={()=>choosePic().then(function(){alert("success")})
                 // .catch(function(err){alert("fail: ",err)})}
             />

@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
 
     const renderItems = ({ item }) => (
       <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
+        statement_id: item._id,
         title:item.title,
         description:item.description,
         images:item.images,

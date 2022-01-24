@@ -37,9 +37,9 @@ export function statementSubmitScreen({navigation}){
     const insertStatement = async (title, description,images) => {
         // console.log(question, difficulty, answer, options, author);
         //https://reactnative.dev/movies.json
-        //http://localhost:8099/api/retrieveStatements/
+        //localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com/
-        const API_URL = 'https://mufyptest.herokuapp.com/api/statement/insert/';
+        const API_URL = 'http://localhost:8099/api/statement/insert/';
     
         try {
          const response = await fetch(API_URL,{
@@ -84,7 +84,6 @@ export function statementSubmitScreen({navigation}){
        }
      }
 //to upload image NOT DONE
-
 const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -92,12 +91,12 @@ const pickImage = async () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64:true
     });
-
-    console.log(result);
-
+    // console.log(result);
     if (!result.cancelled) {
-        images.push(result.uri)
+        var base64 = 'data:image/jpg;base64,' + result.base64;
+        images.push(base64);
         setImages(images);
         console.log(images);
     }
@@ -198,7 +197,7 @@ const pickImage = async () => {
                 titleStyle={{ fontWeight: 'bold' }}
                 style={{paddingTop:SIZES.padding}}
                 title="Submit"
-                onPress={()=>insertStatement(title, des)}
+                onPress={()=>insertStatement(title, des, images)}
             /> 
         </ScrollView>
 
