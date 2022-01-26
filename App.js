@@ -5,6 +5,8 @@ import {
     SectionList
     } from 'react-native-elements';
 import { View } from 'react-native';
+import { Provider, useSelector } from 'react-redux';
+import store from './model/store';
 import {COLORS,SIZES} from './components/style/theme';
 import {
   createBottomTabNavigator,
@@ -14,6 +16,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import StatementsScreen from './screens/StatementsScreen.js';
 import HomeScreen from './screens/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
+
+
+
 
 // class HomeScreen extends Component {
 //   constructor(props) {
@@ -42,11 +47,13 @@ import AccountScreen from './screens/AccountScreen';
 //     );
 //   }
 // }
+// const menuItemData = useSelector(state => state.menuItemData);
 
 const Tab = createBottomTabNavigator();
 
 const App=()=>{
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home" ///the name of the initial screen
@@ -80,6 +87,7 @@ const App=()=>{
 
       </Tab.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 export default App;

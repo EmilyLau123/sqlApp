@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import HomeScreen from '../HomeScreen.js';
 import StatementDetailScreen from '../StatementDetailScreen.js';
 import { COLORS, SIZES, ICONS } from '../../components/style/theme.js';
-import { statementSubmitScreen } from '..'https://mufyptest.herokuapp.com/StatementCreateForm.js';
+import { statementSubmitScreen } from '../form/StatementCreateForm.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 

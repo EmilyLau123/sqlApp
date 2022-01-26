@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {
     Text,
     Image,
@@ -10,9 +10,14 @@ import {
     Tab,
     TabView
     } from 'react-native-elements';
+import {changeNickname} from '../model/action'
+import { useDispatch, useSelector } from 'react-redux';
 import {StyleSheet,Alert,SafeAreaView} from 'react-native';
 import { STYLES,SIZES, COLORS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
+
+//auth
+import {RoleContext, nicknameContext} from '../context/ContextControl';
 
 const style = StyleSheet.create({
    
@@ -25,15 +30,24 @@ const style = StyleSheet.create({
 
 
 
+
 const SignInScreen = ({navigation}) => {
+    
+
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
-    const [role,setRole] = useState(0);
+    const [userRole,setUserRole] = useState(0);
     const [index,setIndex] = useState(0);
+    const [loggedIn,setLoggedIn] = useState(false);
+    const [nickname,setNickname] = useSelector(state => state.nickname);
 
+         const dispatch = useDispatch(); 
 
-    const loginUser = async () => {
-        console.log(username,password, role);
+  
+    //  const roleUtil = useContext(RoleContext);
+
+     const loginUser = async (username,password, userRole) => {
+        console.log(username,password, userRole);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
@@ -48,22 +62,27 @@ const SignInScreen = ({navigation}) => {
              body: JSON.stringify({
                 username: username,
                 password: password,
-                role: role
+                role: userRole
             }),
             
          });
          const json = await response.json();
          if(response.status == 200){
+            setLoggedIn(true);
+            // setNickname(json[0].nickname);
+            dispatch(changeNickname(json[0].nickname));
             console.log("json",json);
             Alert.alert("Success","Sign In success",
             [
                 {
                   text: "Close",
-                  onPress: () => navigation.navigate("Home",{
-                      role:json[0].role,
-                      status:true,
-                      nickname:json[0].nickname,
-                  }),
+                  onPress: () => navigation.navigate("Home"
+                //   ,{
+                //       role:json[0].role,
+                //       status:true,
+                //       nickname:json[0].nickname,
+                //   }
+                  ),
                   style: "close",
                 },
               ]
@@ -77,11 +96,17 @@ const SignInScreen = ({navigation}) => {
        }
      }
 
+useEffect(()=>{
+    console.log("change");
+},[loggedIn]
+
+)
+
     return(
         <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
                 <Tab
                     value={index}
-                    onChange={(e) => {setIndex(e);setRole(e)}}
+                    onChange={(e) => {setIndex(e);setUserRole(e)}}
                     indicatorStyle={{
                     backgroundColor: 'white',
                     height: 2,
@@ -99,7 +124,7 @@ const SignInScreen = ({navigation}) => {
                         icon={{ name: 'school-outline', type: 'ionicon', color: 'white' }}
                     />
                 </Tab>
-            <TabView value={index} onChange={setIndex, setRole} animationType="spring">
+            <TabView value={index} onChange={setIndex, setUserRole} animationType="spring">
                 <TabView.Item style={{backgroundColor:COLORS.background}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
@@ -129,7 +154,9 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
-                            onPress={()=>loginUser(username,password,role)}/>
+                            // onPress={()=>loginUser(username,password,role)}/>
+                            onPress={()=>loginUser(username,password, userRole)}/>
+
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'
@@ -177,7 +204,9 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
-                            onPress={()=>loginUser(username,password,role)}/>
+                            // onPress={()=>loginUser(username,password,role)}/>
+                            onPress={()=>loginUser(username,password, userRole)}/>
+
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'
@@ -198,6 +227,7 @@ const SignInScreen = ({navigation}) => {
                 </TabView.Item>
             </TabView>
         </SafeAreaView>
+
     );
 }
 export default SignInScreen;

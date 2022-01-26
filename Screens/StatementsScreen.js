@@ -1,5 +1,5 @@
 import { NavigationContainer, useNavigationContainerRef} from '@react-navigation/native';
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, useContext, useRef} from 'react';
 import { ListItem, Text,  Button, SearchBar, FAB } from 'react-native-elements';
 import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView, View, ActivityIndicator } from 'react-native';
 
@@ -7,9 +7,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen.js';
 import StatementDetailScreen from './StatementDetailScreen.js';
-import { COLORS, SIZES } from '../components/style/theme.js';
-import { statementSubmitScreen } from './Form/StatementCreateForm.js';
-
+import { COLORS, SIZES } from '.././components/style/theme.js';
+import { statementSubmitScreen } from './form/StatementCreateForm.js';
+//auth role
 
 
 
@@ -67,6 +67,8 @@ const styles = StyleSheet.create({
 
 // async function StatementsSectionList({navigation}){
  function StatementsFlatList({navigation}){
+  const mounted=useRef();
+
 
     const renderItems = ({ item }) => (
       <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
@@ -111,9 +113,9 @@ const styles = StyleSheet.create({
    }
  }
 
- useEffect(() => {
-  getStatements("");
- }, []);
+//  useEffect(() => {
+//   getStatements("");
+//  }, []);
 
  const searchButton = (searchText) => {
    setSearch(searchText);
@@ -178,13 +180,35 @@ const styles = StyleSheet.create({
     // }
     // console.log('data',data);
     // console.log('fin',myPromise);
+  //   checkRoleUtil = { 
+  //      role: userRole, 
+  //      setRole: setUserRole
+  //  }
+//   useEffect({
+//     getRole()
+// },{}
+//   )
+useEffect(()=>{
+  if(!mounted.current){//componentDidMount
+    // setPercent(props.value);
+    console.log("init");
 
+    mounted.current=true;
 
+    //checkRoleUtil.setRole(checkRoleUtil.role=false);
+    
+  }else{
+    console.log("sth changed");
+  }},[role]
+);
     return(
       //style={{backgroundColor:COLORS.background}}
-      <SafeAreaView>
+      <ScrollView>
         
-        {isLoading?<ActivityIndicator/>:(
+          <Text>Student:</Text>
+         
+        {/* )} */}
+        {/* {isLoading?<ActivityIndicator/>:(
           <View>
           <View>
           <SearchBar 
@@ -220,12 +244,13 @@ const styles = StyleSheet.create({
           
           </View>
           </View>
-          )}
-      </SafeAreaView>
+          )} */}
+      </ScrollView>
       
   )
 
 }
+
 
 const Stack = createStackNavigator();
 

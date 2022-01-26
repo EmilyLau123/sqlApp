@@ -6,10 +6,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignUpScreen from './SignUpScreen';
 import SignInScreen from './SignInScreen';
 import accountSettingScreen from './AccountSettingScreen';
-import { userList,userDetail } from './UserListScreen';
-import {requestList,requestDetail} from './RequestListScreen';
+import { userList,userDetail } from './admin/UserListScreen';
+import {requestList,requestDetail} from './admin/RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {StatementsFullList, StatementsFullDetail} from './AdminStatementList';
+import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementList';
 
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
@@ -17,10 +17,15 @@ import {
     LineChart,
   } from "react-native-chart-kit";
 
+  //auth using redux
+// import { Provider } from "react-redux";
+// import { authStore } from "./model/store.js";
+// import { useSelector } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 
 const AccountStack = createStackNavigator();
 function ckeckLogIn(){
-    var userStatus = [true,USER_ROLE.admin];
+    var userStatus = [false,""];
     return userStatus;
 }
 function logOut(){
@@ -404,4 +409,20 @@ const AccountScreen = () => {
             </AccountStack.Navigator>
     ); 
 }
+
+export const fin_AccountScreen = () => {
+    const menuItemData = useSelector(state => state.menuItemData);
+    const dispatch = useDispatch();
+    dispatch({
+        type: "ADD_ITEM",
+        payload: {itemNew:"測試資料"}
+    }); 
+    return(
+        <Provider store={authStore}>
+            <AccountScreen/>
+        </Provider>
+    );
+}
+
+
 export default AccountScreen;

@@ -7,16 +7,19 @@ import {
     Card,
     FAB 
     } from 'react-native-elements';
+import { Provider, useSelector } from 'react-redux';
+
 import { SectionList,ScrollView, StyleSheet, SafeAreaView, ImageBackground } from 'react-native';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {requestSubmitScreen} from './RequestSubmitScreen';
+import {requestSubmitScreen} from './form/RequestSubmitScreen';
 import {Quiz, quizChooseScreen, congratScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
 import {SIZES, COLORS} from '../components/style/theme';
+import {RoleContext} from '../context/ContextControl';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
@@ -74,11 +77,12 @@ function checkLogIn(){
 }
 
 function homeWelcomeHeader({route,navigation}){
-  const username = "User";
+  const nickname = useSelector(state => state.nickname);
 
-  if(route.params != null){
-      username = route.params;
-  }
+
+  // if(route.params != null){
+  //     username = route.params;
+  // }
   return(
     <SafeAreaView style={{flex:1}}>
           {/* <ImageBackground source={{uri: "https://reactjs.org/logo-og.png"}} resizeMode="cover" style={styles.image}> */}
@@ -88,7 +92,7 @@ function homeWelcomeHeader({route,navigation}){
         <Card borderRadius={SIZES.round}>
         <Card.Title> Welcome</Card.Title>
           <Card.Divider />
-          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi {username} !</Text>
+          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi {nickname} !</Text>
           <Text size={SIZES.text} style={{padding:SIZES.text}}>Remember practice makes perfect!</Text>
         </Card>
         <Card borderRadius={SIZES.round}>
