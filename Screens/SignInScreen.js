@@ -15,9 +15,17 @@ import {StyleSheet,Alert,SafeAreaView} from 'react-native';
 import { STYLES,SIZES, COLORS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
+<<<<<<< HEAD
 //auth
 import {changeNickname, changeRole, changeUserId, changeStat} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
+=======
+const AuthContext = React.createContext();
+
+
+const { signIn } = React.useContext(AuthContext);
+
+>>>>>>> auth
 
 const style = StyleSheet.create({
    
@@ -48,6 +56,7 @@ const SignInScreen = ({navigation}) => {
         // const [nickname,setNickname] = useSelector(store.getState());
 
 
+<<<<<<< HEAD
          const dispatch = useDispatch(); 
 
   
@@ -107,6 +116,52 @@ const SignInScreen = ({navigation}) => {
         console.log("done");
        }
      }
+=======
+    // const loginUser = async () => {
+    //     console.log(username,password, role);
+    //     //https://reactnative.dev/movies.json
+    //     //http://localhost:8099/api/retrieveStatements/
+    //     const API_URL = 'http://localhost:8099/api/user/login/';
+    
+    //     try {
+    //      const response = await fetch(API_URL,{
+    //          method:"POST",
+    //             headers: {
+    //                 'Content-Type':'application/json',
+    //                 'Accept':'application/json'
+    //             },
+    //          body: JSON.stringify({
+    //             username: username,
+    //             password: password,
+    //             role: role
+    //         }),
+            
+    //      });
+    //      const json = await response.json();
+    //      if(response.status == 200){
+    //         console.log("json",json);
+    //         Alert.alert("Success","Sign In success",
+    //         [
+    //             {
+    //               text: "Close",
+    //               onPress: () => navigation.navigate("Home",{
+    //                   role:json[0].role,
+    //                   status:true,
+    //                   nickname:json[0].nickname,
+    //               }),
+    //               style: "close",
+    //             },
+    //           ]
+    //         );
+    //      }
+    //    } catch (error) {
+    //      console.error(error);
+    //    } finally {
+    //     // setLoading(false);
+    //     console.log("done");
+    //    }
+     
+>>>>>>> auth
 
 // useEffect(()=>{
 //     console.log("change");
@@ -171,9 +226,13 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
+<<<<<<< HEAD
                             // onPress={()=>loginUser(username,password,role)}/>
                             onPress={()=>loginUser(username,password, userRole)}/>
 
+=======
+                            onPress={()=>signIn(username,password,role)}/>
+>>>>>>> auth
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'
@@ -221,9 +280,13 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
+<<<<<<< HEAD
                             // onPress={()=>loginUser(username,password,role)}/>
                             onPress={()=>loginUser(username,password, userRole)}/>
 
+=======
+                            onPress={()=>signIn(username,password,role)}/>
+>>>>>>> auth
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'

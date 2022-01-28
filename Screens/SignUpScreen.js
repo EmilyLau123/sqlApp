@@ -9,6 +9,9 @@ import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
 
 const Stack = createStackNavigator();
 
+const AuthContext = React.createContext();
+
+
 const SignUpScreen = ({navigation}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

@@ -37,8 +37,12 @@
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
+<<<<<<< HEAD
     "react-redux": "^7.2.6",
     "redux": "^4.1.2"
+=======
+    "expo-secure-store": "~11.0.3"
+>>>>>>> auth
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
