@@ -5,7 +5,8 @@ import { Text, Button, Input,ButtonGroup, Card } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../../components/style/theme.js';
 import * as ImagePicker from 'expo-image-picker';
-
+//auth
+import { Provider, useSelector } from 'react-redux';
 // import customButton from '../components/customButton.js';
 
 const styles = StyleSheet.create({
@@ -32,7 +33,8 @@ export function requestSubmitScreen({navigation}){
     const [option3 , setOption3] = useState("");
     const [option4 , setOption4] = useState("");
     const [images, setImages] = useState([]);
-
+    const author_id = useSelector(state => state.userIdReducer.user_id);
+    const role = useSelector(state => state.roleReducer.role);
    
 
     function refresh(){
@@ -50,11 +52,14 @@ export function requestSubmitScreen({navigation}){
     }
     
 
-    const insertQuiz = async (question, difficulty, answer, options, author) => {
-        console.log(question, difficulty, answer, options, author);
+    const insertQuiz = async (question, difficulty, answer, options, author_id, role) => {
+        
+
+        console.log(question, difficulty, answer, options);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
-        const API_URL = 'https://mufyptest.herokuapp.com/api/question/insert/';
+        //https://mufyptest.herokuapp.com/api/question/insert/
+        const API_URL = 'http://localhost:8099/api/question/insert/';
     
         try {
          const response = await fetch(API_URL,{
@@ -68,8 +73,8 @@ export function requestSubmitScreen({navigation}){
                 difficulty: difficulty,
                 answer: answer,
                 options: options,
-                author: author,
-                role: 1 ,// admin,
+                author: author_id,
+                role: role ,// admin,
                 images:images
             }),
             
@@ -94,6 +99,10 @@ export function requestSubmitScreen({navigation}){
                   },
               ]
             );
+         }else{
+            console.log("json",json);
+            alert("error");
+
          }
        } catch (error) {
          console.error(error);
@@ -229,7 +238,8 @@ const pickImage = async () => {
                                 difficulty,
                                 answer,
                                 [option1,option2,option3,option4],
-                                1//"Admin"
+                                author_id,
+                                role
                             )}
             /> 
         </ScrollView>

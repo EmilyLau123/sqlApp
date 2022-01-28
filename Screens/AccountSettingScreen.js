@@ -12,7 +12,8 @@ import 'react-native-gesture-handler';
 import {COLORS, SIZES} from '../components/style/theme'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+//auth
+import { Provider, useSelector } from 'react-redux';
 
 
 const accountSettingScreen = () =>{

@@ -47,6 +47,7 @@ export const STRINGS = {
     logOut: "Log Out",
     login: "Login",
     signIn: "Sign In",
+    submitHistory: "View History"
 
 }
 
@@ -61,7 +62,8 @@ export const USER_STATUS = {
 export const USER_ROLE = {
     student: 0,
     teacher: 1,
-    admin: 2
+    admin: 2,
+    anonymous: 3
 }
 
 export const REQUEST_STATUS = {

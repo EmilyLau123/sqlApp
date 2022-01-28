@@ -2,15 +2,15 @@ import { NavigationContainer, useNavigationContainerRef} from '@react-navigation
 import React, {Component, useState, useEffect, useContext, useRef} from 'react';
 import { ListItem, Text,  Button, SearchBar, FAB } from 'react-native-elements';
 import { ScrollView, FlatList, Platform, StyleSheet, TouchableOpacity, SafeAreaView, View, ActivityIndicator } from 'react-native';
-
+import {USER_ROLE} from '../components/style/theme';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen.js';
 import StatementDetailScreen from './StatementDetailScreen.js';
 import { COLORS, SIZES } from '.././components/style/theme.js';
 import { statementSubmitScreen } from './form/StatementCreateForm.js';
-//auth role
-
+//auth
+import { Provider, useSelector } from 'react-redux';
 
 
 
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
 // async function StatementsSectionList({navigation}){
  function StatementsFlatList({navigation}){
   const mounted=useRef();
+  const role = useSelector(state => state.roleReducer.role);
 
 
     const renderItems = ({ item }) => (
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
   const [search, setSearch] = useState("");
 
   const getStatements = async (searchText) => {
+      
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/statements/find/'+searchText;
@@ -113,9 +115,9 @@ const styles = StyleSheet.create({
    }
  }
 
-//  useEffect(() => {
-//   getStatements("");
-//  }, []);
+ useEffect(() => {
+  getStatements("");
+ }, []);
 
  const searchButton = (searchText) => {
    setSearch(searchText);
@@ -203,13 +205,9 @@ useEffect(()=>{
 );
     return(
       //style={{backgroundColor:COLORS.background}}
-      <ScrollView>
-        
-          <Text>Student:</Text>
-         
-        {/* )} */}
-        {/* {isLoading?<ActivityIndicator/>:(
-          <View>
+      <SafeAreaView>
+      {/* <View> */}
+        {isLoading?<ActivityIndicator/>:(
           <View>
           <SearchBar 
           searchIcon={true}
@@ -217,7 +215,8 @@ useEffect(()=>{
           placeholder="Type Here..."
           onChangeText={(value)=>searchButton(value)}
           value={search}
-        /><View style={{paddingBottom:SIZES.tabBarheight+170}}>
+        />
+          {/* // <View style={{paddingBottom:SIZES.tabBarheight+170}}> */}
           <FlatList
           data={data}
           renderItem= {renderItems}
@@ -228,7 +227,8 @@ useEffect(()=>{
 
           /> 
         </View>
-          
+          )} 
+          {role==USER_ROLE.admin||role==USER_ROLE.teacher?(
           <FAB
                 visible={true}
                 onPress={() =>navigation.navigate("StatementSubmit")}
@@ -237,16 +237,10 @@ useEffect(()=>{
                 color={COLORS.attention}
                 style={{zIndex:1, position:"absolute"}}
                 />
-        
-          </View>
-          <View>
-
-          
-          </View>
-          </View>
-          )} */}
-      </ScrollView>
-      
+            ):(
+              <View></View>
+            )}
+      </SafeAreaView>
   )
 
 }

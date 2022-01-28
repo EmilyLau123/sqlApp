@@ -11,6 +11,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import {ANSWER,COLORS,SIZES,DIFFICULTY} from '../components/style/theme.js';
 import moment from 'moment';
+//auth
+import { Provider, useSelector } from 'react-redux';
 
 export function congratScreen({route,navigation}){
   const {score} = route.params;
@@ -148,6 +150,9 @@ export function congratScreen({route,navigation}){
 export function Quiz({route, navigation}){
   //   var totalQuestion = 9;
   //   var modelAnswer=DATA[0].answer;
+  const user_id = useSelector(state => state.userIdReducer.user_id);
+
+
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState("");
   const [score, setScore] = useState(0);
@@ -237,7 +242,7 @@ export function Quiz({route, navigation}){
           }
         }
         
-        var result = updateUser("61e676a817b1701f87c00711",storingData, score,{navigation});
+        var result = updateUser(user_id,storingData, score,{navigation});
         result.then(function(){
           console.log("success")}
         ).catch(function(err){

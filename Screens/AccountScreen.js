@@ -10,12 +10,16 @@ import { userList,userDetail } from './admin/UserListScreen';
 import {requestList,requestDetail} from './admin/RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementList';
+import {HistoryFullList} from './teacher/SubmitHistoryScreen';
 
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
 import {
     LineChart,
   } from "react-native-chart-kit";
+//auth
+import {changeNickname, changeRole, changeUserId, changeStat} from '../model/action'
+import { useDispatch, useSelector } from 'react-redux';
 
   //auth using redux
 // import { Provider } from "react-redux";
@@ -24,18 +28,22 @@ import {
 // import { useDispatch } from 'react-redux';
 
 const AccountStack = createStackNavigator();
-function ckeckLogIn(){
-    var userStatus = [false,""];
-    return userStatus;
-}
-function logOut(){
+// function ckeckLogIn(){
+//     var userStatus = [false,""];
+//     return userStatus;
+// }
+
+function logOut(dispatch){
+    dispatch(changeRole(USER_ROLE.anonymous));
+    dispatch(changeNickname("stranger"));
     console.log("Logged out");
     return alert("Logged out");
 }
 
 
-
 function adminMainAccountScreen({navigation}){
+    const nickname = useSelector(state => state.nicknameReducer.nickname);
+    const dispatch = useDispatch(); 
  
     const userRenderItem = ({ item }) => {
         var iconName = ICONS.approved;
@@ -82,7 +90,7 @@ function adminMainAccountScreen({navigation}){
                 <Card borderRadius={SIZES.round}>
                     <Card.Title>Your Information</Card.Title>
                     <Card.Divider />
-                    <Text style={{padding:SIZES.padding}}>User name</Text>
+                    <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
                     <Text style={{padding:SIZES.padding}}>Number of requests of: 100</Text>
                     <Text></Text>
                 </Card>
@@ -181,7 +189,7 @@ function adminMainAccountScreen({navigation}){
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }} 
-                    onPress={logOut}></Button>
+                    onPress={()=>logOut(dispatch)}></Button>
             </ScrollView>
         </SafeAreaView>
 
@@ -190,6 +198,11 @@ function adminMainAccountScreen({navigation}){
 
 
 function teacherMainAccountScreen({navigation}){
+    const stat = useSelector(state => state.statReducer.stat);
+    const nickname = useSelector(state => state.nicknameReducer.nickname);
+    const dispatch = useDispatch(); 
+
+
     const DATA = [
         {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -214,11 +227,10 @@ function teacherMainAccountScreen({navigation}){
         );
     return(
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
-            <ScrollView>
                 <Card borderRadius={SIZES.round}>
                     <Card.Title>Your Information</Card.Title>
                     <Card.Divider />
-                    <Text style={{padding:SIZES.padding}}>User name</Text>
+                    <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
                     <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text>
                     <Text style={{padding:SIZES.padding}}>Requests you have made : 10</Text>
                     <Text style={{padding:SIZES.padding}}>Approved Requests: 10/100</Text>
@@ -231,9 +243,23 @@ function teacherMainAccountScreen({navigation}){
                         renderItem={renderItem}
                         keyExtractor={item => item.id}
                     />
-                        
     
                     {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
+                    <Button title={STRINGS.submitHistory}
+                        buttonStyle={{
+                            backgroundColor: COLORS.primary,
+                            borderWidth: 2,
+                            borderColor: COLORS.secondary,
+                            borderRadius: 30,
+                            }}
+                        containerStyle={{
+                            width: 'auto',
+                            marginHorizontal: 50,
+                            marginVertical: 10,
+                            }}
+                        titleStyle={{ fontWeight: 'bold' }}  
+                        onPress={()=>navigation.navigate("SubmitHistory")}>
+                    </Button>
                 </Card>
                 <Button title={STRINGS.accountSetting}
                     buttonStyle={{
@@ -263,24 +289,56 @@ function teacherMainAccountScreen({navigation}){
                         marginVertical: 10,
                         }}
                     titleStyle={{ fontWeight: 'bold' }} 
-                    onPress={logOut}>
+                    onPress={()=>logOut(dispatch)}>
                 </Button>
-            </ScrollView>
         </SafeAreaView>
         );
 }
 
 function studnetMainAccountScreen({navigation}){
+    const stat = useSelector(state => state.statReducer.stat);
+    const nickname = useSelector(state => state.nicknameReducer.nickname);
+    const dispatch = useDispatch(); 
+    var totalPoints = 0;
+    var counter = 0;
+    var dateLabels = [];
+    var index = 0;
+    var data = [];
+    var label = "";
+
+    stat.forEach(item => {
+        console.log("set:");
+
+        item.forEach(detail => {
+            var itemTime = detail.answerTime;
+            label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
+            // console.log(itemTime.split('-'));
+            if(!dateLabels.includes(label)){
+                dateLabels.push(label);
+            }
+            console.log(itemTime);
+            totalPoints += detail.point;
+            data[index] = totalPoints;
+
+            // console.log(totalPoints, stat.length);
+
+        });
+    });
+
+
+    console.log(dateLabels);
+    var avg = totalPoints/stat.length;
+
     return(
     <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
         <ScrollView>
             <Card borderRadius={SIZES.round}>
                 <Card.Title>Your Information</Card.Title>
                 <Card.Divider />
-                <Text style={{padding:SIZES.padding}}>User name</Text>
-                <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text>
-                <Text style={{padding:SIZES.padding}}>Quizes done: number</Text>
-                <Text style={{padding:SIZES.padding}}>Quizes average score: floating point</Text>
+                <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
+                {/* <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text> */}
+                <Text style={{padding:SIZES.padding}}>Quizes done: {stat.length}</Text>
+                <Text style={{padding:SIZES.padding}}>Quizes average score: {avg.toFixed(0)}</Text>
             </Card>
             <Card borderRadius={SIZES.round}>
                 <Card.Title>Perfromance</Card.Title>
@@ -288,30 +346,29 @@ function studnetMainAccountScreen({navigation}){
                 {/* https://github.com/indiespirit/react-native-chart-kit */}
                 <LineChart
                     data={{
-                    labels: ["January", "February", "March", "April", "May", "June"],
+                    labels: dateLabels
+                    //  labels: ["01/2022", "02/2022", "03/2022", "04/2022", "05/2022",]
+                            //  "06/2022","07/2022","08/2022","09/2022","09/2022",
+                            //  "10/2022","11/2022","12/2022",]
+                             ,
                     datasets: [
                         {
-                        data: [
-                            0,
-                            2,
-                            4,
-                            6,
-                            8,
-                            10
-                        ]
+                        data: data
                         }
-                    ]
+                    ],
+                    legend: ["Accumulated points in a month"] 
                     }}
                     width= {SIZES.width-55} // from react-native
                     height={200}
                     // yAxisLabel="Mark"
                     yAxisInterval={1} // optional, defaults to 1
+                    xAxisInterval={1} 
                     chartConfig={{
                     backgroundColor: COLORS.primary,
                     backgroundGradientFrom: COLORS.primary,
                     backgroundGradientTo: COLORS.secondary,
                     decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    color: (opacity = 1) => `rgba(255, 225, 227, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     style: {
                         borderRadius: 5
@@ -319,10 +376,10 @@ function studnetMainAccountScreen({navigation}){
                     propsForDots: {
                         r: "6",
                         strokeWidth: "2",
-                        stroke: "#ffa726"
+                        stroke: "#4BB1B9"
                     }
                     }}
-                    bezier
+                    // bezier //make line smooth
                     style={{
                     marginVertical: 5,
                     borderRadius: 16
@@ -360,7 +417,7 @@ function studnetMainAccountScreen({navigation}){
                     marginVertical: 10,
                     }}
                 titleStyle={{ fontWeight: 'bold' }} 
-                onPress={logOut}/>
+                onPress={()=>logOut(dispatch)}/>
         </ScrollView>
     </SafeAreaView>
     );
@@ -368,23 +425,26 @@ function studnetMainAccountScreen({navigation}){
 
 
 const AccountScreen = () => {
-    var isLoggedIn = ckeckLogIn();
-    if(isLoggedIn[0]== true){
-        if(isLoggedIn[1] == USER_ROLE.teacher){
+    const role = useSelector(state => state.roleReducer.role);
+    
+
+        if(role == USER_ROLE.teacher){
             return(
                 <AccountStack.Navigator>
                     <AccountStack.Screen name="TeacherAccountMain" component={teacherMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
+                    <AccountStack.Screen name="SubmitHistory" component={HistoryFullList} options={{ title: 'Submit History' }}/>
+
                 </AccountStack.Navigator>
             );
-        }else if(isLoggedIn[1] == USER_ROLE.student){
+        }else if(role == USER_ROLE.student){
             return(
             <AccountStack.Navigator>
                 <AccountStack.Screen name="StudnetAccountMain" component={studnetMainAccountScreen} options={{ title: 'Your Account' }}/>
                 <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
             </AccountStack.Navigator>
             );
-        }else{
+        }else if(role == USER_ROLE.admin){
             return(
                 <AccountStack.Navigator>
                     <AccountStack.Screen name="AdminAccountMain" component={adminMainAccountScreen} options={{ title: 'Your Account' }}/>
@@ -399,15 +459,15 @@ const AccountScreen = () => {
     
                 </AccountStack.Navigator>
                 );
-        }
+        }else{
         
+            return(
+                    <AccountStack.Navigator>
+                        <AccountStack.Screen name="SignIn" component={SignInScreen} options={{ title: 'Sign In' }}/>
+                        <AccountStack.Screen name="SignUp" component={SignUpScreen} options={{ title: 'Sign Up' }}/>
+                    </AccountStack.Navigator>
+            ); 
     }
-      return(
-            <AccountStack.Navigator>
-                <AccountStack.Screen name="SignIn" component={SignInScreen} options={{ title: 'Sign In' }}/>
-                <AccountStack.Screen name="SignUp" component={SignUpScreen} options={{ title: 'Sign Up' }}/>
-            </AccountStack.Navigator>
-    ); 
 }
 
 export const fin_AccountScreen = () => {

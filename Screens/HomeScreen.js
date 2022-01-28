@@ -7,9 +7,8 @@ import {
     Card,
     FAB 
     } from 'react-native-elements';
-import { Provider, useSelector } from 'react-redux';
 
-import { SectionList,ScrollView, StyleSheet, SafeAreaView, ImageBackground } from 'react-native';
+import { SectionList,ScrollView, StyleSheet, SafeAreaView, ImageBackground, View } from 'react-native';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
@@ -18,9 +17,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {requestSubmitScreen} from './form/RequestSubmitScreen';
 import {Quiz, quizChooseScreen, congratScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
-import {SIZES, COLORS} from '../components/style/theme';
-import {RoleContext} from '../context/ContextControl';
+import {SIZES, COLORS, USER_ROLE} from '../components/style/theme';
 import { createStackNavigator } from '@react-navigation/stack';
+//auth
+import { Provider, useSelector } from 'react-redux';
+
 
 const styles = StyleSheet.create({
   Text: {
@@ -72,13 +73,21 @@ const styles = StyleSheet.create({
 //   }
 // }
 
-function checkLogIn(){
-
+function useUsername() {
+  const { role,nickname } = useSelector(state => ({
+    ...state.role,
+    ...state.nickname
+  }));
+  return { role,nickname };
 }
 
 function homeWelcomeHeader({route,navigation}){
-  const nickname = useSelector(state => state.nickname);
+  const nickname = useSelector(state => state.nicknameReducer.nickname);
+  const role = useSelector(state => state.roleReducer.role);
+  const user_id = useSelector(state => state.userIdReducer.user_id);
 
+
+  // const { role,nickname } = useUsername();
 
   // if(route.params != null){
   //     username = route.params;
@@ -92,7 +101,7 @@ function homeWelcomeHeader({route,navigation}){
         <Card borderRadius={SIZES.round}>
         <Card.Title> Welcome</Card.Title>
           <Card.Divider />
-          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi {nickname} !</Text>
+          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi {nickname} , {role}, {user_id}!</Text>
           <Text size={SIZES.text} style={{padding:SIZES.text}}>Remember practice makes perfect!</Text>
         </Card>
         <Card borderRadius={SIZES.round}>
@@ -131,13 +140,18 @@ function homeWelcomeHeader({route,navigation}){
                 onPress={()=>navigation.navigate("Choose")}></Button>
         
       </ScrollView>
-        <FAB
+      {role==USER_ROLE.admin||role==USER_ROLE.teacher?(
+          <FAB
             visible={true}
             onPress={() =>navigation.navigate("RequestSubmit")}
             placement="right"
             icon={{ name: 'add', color: 'white' }}
             color="#d9cc35"
           />
+      ):(
+        <View></View>
+      )}
+        
         {/* </ImageBackground> */}
     </SafeAreaView>
 

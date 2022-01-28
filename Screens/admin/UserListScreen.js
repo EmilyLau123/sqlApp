@@ -76,6 +76,7 @@ export function userList({navigation}){
         
         );
     }
+    
     return(
         <SafeAreaView>
             {isLoading?<ActivityIndicator/>:(
