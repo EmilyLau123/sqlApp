@@ -8,11 +8,13 @@ import {
     onChangeText,
     Card,
     Tab,
-    TabView
+    TabView,
+    LinearProgress,
+    Overlay
     } from 'react-native-elements';
 
-import {StyleSheet,Alert,SafeAreaView} from 'react-native';
-import { STYLES,SIZES, COLORS } from '../components/style/theme';
+import {StyleSheet,Alert,SafeAreaView, Model, View} from 'react-native';
+import { STYLES,SIZES, COLORS, USER_STATUS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
 //auth
@@ -47,8 +49,13 @@ const SignInScreen = ({navigation}) => {
     const [stat,setStat] = useSelector(state => state.statReducer.stat);
 
         // const [nickname,setNickname] = useSelector(store.getState());
-         const dispatch = useDispatch(); 
+    const dispatch = useDispatch(); 
 
+    const [isLoading,setIsLoading] = useState(false);
+
+    const toggleOverlay = () => {
+        setIsLoading(!isLoading);
+    };
   
     //  const roleUtil = useContext(RoleContext);
 
@@ -76,6 +83,7 @@ const SignInScreen = ({navigation}) => {
          if(response.status == 200){
             // setLoggedIn(true);
             // setNickname(json[0].nickname);
+            if(json[0].status == USER_STATUS.approved){
             dispatch(changeUserId(json[0]._id));
             dispatch(changeRole(userRole));
             dispatch(changeNickname(json[0].nickname));
@@ -89,17 +97,14 @@ const SignInScreen = ({navigation}) => {
             [
                 {
                   text: "Close",
-                  onPress: () => navigation.navigate("Home"
-                //   ,{
-                //       role:json[0].role,
-                //       status:true,
-                //       nickname:json[0].nickname,
-                //   }
-                  ),
+                  onPress: () => navigation.navigate("Home"),
                   style: "close",
                 },
               ]
             );
+            }else{
+                alert("User is not approved or is banned");
+            }
          }else{
              alert("User not found");
          }
@@ -119,6 +124,7 @@ const SignInScreen = ({navigation}) => {
 
     return(
         <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
+        
                 <Tab
                     value={index}
                     onChange={(e) => {setIndex(e);setUserRole(e)}}
@@ -145,7 +151,9 @@ const SignInScreen = ({navigation}) => {
                     />
                 </Tab>
             <TabView value={index} onChange={setIndex, setUserRole} animationType="spring">
-                <TabView.Item style={{backgroundColor:COLORS.background}}>
+                <TabView.Item style={{backgroundColor:COLORS.background, margin:20,
+          alignItems: 'center', //Centered vertically
+          flex:1}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
                         <Text>Username :</Text><Input
@@ -195,7 +203,9 @@ const SignInScreen = ({navigation}) => {
                                 onPress={()=>navigation.navigate("SignUp")}/>
                     </Card> 
                 </TabView.Item>
-                <TabView.Item style={{backgroundColor:COLORS.background}}>
+                <TabView.Item style={{backgroundColor:COLORS.background, margin:20,
+                                        alignItems: 'center', //Centered vertically
+                                        flex:1}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
                         <Text>Username : {username}</Text><Input
@@ -244,7 +254,9 @@ const SignInScreen = ({navigation}) => {
                                 onPress={()=>navigation.navigate("SignUp")}/>
                     </Card> 
                 </TabView.Item>
-                <TabView.Item style={{backgroundColor:COLORS.background}}>
+                <TabView.Item style={{backgroundColor:COLORS.background, margin:20,
+                                        alignItems: 'center', //Centered vertically
+                                        flex:1}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
                         <Text>Username : {username}</Text><Input
@@ -268,7 +280,7 @@ const SignInScreen = ({navigation}) => {
                             borderRadius: 30,
                             }}
                             containerStyle={{
-                            width: 'auto',
+                            width: 200,
                             marginHorizontal: 50,
                             marginVertical: 10,
                             }}
@@ -278,6 +290,12 @@ const SignInScreen = ({navigation}) => {
                     </Card> 
                 </TabView.Item>
             </TabView>
+            <Overlay isVisible={isLoading} onBackdropPress={()=>toggleOverlay()}>
+              <View style={{height:100, width:250, margin:10}}>
+                <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
+                <LinearProgress color={COLORS.primary}/>
+              </View>
+            </Overlay>
         </SafeAreaView>
 
     );

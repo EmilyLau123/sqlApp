@@ -98,8 +98,10 @@ console.log(index, role);
                     />
                 </Tab>
                 <TabView value={index} onChange={setIndex, setRole} animationType="spring">
-                    <TabView.Item style={{backgroundColor:COLORS.background}}>
-                        <Card borderRadius={SIZES.round}>   
+                    <TabView.Item style={{backgroundColor:COLORS.background, margin:20,
+                                        alignItems: 'center', //Centered vertically
+                                        flex:1}}>
+                        <Card borderRadius={SIZES.round} width={SIZES.width-100} >   
                              <Text>Username*</Text>
                                 <Input
                                     style={STYLES.input}
@@ -141,8 +143,9 @@ console.log(index, role);
                             />
                         </Card>
                     </TabView.Item>
-                    <TabView.Item style={{backgroundColor:COLORS.background}}>
-                        
+                    <TabView.Item style={{backgroundColor:COLORS.background, margin:20,
+                                        alignItems: 'center', //Centered vertically
+                                        flex:1}}>
                         <ScrollView>
                         <Card borderRadius={SIZES.round}>
                             <Text style={{fontWeight:"bold", padding:5}}>

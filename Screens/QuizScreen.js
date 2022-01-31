@@ -4,15 +4,31 @@ import {
     Text,
     Image,
     Card,
-    Button
+    Button,
+    Overlay,
+    LinearProgress
     } from 'react-native-elements'; 
-import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView } from 'react-native';
+import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView, Model } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import {ANSWER,COLORS,SIZES,DIFFICULTY} from '../components/style/theme.js';
 import moment from 'moment';
 //auth
 import { Provider, useSelector } from 'react-redux';
+
+export function askSignInScreen({route,navigation}){
+  return(
+    <SafeAreaView
+        style={{backgroundColor:COLORS.background, height:SIZES.height,
+        justifyContent: 'center', //Centered horizontally
+          alignItems: 'center', //Centered vertically
+          flex:1}}>
+      <Text style={{color:"white", fontWeight:"bold", fontSize:20, padding:20}}>You have to sign in first!</Text>
+      <Button title="Go sign in" 
+              onPress={()=>navigation.navigate("Account")}/>
+    </SafeAreaView>
+  );
+}
 
 export function congratScreen({route,navigation}){
   const {score} = route.params;
@@ -162,6 +178,13 @@ export function Quiz({route, navigation}){
   const [score, setScore] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [storingData, setStoringData] = useState([]);
+  // const [isSending, setIsSending] = useState(false);
+
+  const [isLast, setIsLast] = useState(false);
+
+  const toggleOverlay =(status) => {
+        setIsLast(status);
+    };
 
   const totalQuestion = 9;
   const {difficulty} = route.params;
@@ -198,6 +221,7 @@ export function Quiz({route, navigation}){
      console.error(error);
    } finally {
     // setLoading(false);
+    toggleOverlay(false);
     console.log("done");
    }
  }
@@ -224,6 +248,8 @@ export function Quiz({route, navigation}){
         //   console.log("done");
         // }
         if(questionIndex == totalQuestion){
+          toggleOverlay(true);
+          console.log(isLast);
           if(data[questionIndex].answer==key){
             console.log("right");
   
@@ -234,6 +260,7 @@ export function Quiz({route, navigation}){
                             });
             setScore(oldScore + 1);
             setStoringData(storingData);
+            
           }else{
             console.log("wrong");
             storingData.push({question_id:data[questionIndex]._id, 
@@ -244,6 +271,7 @@ export function Quiz({route, navigation}){
             setStoringData(storingData);
   
           }
+          
         }
         
         var result = updateUser(user_id,storingData, score,{navigation});
@@ -280,6 +308,7 @@ export function Quiz({route, navigation}){
         }
         
       }
+
     }
 
   const getQuestions = async (difficulty) => {
@@ -346,7 +375,6 @@ console.log("storingData: ",storingData);
 // }else{
   //For making questions show randomly
   const dataLength = data.length;
-  var usedIndex = [];
 
   return(
     <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
@@ -424,6 +452,15 @@ console.log("storingData: ",storingData);
                   onPress={()=>nextQuestion(3)}/>
 
           </Card>
+            <Overlay isVisible={isLast} onBackdropPress={()=>toggleOverlay(false)}>
+              <View style={{height:100, width:250, margin:10}}>
+                <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
+                <LinearProgress color={COLORS.primary}/>
+              </View>
+            </Overlay>
+          
+                
+            
           </View>
               // :
               // <View style={{backgroundColor:COLORS.background, height:SIZES.height, }}>

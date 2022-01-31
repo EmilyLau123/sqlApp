@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {Component, useState,useEffect} from 'react';
-import {View, StyleSheet, Alert, ActivityIndicator} from 'react-native';
-import { Text, Button, Input,ButtonGroup, Card, Image } from 'react-native-elements';
+import {View, StyleSheet, Alert, ActivityIndicator, Model} from 'react-native';
+import { Text, Button, Input,ButtonGroup, Card, Image, Overlay } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STYLES} from '../../components/style/theme';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -27,6 +27,11 @@ export function statementSubmitScreen({navigation}){
     const [des, setDes] = useState("");
     const [images, setImages] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false);
+
+  const toggleOverlay =() => {
+        setIsLoading(!isLoading);
+    };
 
     function refresh(){
         setDes("");

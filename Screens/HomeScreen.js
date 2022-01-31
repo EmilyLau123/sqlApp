@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {
     Text,
     Image,
     Button,
     Alert,
     Card,
-    FAB 
+    FAB,
+    Overlay
     } from 'react-native-elements';
 
-import { SectionList,ScrollView, StyleSheet, SafeAreaView, ImageBackground, View } from 'react-native';
+import { SectionList,ScrollView, StyleSheet, SafeAreaView, ImageBackground, View, ActivityIndicator, Model } from 'react-native';
 import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
@@ -16,6 +17,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {requestSubmitScreen} from './form/RequestSubmitScreen';
 import {Quiz, quizChooseScreen, congratScreen} from './QuizScreen';
+import {askSignInScreen} from './QuizScreen';
 // import {AccountScreen} from './AccountScreen';
 import {SIZES, COLORS, USER_ROLE} from '../components/style/theme';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -45,47 +47,74 @@ const styles = StyleSheet.create({
 })
 
 
-// class HomeScreen extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {};
-//   }
-//   render() {
-//     return(
-//       <View>
-//         <Text>Home</Text>
-//       </View>
-//     );
-//   }
-// }
-
-// class AccountScreen extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {};
-//   }
-//   render() {
-//     return(
-//       <View>
-//         <Text>Account</Text>
-//       </View>
-//     );
-//   }
-// }
-
-function useUsername() {
-  const { role,nickname } = useSelector(state => ({
-    ...state.role,
-    ...state.nickname
-  }));
-  return { role,nickname };
-}
-
 function homeWelcomeHeader({route,navigation}){
   const nickname = useSelector(state => state.nicknameReducer.nickname);
   const role = useSelector(state => state.roleReducer.role);
   const user_id = useSelector(state => state.userIdReducer.user_id);
+  const [knowledgeTitle, setknowledgeTitle] = useState("");
+  const [images, setImages] = useState([]);
+  const [knowledgeContent, setknowledgeContent] = useState("");
+  const [isLoading, setLoading] = useState(true);
+  const [isView, setIsView] = useState(false);
 
+const toggleOverlay =() => {
+        setIsView(!isView);
+    };
+
+const loginUser = async (username,password, userRole) => {
+        console.log(username,password, userRole);
+        //https://reactnative.dev/movies.json
+        //http://localhost:8099/api/retrieveStatements/
+        const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
+    
+        try {
+         const response = await fetch(API_URL,{
+             method:"POST",
+                headers: {
+                    'Content-Type':'application/json',
+                    'Accept':'application/json'
+                },
+             body: JSON.stringify({
+                username: username,
+                password: password,
+                role: userRole
+            }),
+            
+         });
+         const json = await response.json();
+         if(response.status == 200){
+            alert("Logged in");
+            
+         }else{
+             alert("User not found");
+         }
+       } catch (error) {
+         console.error(error);
+       } finally {
+        // setLoading(false);
+        console.log("done");
+       }
+     }
+
+  const getKnowledge = async () => {
+    const API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/';
+
+    try {
+        const response = await fetch(API_URL);
+        const json = await response.json();
+        console.log(json);
+        setknowledgeTitle(json[0].title);
+        setknowledgeContent(json[0].description);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+        console.log("done");
+      }
+    }
+useEffect(() => {
+  getKnowledge();
+ }, []);
 
   // const { role,nickname } = useUsername();
 
@@ -107,9 +136,13 @@ function homeWelcomeHeader({route,navigation}){
         <Card borderRadius={SIZES.round}>
           <Card.Title> Today's Knowledge</Card.Title>
           <Card.Divider />
-          <Text size={SIZES.title} style={{padding:SIZES.text}}>--Knowledge title--</Text>
-          <Text size={SIZES.text} style={{padding:SIZES.text}}>--Knowledge Content--</Text>
-          <Button title='View Details' 
+          {isLoading?(
+            <ActivityIndicator/>
+          ):(
+            <>
+            <Text size={SIZES.title} style={{padding:SIZES.text, fontWeight:"bold"}}>{knowledgeTitle}</Text>
+            <Text size={SIZES.text} style={{padding:SIZES.text}}>{knowledgeContent}</Text>
+            <Button title='View Details' 
                   buttonStyle={{
                     backgroundColor: COLORS.primary,
                     borderWidth: 2,
@@ -122,9 +155,29 @@ function homeWelcomeHeader({route,navigation}){
                     marginVertical: 10,
                   }}
                   titleStyle={{ fontWeight: 'bold' }}
-                  onPress={()=>alert("Jump to the statement's detail page")}></Button>
+                  onPress={()=>toggleOverlay()}></Button>
+            </>
+          )}
+          
         </Card>
-        <Button title='Quiz' 
+
+        {role == USER_ROLE.anonymous?(
+          <Button title='Quiz' 
+                buttonStyle={{
+                  backgroundColor: '#77afac',
+                  borderWidth: 2,
+                  borderColor: '#77afac',
+                  borderRadius: 30,
+                }}
+                containerStyle={{
+                  width: 'auto',
+                  marginHorizontal: 50,
+                  marginVertical: 10,
+                }}
+                titleStyle={{ fontWeight: 'bold' }}
+                onPress={()=>navigation.navigate("AskSignIn")}></Button>
+        ):(
+          <Button title='Quiz' 
                 buttonStyle={{
                   backgroundColor: '#77afac',
                   borderWidth: 2,
@@ -138,8 +191,20 @@ function homeWelcomeHeader({route,navigation}){
                 }}
                 titleStyle={{ fontWeight: 'bold' }}
                 onPress={()=>navigation.navigate("Choose")}></Button>
+        )}
         
       </ScrollView>
+
+            <Overlay isVisible={isView} onBackdropPress={()=>toggleOverlay()}>
+            <SafeAreaView style={{height:SIZES.height-300, width: SIZES.width-100}}>
+              <ScrollView>
+                <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>{knowledgeTitle}</Text>
+                <Text style={{padding:10, fontSize:14}}>{knowledgeContent}</Text>
+
+              </ScrollView>
+              </SafeAreaView>
+            </Overlay>
+
       {role==USER_ROLE.admin||role==USER_ROLE.teacher?(
           <FAB
             visible={true}
@@ -167,8 +232,9 @@ const HomeScreen=({route})=>{
     <Stack.Navigator>
       <Stack.Screen name="HomePage" component={homeWelcomeHeader} options={{title:"Home"}}/>
       <Stack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose a difficulty"}}/>
-        <Stack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
-        <Stack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>
+      <Stack.Screen name="AskSignIn" component={askSignInScreen} options={{title:"Quiz"}}/>
+      <Stack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
+      <Stack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>
       <Stack.Screen name="RequestSubmit" component={requestSubmitScreen} options={{title:"Request Form"}}/>
 
     </Stack.Navigator>

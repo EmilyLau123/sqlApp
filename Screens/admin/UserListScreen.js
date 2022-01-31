@@ -515,11 +515,9 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                 />
                 </View>
             ):(<View></View>)}
-{/* //onBackdropPress={toggleOverlay} */}
+
       <Overlay isVisible={isSending} onBackdropPress={()=>navigation.navigate("UserList")}>
-        <View style={{height:100, width:250}}>
-                
-                
+        <View style={{height:100, width:250, margin:10}}>
                 {back?(
                     <>
                     <Text style={{padding:10, alignSelf:"center",fontSize:16,}}>User status changed!</Text>
