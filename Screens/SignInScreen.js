@@ -15,17 +15,10 @@ import {StyleSheet,Alert,SafeAreaView} from 'react-native';
 import { STYLES,SIZES, COLORS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
-<<<<<<< HEAD
 //auth
-import {changeNickname, changeRole, changeUserId, changeStat} from '../model/action'
+import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
-=======
-const AuthContext = React.createContext();
 
-
-const { signIn } = React.useContext(AuthContext);
-
->>>>>>> auth
 
 const style = StyleSheet.create({
    
@@ -54,9 +47,6 @@ const SignInScreen = ({navigation}) => {
     const [stat,setStat] = useSelector(state => state.statReducer.stat);
 
         // const [nickname,setNickname] = useSelector(store.getState());
-
-
-<<<<<<< HEAD
          const dispatch = useDispatch(); 
 
   
@@ -84,12 +74,16 @@ const SignInScreen = ({navigation}) => {
          });
          const json = await response.json();
          if(response.status == 200){
-            setLoggedIn(true);
+            // setLoggedIn(true);
             // setNickname(json[0].nickname);
             dispatch(changeUserId(json[0]._id));
             dispatch(changeRole(userRole));
             dispatch(changeNickname(json[0].nickname));
             dispatch(changeStat(json[0].quizDone));
+            dispatch(changeEmail(json[0].email));
+            dispatch(changePassword(json[0].password));
+
+            
             console.log("json",json);
             Alert.alert("Success","Sign In success",
             [
@@ -116,52 +110,6 @@ const SignInScreen = ({navigation}) => {
         console.log("done");
        }
      }
-=======
-    // const loginUser = async () => {
-    //     console.log(username,password, role);
-    //     //https://reactnative.dev/movies.json
-    //     //http://localhost:8099/api/retrieveStatements/
-    //     const API_URL = 'http://localhost:8099/api/user/login/';
-    
-    //     try {
-    //      const response = await fetch(API_URL,{
-    //          method:"POST",
-    //             headers: {
-    //                 'Content-Type':'application/json',
-    //                 'Accept':'application/json'
-    //             },
-    //          body: JSON.stringify({
-    //             username: username,
-    //             password: password,
-    //             role: role
-    //         }),
-            
-    //      });
-    //      const json = await response.json();
-    //      if(response.status == 200){
-    //         console.log("json",json);
-    //         Alert.alert("Success","Sign In success",
-    //         [
-    //             {
-    //               text: "Close",
-    //               onPress: () => navigation.navigate("Home",{
-    //                   role:json[0].role,
-    //                   status:true,
-    //                   nickname:json[0].nickname,
-    //               }),
-    //               style: "close",
-    //             },
-    //           ]
-    //         );
-    //      }
-    //    } catch (error) {
-    //      console.error(error);
-    //    } finally {
-    //     // setLoading(false);
-    //     console.log("done");
-    //    }
-     
->>>>>>> auth
 
 // useEffect(()=>{
 //     console.log("change");
@@ -193,19 +141,19 @@ const SignInScreen = ({navigation}) => {
                     <Tab.Item
                         title="Sign in as admin"
                         titleStyle={{ fontSize: 12 }}
-                        icon={{ name: 'school-outline', type: 'ionicon', color: 'white' }}
+                        icon={{ name: 'build-outline', type: 'ionicon', color: 'white' }}
                     />
                 </Tab>
             <TabView value={index} onChange={setIndex, setUserRole} animationType="spring">
                 <TabView.Item style={{backgroundColor:COLORS.background}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
-                        <Text>Username : {username}</Text><Input
+                        <Text>Username :</Text><Input
                                 style={STYLES.input}
                                 onChangeText={username => setUsername(username)}
                                 defaultValue={username}
                             />
-                        <Text>Password : {password}</Text>
+                        <Text>Password :</Text>
                         <Input
                             style={STYLES.input}
                             onChangeText={password => setPassword(password)}
@@ -226,13 +174,9 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
-<<<<<<< HEAD
                             // onPress={()=>loginUser(username,password,role)}/>
                             onPress={()=>loginUser(username,password, userRole)}/>
 
-=======
-                            onPress={()=>signIn(username,password,role)}/>
->>>>>>> auth
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'
@@ -280,13 +224,8 @@ const SignInScreen = ({navigation}) => {
                             marginVertical: 10,
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
-<<<<<<< HEAD
                             // onPress={()=>loginUser(username,password,role)}/>
-                            onPress={()=>loginUser(username,password, userRole)}/>
-
-=======
-                            onPress={()=>signIn(username,password,role)}/>
->>>>>>> auth
+                            onPress={()=>loginUser(username,password, userRole)}/>              
 
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'

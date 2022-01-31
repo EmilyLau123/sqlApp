@@ -216,7 +216,7 @@ useEffect(()=>{
           onChangeText={(value)=>searchButton(value)}
           value={search}
         />
-          {/* // <View style={{paddingBottom:SIZES.tabBarheight+170}}> */}
+          <View style={{paddingBottom:SIZES.tabBarheight+110}}>
           <FlatList
           data={data}
           renderItem= {renderItems}
@@ -226,6 +226,7 @@ useEffect(()=>{
           // height={SIZES.height-400}
 
           /> 
+          </View>
         </View>
           )} 
           {role==USER_ROLE.admin||role==USER_ROLE.teacher?(

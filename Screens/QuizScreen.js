@@ -17,10 +17,14 @@ import { Provider, useSelector } from 'react-redux';
 export function congratScreen({route,navigation}){
   const {score} = route.params;
   return(
-    <SafeAreaView>
-      <Text>Score: {score} / 10</Text>
+    <SafeAreaView
+        style={{backgroundColor:COLORS.background, height:SIZES.height,
+        justifyContent: 'center', //Centered horizontally
+          alignItems: 'center', //Centered vertically
+          flex:1}}>
+      <Text style={{color:"white", fontWeight:"bold", fontSize:20, padding:20}}>Score: {score} / 10</Text>
       <Button title="Back to Home" 
-              onPress={()=>navigation.navigate("Home")}/>
+              onPress={()=>navigation.navigate("HomePage")}/>
     </SafeAreaView>
   );
 }
@@ -450,7 +454,10 @@ console.log("storingData: ",storingData);
         
 export function quizChooseScreen({navigation}){
   return(
-    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
+    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height,
+          justifyContent: 'center', //Centered horizontally
+          alignItems: 'center', //Centered vertically
+          flex:1}}>
       <Button title="Easy"
         buttonStyle={{
           backgroundColor: COLORS.primary,
@@ -459,7 +466,7 @@ export function quizChooseScreen({navigation}){
           borderRadius: 30,
       }}
       containerStyle={{
-          width: 'auto',
+          width: 200,
           marginHorizontal: 50,
           marginVertical: 10,
       }}
@@ -474,7 +481,7 @@ export function quizChooseScreen({navigation}){
           borderRadius: 30,
       }}
       containerStyle={{
-          width: 'auto',
+          width: 200,
           marginHorizontal: 50,
           marginVertical: 10,
       }}
@@ -489,7 +496,7 @@ export function quizChooseScreen({navigation}){
           borderRadius: 30,
       }}
       containerStyle={{
-          width: 'auto',
+          width: 200,
           marginHorizontal: 50,
           marginVertical: 10,
       }}

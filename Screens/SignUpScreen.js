@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {Component, useState} from 'react';
-import {View, StyleSheet, SafeAreaView,Alert} from 'react-native';
+import {View, StyleSheet, SafeAreaView,Alert,ScrollView} from 'react-native';
 import { Text, Button, Input, Card, Tab, TabView } from 'react-native-elements';
 import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
 //import { Form, FormItem } from 'react-native-form-component';
@@ -16,13 +16,14 @@ const SignUpScreen = ({navigation}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
+    const [email, setEmail] = useState("");
     const [role, setRole] = useState(0);
     const [index, setIndex] = useState(0);
 
 
 
     const insertUser = async () => {
-        console.log(username,password,nickname, role);
+        console.log(username,password,nickname, role, email);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/';
@@ -38,7 +39,8 @@ const SignUpScreen = ({navigation}) => {
                 username: username,
                 password: password,
                 nickname: nickname,
-                role: role
+                role: role,
+                email: email
             }),
             
          });
@@ -70,33 +72,6 @@ const SignUpScreen = ({navigation}) => {
     //   getStatements();
     //  }, []);
 
-    // var submit = async(username, nickname, password) =>{
-    //     console.log(username);
-    //     try{
-    //         let result = await fetch('https://mufyptest.herokuapp.com/api/insertUser/',{
-    //             method:'POST',
-    //             // headers: {
-    //             //     Accept: 'application/json',
-    //             //     'Content-Type': 'application/json'
-    //             // },
-    //             body: JSON.stringify({
-    //                 username: username,
-    //                 password: password,
-    //                 nickname: nickname,
-    //                 role: 8//student
-    //             }),
-    //         });
-    //         let resJson = await res.json();
-    //         if (res.status === 200 ){
-    //             alert('DONE');
-    //         }else{
-    //             alert('FAIL');
-    //         }
-    //     }catch(err){
-    //         alert('error: ',err);
-
-    //     }
-    // }
 //https://reactnavigation.org/docs/params passing values
 console.log(index, role);
 
@@ -167,8 +142,18 @@ console.log(index, role);
                         </Card>
                     </TabView.Item>
                     <TabView.Item style={{backgroundColor:COLORS.background}}>
-                        <Card borderRadius={SIZES.round}>   
+                        
+                        <ScrollView>
+                        <Card borderRadius={SIZES.round}>
+                            <Text style={{fontWeight:"bold", padding:5}}>
+                            After your registration is approved,
+                             you can submit add quiz question to enlarge 
+                             our question database, So we need more information 
+                             for our consideration
+                             </Text>
+                             <Card.Divider></Card.Divider>  
                              <Text>Username*</Text>
+                             
                                 <Input
                                     style={STYLES.input}
                                     onChangeText={username => setUsername(username)}
@@ -191,12 +176,12 @@ console.log(index, role);
                                     placeholder="For login"
                                     secureTextEntry={true}
                                 />
-                            <Text>Reason</Text>
+                            <Text>Email</Text>
                                 <Input
                                     style={STYLES.input}
-                                    onChangeText={password => setPassword(password)}
-                                    defaultValue={password}
-                                    placeholder="For login"
+                                    onChangeText={email => setEmail(email)}
+                                    defaultValue={email}
+                                    placeholder="we will notify you via email"
                                     secureTextEntry={true}
                                 />
                             <Button title='images to proof'
@@ -228,9 +213,10 @@ console.log(index, role);
                                     marginVertical: 10,
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
-                                onPress={()=>insertUser(username, nickname, password, role)}
+                                onPress={()=>insertUser(username, nickname, password, role, email)}
                             />
                         </Card>
+                        </ScrollView>
                     </TabView.Item>
                 </TabView>
                 

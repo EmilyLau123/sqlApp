@@ -16,6 +16,14 @@ const nicknameInitState = {
   nickname: "stranger"
 };
 
+const emailInitState = {
+  email: ""
+};
+
+const passwordInitState = {
+  password: ""
+};
+
 export const statReducer = (state = statInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_STAT:
@@ -80,6 +88,37 @@ export const nicknameReducer = (state = nicknameInitState, action) => {
   }
 };
   
+export const emailReducer = (state = emailInitState, action) => {
+  switch (action.type) {
+    case actions.CHANGE_EMAIL:
+    // state.nickname = [action.payload.nickname]
+    // console.log(state.nickname,action.payload.nickname);
+      return{
+        ...state,
+        email: action.payload.email
+        // ...state, nickname:[action.payload.nickname]
+        // state
+      }
+    default:
+      return state;
+  }
+};
+
+export const passwordReducer = (state = passwordInitState, action) => {
+  switch (action.type) {
+    case actions.CHANGE_PASSWORD:
+    // state.nickname = [action.payload.nickname]
+    // console.log(state.nickname,action.payload.nickname);
+      return{
+        ...state,
+        password: action.payload.password
+        // ...state, nickname:[action.payload.nickname]
+        // state
+      }
+    default:
+      return state;
+  }
+};
 // export default nicknameReducer;
 // export default roleReducer;
 

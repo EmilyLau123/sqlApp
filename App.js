@@ -17,11 +17,8 @@ import StatementsScreen from './screens/StatementsScreen.js';
 import HomeScreen from './screens/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
 
-<<<<<<< HEAD
+// import * as SecureStore from 'expo-secure-store';
 
-=======
-import * as SecureStore from 'expo-secure-store';
->>>>>>> auth
 
 
 // class HomeScreen extends Component {
@@ -51,12 +48,10 @@ import * as SecureStore from 'expo-secure-store';
 //     );
 //   }
 // }
-<<<<<<< HEAD
-// const menuItemData = useSelector(state => state.menuItemData);
-=======
-const AuthContext = React.createContext();
 
->>>>>>> auth
+// const menuItemData = useSelector(state => state.menuItemData);
+
+
 
 const Tab = createBottomTabNavigator();
 
@@ -177,12 +172,8 @@ const App=()=>{
   );
 
   return (
-<<<<<<< HEAD
     <Provider store={store}>
-=======
-    <AuthContext.Provider value={authContext}>
 
->>>>>>> auth
     <NavigationContainer>
       {/* {state.userToken == null ? ():()} */}
       <Tab.Navigator
@@ -217,12 +208,8 @@ const App=()=>{
 
       </Tab.Navigator>
     </NavigationContainer>
-<<<<<<< HEAD
-    </Provider>
-=======
-    </AuthContext.Provider>
+  </Provider>
 
->>>>>>> auth
   );
 }
 export default App;
