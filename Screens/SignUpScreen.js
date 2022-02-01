@@ -1,8 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {Component, useState} from 'react';
-import {View, StyleSheet, SafeAreaView,Alert,ScrollView} from 'react-native';
-import { Text, Button, Input, Card, Tab, TabView } from 'react-native-elements';
+import {View, StyleSheet, SafeAreaView,Alert,ScrollView, Model} from 'react-native';
+import { Text, Button, Input, Card, Tab, TabView, LinearProgress, Overlay } from 'react-native-elements';
 import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
 //import { Form, FormItem } from 'react-native-form-component';
 //https://www.npmjs.com/package/react-native-form-component
@@ -20,7 +20,11 @@ const SignUpScreen = ({navigation}) => {
     const [role, setRole] = useState(0);
     const [index, setIndex] = useState(0);
 
+    const [isLoading, setIsLoading] = useState(false);
 
+    const toggleOverlay = (status) => {
+        setIsLoading(status);
+    };
 
     const insertUser = async () => {
         console.log(username,password,nickname, role, email);
@@ -29,6 +33,7 @@ const SignUpScreen = ({navigation}) => {
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/';
     
         try {
+            toggleOverlay(true);
          const response = await fetch(API_URL,{
              method:"POST",
                 headers: {
@@ -46,12 +51,13 @@ const SignUpScreen = ({navigation}) => {
          });
          const json = await response.json();
          if(response.status == 200){
+            
             console.log("json",json);
             Alert.alert("Success","Sign up success",
             [
                 {
                   text: "Close",
-                  onPress: () => navigation.navigate("Home",{
+                  onPress: () => navigation.navigate("HomePage",{
                       role:8,
                       status:true,
                   }),
@@ -59,10 +65,13 @@ const SignUpScreen = ({navigation}) => {
                 },
               ]
             );
+         }else{
+             alert("Account already exist!");
          }
        } catch (error) {
          console.error(error);
        } finally {
+           toggleOverlay(false);
         // setLoading(false);
         console.log("done");
        }
@@ -222,6 +231,13 @@ console.log(index, role);
                         </ScrollView>
                     </TabView.Item>
                 </TabView>
+
+                <Overlay isVisible={isLoading}>
+                    <View style={{height:100, width:250, margin:10}}>
+                        <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
+                        <LinearProgress color={COLORS.primary}/>
+                    </View>
+                </Overlay>
                 
         </SafeAreaView>
 

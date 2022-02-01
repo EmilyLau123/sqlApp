@@ -1,5 +1,5 @@
 import * as actions from './action';
-
+import {USER_ROLE} from '../components/style/theme';
 const statInitState = {
   stat:[]
 };
@@ -9,7 +9,7 @@ const userIdInitState = {
 };
 
 const roleInitState = {
-    role: 4
+    role: USER_ROLE.anonymous
   };
 
 const nicknameInitState = {

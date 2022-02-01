@@ -452,7 +452,7 @@ console.log("storingData: ",storingData);
                   onPress={()=>nextQuestion(3)}/>
 
           </Card>
-            <Overlay isVisible={isLast} onBackdropPress={()=>toggleOverlay(false)}>
+            <Overlay isVisible={isLast}>
               <View style={{height:100, width:250, margin:10}}>
                 <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
                 <LinearProgress color={COLORS.primary}/>

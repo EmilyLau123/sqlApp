@@ -53,8 +53,8 @@ const SignInScreen = ({navigation}) => {
 
     const [isLoading,setIsLoading] = useState(false);
 
-    const toggleOverlay = () => {
-        setIsLoading(!isLoading);
+    const toggleOverlay = (status) => {
+        setIsLoading(status);
     };
   
     //  const roleUtil = useContext(RoleContext);
@@ -66,6 +66,7 @@ const SignInScreen = ({navigation}) => {
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
     
         try {
+            toggleOverlay(true);
          const response = await fetch(API_URL,{
              method:"POST",
                 headers: {
@@ -80,37 +81,43 @@ const SignInScreen = ({navigation}) => {
             
          });
          const json = await response.json();
+         
          if(response.status == 200){
+             
             // setLoggedIn(true);
             // setNickname(json[0].nickname);
             if(json[0].status == USER_STATUS.approved){
-            dispatch(changeUserId(json[0]._id));
-            dispatch(changeRole(userRole));
-            dispatch(changeNickname(json[0].nickname));
-            dispatch(changeStat(json[0].quizDone));
-            dispatch(changeEmail(json[0].email));
-            dispatch(changePassword(json[0].password));
+                dispatch(changeUserId(json[0]._id));
+                dispatch(changeRole(userRole));
+                dispatch(changeNickname(json[0].nickname));
+                dispatch(changeStat(json[0].quizDone));
+                dispatch(changeEmail(json[0].email));
+                dispatch(changePassword(json[0].password));
 
-            
-            console.log("json",json);
-            Alert.alert("Success","Sign In success",
-            [
-                {
-                  text: "Close",
-                  onPress: () => navigation.navigate("Home"),
-                  style: "close",
-                },
-              ]
-            );
+                
+                console.log("json",json);
+                Alert.alert("Success","Sign In success",
+                [
+                    {
+                    text: "Close",
+                    onPress: () => navigation.navigate("Home"),
+                    style: "close",
+                    },
+                ]
+                );
             }else{
                 alert("User is not approved or is banned");
             }
          }else{
+             toggleOverlay();
              alert("User not found");
+             
          }
+         
        } catch (error) {
          console.error(error);
        } finally {
+           toggleOverlay(false);
         // setLoading(false);
         console.log("done");
        }
@@ -290,7 +297,7 @@ const SignInScreen = ({navigation}) => {
                     </Card> 
                 </TabView.Item>
             </TabView>
-            <Overlay isVisible={isLoading} onBackdropPress={()=>toggleOverlay()}>
+            <Overlay isVisible={isLoading} onBackdropPress={()=>toggleOverlay(true)}>
               <View style={{height:100, width:250, margin:10}}>
                 <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
                 <LinearProgress color={COLORS.primary}/>

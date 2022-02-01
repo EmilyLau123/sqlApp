@@ -242,10 +242,10 @@ const changeUserStatus = async(user_id, status) => {
 
 const sendEmail = async(email, status) => {
     try{
-       var EMAIL_API_URL = 'http://localhost:8099/api/sendEmail/rejected';
+       var EMAIL_API_URL = 'https://mufyptest.herokuapp.com/api/sendEmail/rejected';
 
          if(status == USER_STATUS.approved){
-            EMAIL_API_URL = 'http://localhost:8099/api/sendEmail/approved';
+            EMAIL_API_URL = 'https://mufyptest.herokuapp.com/api/sendEmail/approved';
          
      }
         
@@ -285,10 +285,10 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
         // setIsSending(true);
         toggleOverlay();
         //send email
-        var EMAIL_API_URL = 'http://localhost:8099/api/sendEmail/rejected';
+        var EMAIL_API_URL = 'https://mufyptest.herokuapp.com/api/sendEmail/rejected';
 
          if(status == USER_STATUS.approved){
-            EMAIL_API_URL = 'http://localhost:8099/api/sendEmail/approved';
+            EMAIL_API_URL = 'https://mufyptest.herokuapp.com/api/sendEmail/approved';
         }
         
         const emailResponse = await fetch(EMAIL_API_URL,{

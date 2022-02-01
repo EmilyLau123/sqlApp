@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
-import { Text, Button, Input,ButtonGroup, Card } from 'react-native-elements';
+import {View, StyleSheet, Alert, Model} from 'react-native';
+import { Text, Button, Input,ButtonGroup, Card, Overlay, LinearProgress } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../../components/style/theme.js';
 import * as ImagePicker from 'expo-image-picker';
@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
 export function requestSubmitScreen({navigation}){
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [selectedIndexAnswer, setSelectedIndexAnswer] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const [question, setQuestion] = useState("");
     const [difficulty, setDifficulty] = useState(0);
@@ -51,6 +53,9 @@ export function requestSubmitScreen({navigation}){
 
     }
     
+    const toggleOverlay =() => {
+        setIsLoading(!isLoading);
+    };
 
     const insertQuiz = async (question, difficulty, answer, options, author_id, role) => {
         
@@ -59,9 +64,10 @@ export function requestSubmitScreen({navigation}){
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com/api/question/insert/
-        const API_URL = 'http://localhost:8099/api/question/insert/';
+        const API_URL = 'https://mufyptest.herokuapp.com/api/question/insert/';
     
         try {
+            toggleOverlay();
          const response = await fetch(API_URL,{
              method:'POST',
                 headers: {
@@ -81,6 +87,7 @@ export function requestSubmitScreen({navigation}){
          });
          const json = await response.json();
          if(response.status == 200){
+             toggleOverlay();
             console.log("json",json);
             Alert.alert("Success","Submit success",
             [
@@ -242,6 +249,17 @@ const pickImage = async () => {
                                 role
                             )}
             /> 
+
+<Overlay isVisible={isLoading}>
+        <View style={{height:100, width:250, margin:10}}>
+            
+            <Text style={{padding:10, alignSelf:"center", paddingBottom:10, fontSize:16}}>Loading...</Text>
+            <LinearProgress color={COLORS.primary}/>
+        
+        </View>
+                
+            </Overlay>
+
         </ScrollView>
 
     );
