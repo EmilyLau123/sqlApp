@@ -13,7 +13,7 @@ import {
     Overlay
     } from 'react-native-elements';
 
-import {StyleSheet,Alert,SafeAreaView, Model, View} from 'react-native';
+import {StyleSheet,Alert,SafeAreaView, Model, View, TouchableOpacity} from 'react-native';
 import { STYLES,SIZES, COLORS, USER_STATUS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
@@ -227,6 +227,14 @@ const SignInScreen = ({navigation}) => {
                             defaultValue={password}
                             secureTextEntry={true}
                             /> 
+                        <TouchableOpacity
+                            onPress={()=>navigation.navigate("PasswordEmail")}
+                            style={{alignSelf:"center"}}
+                            >
+                            <Text
+                                style={{color:'#5a5c63'}}
+                            >Forgot password?</Text>
+                        </TouchableOpacity>
                         <Button title="SIGN IN"
                             // titleStyle={{ color: '#2465a0' }}
                             buttonStyle={{
@@ -243,7 +251,7 @@ const SignInScreen = ({navigation}) => {
                             titleStyle={{ fontWeight: 'bold' }}
                             // onPress={()=>loginUser(username,password,role)}/>
                             onPress={()=>loginUser(username,password, userRole)}/>              
-
+                        
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'
                                 buttonStyle={{
@@ -278,6 +286,7 @@ const SignInScreen = ({navigation}) => {
                             defaultValue={password}
                             secureTextEntry={true}
                             /> 
+                        
                         <Button title="SIGN IN"
                             // titleStyle={{ color: '#2465a0' }}
                             buttonStyle={{

@@ -11,6 +11,9 @@ import {requestList,requestDetail} from './admin/RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementList';
 import {HistoryFullList} from './teacher/SubmitHistoryScreen';
+import {PasswordEmailScreen} from './form/PasswordEmailScreen';
+import {PasswordResetScreen} from './form/PasswordResetScreen';
+
 
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
@@ -18,7 +21,7 @@ import {
     LineChart,
   } from "react-native-chart-kit";
 //auth
-import {changeNickname, changeRole, changeUserId, changeStat} from '../model/action'
+import {changeNickname, changeRole, changeUserId, changeStat, changeEmail, changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 
   //auth using redux
@@ -36,6 +39,10 @@ const AccountStack = createStackNavigator();
 function logOut(dispatch){
     dispatch(changeRole(USER_ROLE.anonymous));
     dispatch(changeNickname("stranger"));
+    dispatch(changeUserId(""));
+    dispatch(changePassword(""));
+    dispatch(changeEmail(""));
+    dispatch(changeStat([]));
     console.log("Logged out");
     return alert("Logged out");
 }
@@ -464,6 +471,10 @@ const AccountScreen = () => {
             return(
                     <AccountStack.Navigator>
                         <AccountStack.Screen name="SignIn" component={SignInScreen} options={{ title: 'Sign In' }}/>
+                        <AccountStack.Screen name="PasswordEmail" component={PasswordEmailScreen} options={{ title: 'Email form' }}/>
+                        <AccountStack.Screen name="PasswordReset" component={PasswordResetScreen} options={{ title: 'Reset password' }}/>
+
+                        
                         <AccountStack.Screen name="SignUp" component={SignUpScreen} options={{ title: 'Sign Up' }}/>
                     </AccountStack.Navigator>
             ); 

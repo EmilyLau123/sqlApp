@@ -13,16 +13,18 @@ import {COLORS, SIZES} from '../components/style/theme'
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //auth
-import { Provider, useSelector } from 'react-redux';
+import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,changePassword} from '../model/action'
+import { Provider,useDispatch, useSelector } from 'react-redux';
 
+import bcrypt from 'react-native-bcrypt';
 
-const accountSettingScreen = () =>{
+const accountSettingScreen = ({navigation}) =>{
     // const [newUsername,setNewUsername] = useState('');
     const [password,setPassword] = useState('');
     // const [newNickname,setNewNickname] = useState('');
     const [newPassword,setNewPassword] = useState('');
     const [confirmPassword,setConfirmPassword] = useState('');
-    const [error,setError] = useState(false);
+    // const [error,setError] = useState(false);
 
     var oldPassword = useSelector(state => state.passwordReducer.password);
 
@@ -38,28 +40,38 @@ var oldNickname = useSelector(state => state.nicknameReducer.nickname);
   const toggleOverlay =(status) => {
         setIsLoading(status);
     };
+
+    const dispatch = useDispatch(); 
   // setNickname(useSelector(state => state.nicknameReducer.nickname));
-//ban a user
-const updateUser = async(user_id, nickname, current_password, newpassword, confirmPassword) => {
+//change password or nickname
+const updateUser = async(user_id, newNickname, current_password, newpassword, confirmPassword) => {
   
   if(current_password != "" && newpassword != "" && confirmPassword != ""){
-    if(current_password != oldPassword){
+    var match = bcrypt.compareSync(current_password, oldPassword); // true
+    if(match == false){
       return alert("Please enter correct current password");
     }else if(newpassword != confirmPassword){
       return alert("new password and confirm password should be the same");
 
     }else{
+      var salt = bcrypt.genSaltSync(10);
+      var hash = bcrypt.hashSync(confirmPassword, salt);
       console.log("All good");
     }
   }else{
-    return alert("Please enter value in empty input box");
+    if(current_password != "" || newpassword != "" || confirmPassword != ""){
+      return alert("If you want to change the password, then enter value in all input box.");
+    }
+    console.log("Not changing the password");
+    confirmPassword = oldPassword;
   }
-  console.log(request_id);
+  console.log(user_id,confirmPassword, oldPassword,newNickname);
   //https://reactnative.dev/movies.json
   //http://localhost:8099/api/retrieveStatements/
-  const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
+  const API_URL = 'https://mufyptest.herokuapp.com/api/user/account/update/';
 
   try {
+    toggleOverlay(true);
    const response = await fetch(API_URL,{
        method:"POST",
           headers: {
@@ -68,20 +80,23 @@ const updateUser = async(user_id, nickname, current_password, newpassword, confi
           },
        body: JSON.stringify({
           user_id: user_id,
-          nickname: nickname,
-          newpassword: newpassword,
+          nickname: newNickname,
+          password: hash,
           // updated_at: Danow(),
       }),
       
    });
    const json = await response.json();
    if(response.status == 200){
+    dispatch(changeNickname(newNickname));
+    dispatch(changePassword(hash));
+    toggleOverlay(false);
       console.log("json",json);
       Alert.alert("Success","Your information are updated",
       [
           {
             text: "Close",
-            onPress: () => navigation.navigate("Account"),
+            onPress: () => navigation.goBack(),
             style: "close",
           },
         ]

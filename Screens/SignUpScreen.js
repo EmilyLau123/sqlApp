@@ -30,6 +30,7 @@ const SignUpScreen = ({navigation}) => {
         console.log(username,password,nickname, role, email);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
+        //https://mufyptest.herokuapp.com
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/';
     
         try {

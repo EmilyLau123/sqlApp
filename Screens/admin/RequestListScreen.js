@@ -33,10 +33,10 @@ export function requestList({navigation}){
       console.log("done");
      }
    }
-  
-   useEffect(() => {
+  useEffect(() => {
     getRequests();
    }, []);
+   
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
         var statusString = 'Approved';
@@ -194,13 +194,14 @@ const changeQuestionStatus = async(question_id, status) => {
                         </View>
                     <Text style={{padding:SIZES.padding}}>Options: </Text>
 
-                    {options.map(item => (
+                    {options.map((item,index) => (
+                        
                         <View  style={{padding:SIZES.padding, borderRadius: 10,
                             borderWidth: 2,
                             borderColor: COLORS.primary,
                             backgroundColor: COLORS.primary,
                             marginBottom:SIZES.margin}}>
-                            <Text style={{fontWeight:"bold",color:"white"}}>{item}</Text>
+                            <Text style={{fontWeight:"bold",color:"white"}}>{index+1}. {item}</Text>
                         </View>
                     ))}
                     <Text style={{padding:SIZES.padding}}>Images: should be image element{images}</Text>
@@ -251,6 +252,7 @@ const changeQuestionStatus = async(question_id, status) => {
                 <View></View>
             )}
             {statusString == "Rejected"?(
+                <View>
                 <Button
                     title="Delete"
                     buttonStyle={{
@@ -268,6 +270,24 @@ const changeQuestionStatus = async(question_id, status) => {
                     titleStyle={{ fontWeight: 'bold' }}
                     onPress={()=>deleteQuestion(question_id)}
                 />
+                <Button
+                        title="Approve"
+                        buttonStyle={{
+                            backgroundColor: 'green',
+                            borderWidth: 2,
+                            borderColor: 'green',
+                            borderRadius: 30,
+                            opacity:0.8
+                            }}
+                        containerStyle={{
+                            width: 'auto',
+                            marginHorizontal: 50,
+                            marginVertical: 10,
+                            }}
+                        titleStyle={{ fontWeight: 'bold' }}
+                        onPress={()=>changeQuestionStatus(question_id, REQUEST_STATUS.approved)}
+                    />
+                </View>
             ):(
                 <View></View>
             )}
