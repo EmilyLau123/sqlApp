@@ -45,7 +45,7 @@ var oldNickname = useSelector(state => state.nicknameReducer.nickname);
   // setNickname(useSelector(state => state.nicknameReducer.nickname));
 //change password or nickname
 const updateUser = async(user_id, newNickname, current_password, newpassword, confirmPassword) => {
-  
+  var change = true;
   if(current_password != "" && newpassword != "" && confirmPassword != ""){
     var match = bcrypt.compareSync(current_password, oldPassword); // true
     if(match == false){
@@ -54,9 +54,9 @@ const updateUser = async(user_id, newNickname, current_password, newpassword, co
       return alert("new password and confirm password should be the same");
 
     }else{
-      var salt = bcrypt.genSaltSync(10);
-      var hash = bcrypt.hashSync(confirmPassword, salt);
-      console.log("All good");
+      // var salt = bcrypt.genSaltSync(10);
+      // var hash = bcrypt.hashSync(confirmPassword, salt);
+      console.log("All good, changing password");
     }
   }else{
     if(current_password != "" || newpassword != "" || confirmPassword != ""){
@@ -64,8 +64,9 @@ const updateUser = async(user_id, newNickname, current_password, newpassword, co
     }
     console.log("Not changing the password");
     confirmPassword = oldPassword;
+    change = false;
   }
-  console.log(user_id,confirmPassword, oldPassword,newNickname);
+  console.log(user_id,confirmPassword, oldPassword,newNickname, change);
   //https://reactnative.dev/movies.json
   //http://localhost:8099/api/retrieveStatements/
   const API_URL = 'https://mufyptest.herokuapp.com/api/user/account/update/';
@@ -81,7 +82,8 @@ const updateUser = async(user_id, newNickname, current_password, newpassword, co
        body: JSON.stringify({
           user_id: user_id,
           nickname: newNickname,
-          password: hash,
+          password: confirmPassword,
+          change: change
           // updated_at: Danow(),
       }),
       
@@ -89,7 +91,7 @@ const updateUser = async(user_id, newNickname, current_password, newpassword, co
    const json = await response.json();
    if(response.status == 200){
     dispatch(changeNickname(newNickname));
-    dispatch(changePassword(hash));
+    dispatch(changePassword(json));
     toggleOverlay(false);
       console.log("json",json);
       Alert.alert("Success","Your information are updated",

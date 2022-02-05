@@ -11,23 +11,27 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/react-native-fontawesome": "^0.2.7",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "@react-navigation/stack": "^6.0.11",
     "axios": "^0.24.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
     "expo": "~43.0.2",
     "expo-image-picker": "~11.0.3",
+    "expo-secure-store": "~11.0.3",
     "expo-status-bar": "~1.1.0",
     "express": "~4.17.1",
     "install": "^0.13.0",
     "moment": "^2.29.1",
-    "mongoose": "~6.0.15",
     "npm": "^8.1.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-bcrypt": "^2.4.0",
     "react-native-chart-kit": "^6.11.0",
     "react-native-elements": "^3.4.2",
     "react-native-form-component": "^2.2.4",
@@ -38,8 +42,7 @@
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
     "react-redux": "^7.2.6",
-    "redux": "^4.1.2",
-    "expo-secure-store": "~11.0.3"
+    "redux": "^4.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

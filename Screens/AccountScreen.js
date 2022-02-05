@@ -13,7 +13,7 @@ import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementLi
 import {HistoryFullList} from './teacher/SubmitHistoryScreen';
 import {PasswordEmailScreen} from './form/PasswordEmailScreen';
 import {PasswordResetScreen} from './form/PasswordResetScreen';
-
+import {PasswordResetResultScreen} from './PasswordResetResultScreen';
 
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
@@ -472,27 +472,12 @@ const AccountScreen = () => {
                     <AccountStack.Navigator>
                         <AccountStack.Screen name="SignIn" component={SignInScreen} options={{ title: 'Sign In' }}/>
                         <AccountStack.Screen name="PasswordEmail" component={PasswordEmailScreen} options={{ title: 'Email form' }}/>
-                        <AccountStack.Screen name="PasswordReset" component={PasswordResetScreen} options={{ title: 'Reset password' }}/>
-
-                        
+                        <AccountStack.Screen name="PasswordReset" component={PasswordResetScreen} options={{ title: 'Reset password',headerShown:false }}/>
+                    
                         <AccountStack.Screen name="SignUp" component={SignUpScreen} options={{ title: 'Sign Up' }}/>
                     </AccountStack.Navigator>
             ); 
     }
-}
-
-export const fin_AccountScreen = () => {
-    const menuItemData = useSelector(state => state.menuItemData);
-    const dispatch = useDispatch();
-    dispatch({
-        type: "ADD_ITEM",
-        payload: {itemNew:"測試資料"}
-    }); 
-    return(
-        <Provider store={authStore}>
-            <AccountScreen/>
-        </Provider>
-    );
 }
 
 

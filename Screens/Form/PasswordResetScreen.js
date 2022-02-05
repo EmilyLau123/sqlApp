@@ -14,7 +14,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {StyleSheet,Alert,SafeAreaView, Model, View} from 'react-native';
 import {STYLES, COLORS, SIZES} from '../../components/style/theme';
-import { toggleOverlay } from "../SignInScreen";
 
 
  
@@ -77,7 +76,8 @@ export function PasswordResetScreen({route,navigation}){
             [
                 {
                     text: "Close",
-                    onPress: () => navigation.navigate("HomePage"),
+                    onPress: () => navigation.navigate("HomPage"),
+                    
                     style: "close",
                 },
                 ]
