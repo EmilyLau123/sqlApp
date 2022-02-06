@@ -13,7 +13,6 @@ import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementLi
 import {HistoryFullList} from './teacher/SubmitHistoryScreen';
 import {PasswordEmailScreen} from './form/PasswordEmailScreen';
 import {PasswordResetScreen} from './form/PasswordResetScreen';
-import {PasswordResetResultScreen} from './PasswordResetResultScreen';
 
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
@@ -304,6 +303,7 @@ function teacherMainAccountScreen({navigation}){
 
 function studnetMainAccountScreen({navigation}){
     const stat = useSelector(state => state.statReducer.stat);
+    // const stat = [];
     const nickname = useSelector(state => state.nicknameReducer.nickname);
     const dispatch = useDispatch(); 
     var totalPoints = 0;
@@ -312,24 +312,24 @@ function studnetMainAccountScreen({navigation}){
     var index = 0;
     var data = [];
     var label = "";
-
+    console.log(useSelector(state => state.statReducer.stat));
     stat.forEach(item => {
-        console.log("set:");
+        console.log("set:",item);
 
-        item.forEach(detail => {
-            var itemTime = detail.answerTime;
-            label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
-            // console.log(itemTime.split('-'));
-            if(!dateLabels.includes(label)){
-                dateLabels.push(label);
-            }
-            console.log(itemTime);
-            totalPoints += detail.point;
-            data[index] = totalPoints;
+        // item.forEach(detail => {
+        //     var itemTime = detail.answerTime;
+        //     label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
+        //     // console.log(itemTime.split('-'));
+        //     if(!dateLabels.includes(label)){
+        //         dateLabels.push(label);
+        //     }
+        //     console.log(itemTime);
+        //     totalPoints += detail.point;
+        //     data[index] = totalPoints;
 
-            // console.log(totalPoints, stat.length);
+        //     // console.log(totalPoints, stat.length);
 
-        });
+        // });
     });
 
 

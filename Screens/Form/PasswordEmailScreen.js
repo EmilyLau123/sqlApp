@@ -102,7 +102,12 @@ export function PasswordEmailScreen({navigation}){
                     }}
                     titleStyle={{ fontWeight: 'bold' }}
                     onPress={()=>verifyEmail(email)}/>
-
+            <Overlay isVisible={isLoading}>
+                <View style={{height:100, width:250, margin:10}}>
+                    <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
+                    <LinearProgress color={COLORS.primary}/>
+                </View>
+            </Overlay>
         </SafeAreaView>
 
     );

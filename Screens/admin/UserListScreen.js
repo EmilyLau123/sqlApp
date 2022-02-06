@@ -1,7 +1,9 @@
 import React, {Component, useState, useEffect, useRef} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+
 import { FlatList, ScrollView, View, SafeAreaView, ActivityIndicator, Alert, Model } from 'react-native';
 import {COLORS, SIZES, ICONS, STRINGS, USER_STATUS, USER_ROLE} from '../../components/style/theme.js';
-import {  Text, Button, ListItem, Card, LinearProgress, Overlay } from 'react-native-elements';
+import {  Text, Button, ListItem, Card, LinearProgress, Overlay, Image } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from "@react-navigation/native";
@@ -27,8 +29,9 @@ export function userList({navigation,route}){
       const API_URL = 'https://mufyptest.herokuapp.com/api/find/users/';
   
       try {
-       const response = await fetch(API_URL);
-       const json = await response.json();
+        setLoading(true);
+        const response = await fetch(API_URL);
+        const json = await response.json();
     //    console.log(json);
        setData(json);
      } catch (error) {
@@ -38,30 +41,36 @@ export function userList({navigation,route}){
       console.log("done");
      }
    }
-  
-   useEffect(() => {
-       if(mounted.current===false){
-           getUsers();
-        mounted.current=true;
-        /* 下面是 第一次渲染後 */
+  useFocusEffect(
+    React.useCallback(() => {
+      getUsers();
+      // Do something when the screen is focused
+      return () => {
+        console.log('not focused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+   );
+//    useEffect(() => {
+//        if(mounted.current===false){
+//            getUsers();
+//         mounted.current=true;
+//         /* 下面是 第一次渲染後 */
     
     
-        /* 上面是 第一次渲染後 */      
-      }
-      else{
-          getUsers();
-        /* 下面是元件更新後 */
+//         /* 上面是 第一次渲染後 */      
+//       }
+//       else{
+//           getUsers();
+//         /* 下面是元件更新後 */
     
     
-        /* 上面是元件更新後 */
+//         /* 上面是元件更新後 */
 
-      }
+//       }
     
-   }, []);
-
-    
-    
-
+//    }, []);
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
         var statusString = 'Approved';
@@ -99,6 +108,18 @@ export function userList({navigation,route}){
         
         );
     }
+
+    useFocusEffect(
+    React.useCallback(() => {
+      getUsers();
+      // Do something when the screen is focused
+      return () => {
+        getUsers();
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+   );
     
     return(
         <SafeAreaView>
@@ -109,7 +130,7 @@ export function userList({navigation,route}){
                 keyExtractor={item => item._id}
                 onRefresh={() => getUsers()}
                 refreshing={isLoading}
-                height={SIZES.height}
+                height={SIZES.height-200}
                 /> 
             )}
         </SafeAreaView>
@@ -328,7 +349,7 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
             // alert("User approved and notified!");
             
             console.log("approved and emailed");
-            toggleOverlay(true);
+            
         }else{
             alert("Oops! Something went wrong...");
             console.log("NO approved and emailed");
@@ -337,6 +358,7 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
     }catch(error){
         console.log(error);
     }finally{
+        toggleOverlay(true);
         console.log("sent");
         
     }
@@ -355,6 +377,12 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
 
                     <Text style={{padding:SIZES.padding}}>Submitted At: {submitted_at} </Text>
                     <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
+                    <Image 
+                     source={{ 
+                    uri:'file:///Users/emilylau/Library/Developer/CoreSimulator/Devices/48A3C137-CB08-4F60-A9DB-ACC122C04EB9/data/Containers/Data/Application/AE41CFA0-5E22-4EA3-8BA1-F2D82399FE0F/Library/Caches/ExponentExperienceData/%2540anonymous%252FsqlApp-5983158c-a27e-43e6-a52c-78faec2afa68/ImagePicker/73C73F8C-3768-45EE-96E6-645C696B0829.jpg'
+                    }}
+                    PlaceholderContent={<ActivityIndicator />}
+                     />
                 </Card>
             {/* <Button
                 title="Edit"
@@ -516,7 +544,7 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                 </View>
             ):(<View></View>)}
 
-      <Overlay isVisible={isSending} onBackdropPress={()=>navigation.navigate("UserList")}>
+      <Overlay isVisible={isSending}>
         <View style={{height:100, width:250, margin:10}}>
                 {back?(
                     <>

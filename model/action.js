@@ -4,12 +4,20 @@ export const CHANGE_USER_ID = 'CHANGE_USER_ID';
 export const CHANGE_STAT = 'CHANGE_STAT';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
+export const CHANGE_USERNAME = 'CHANGE_USERNAME';
 
 
 export const changeStat = stat => ({
     type: CHANGE_STAT,
     payload: {
       stat,
+    },
+  });
+
+export const changeUsername = username => ({
+    type: CHANGE_USERNAME,
+    payload: {
+      username,
     },
   });
 

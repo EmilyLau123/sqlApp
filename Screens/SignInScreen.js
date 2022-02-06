@@ -18,7 +18,7 @@ import { STYLES,SIZES, COLORS, USER_STATUS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
 //auth
-import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,changePassword} from '../model/action'
+import {changeNickname, changeRole, changeUsername, changeUserId, changeStat, changeEmail,changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -47,6 +47,7 @@ const SignInScreen = ({navigation}) => {
     const [nickname,setNickname] = useSelector(state => state.nicknameReducer.nickname);
     const [userId,setUserId] = useSelector(state => state.userIdReducer.user_id);
     const [stat,setStat] = useSelector(state => state.statReducer.stat);
+
 
         // const [nickname,setNickname] = useSelector(store.getState());
     const dispatch = useDispatch(); 
@@ -93,6 +94,8 @@ const SignInScreen = ({navigation}) => {
                 dispatch(changeStat(json[0].quizDone));
                 dispatch(changeEmail(json[0].email));
                 dispatch(changePassword(json[0].password));
+                dispatch(changeUsername(json[0].username));
+
 
                 
                 console.log("json",json);
@@ -286,7 +289,14 @@ const SignInScreen = ({navigation}) => {
                             defaultValue={password}
                             secureTextEntry={true}
                             /> 
-                        
+                        <TouchableOpacity
+                            onPress={()=>navigation.navigate("PasswordEmail")}
+                            style={{alignSelf:"center"}}
+                            >
+                            <Text
+                                style={{color:'#5a5c63'}}
+                            >Forgot password?</Text>
+                        </TouchableOpacity>
                         <Button title="SIGN IN"
                             // titleStyle={{ color: '#2465a0' }}
                             buttonStyle={{

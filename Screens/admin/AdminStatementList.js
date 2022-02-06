@@ -2,6 +2,7 @@ import { NavigationContainer, useNavigationContainerRef} from '@react-navigation
 import React, {Component, useState, useEffect} from 'react';
 import { ListItem, Text,  Button, SearchBar, Card, Image } from 'react-native-elements';
 import { ScrollView, FlatList, Alert, StyleSheet, TouchableOpacity, SafeAreaView, View, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -53,6 +54,8 @@ export function StatementsFullList({navigation}){
     const API_URL = 'https://mufyptest.herokuapp.com/api/statements/all/find/'+searchText;
 
     try {
+      console.log('searchText',searchText);
+      setLoading(true);
      const response = await fetch(API_URL);
      const json = await response.json();
      console.log(json);
@@ -64,6 +67,19 @@ export function StatementsFullList({navigation}){
     console.log("done");
    }
 }
+
+useFocusEffect(
+    React.useCallback(() => {
+      getStatements("");
+      // Do something when the screen is focused
+      return () => {
+        console.log('not focused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+   );
+
    const renderItem = ({ item }) => {
     var iconName = ICONS.approved;
     var hide = item.hide;
@@ -98,14 +114,14 @@ return(
     );
  }
 
- useEffect(() => {
-  getStatements("");
- }, []);
+//  useEffect(() => {
+//   getStatements("");
+//  }, []);
 
  const searchButton = (searchText) => {
-    setLoading(true);
-   setSearch(searchText);
-   getStatements(searchText);
+    // setLoading(true);
+    setSearch(searchText);
+    getStatements(searchText);
 //    console.log(search);
  }
 

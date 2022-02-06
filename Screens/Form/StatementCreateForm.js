@@ -27,10 +27,10 @@ export function statementSubmitScreen({navigation}){
     const [des, setDes] = useState("");
     const [images, setImages] = useState([]);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading,setIsLoading] = useState(false);
 
-  const toggleOverlay =() => {
-        setIsLoading(!isLoading);
+    const toggleOverlay = (status) => {
+        setIsLoading(status);
     };
 
     function refresh(){
@@ -47,6 +47,7 @@ export function statementSubmitScreen({navigation}){
         const API_URL = 'https://mufyptest.herokuapp.com/api/statement/insert/';
     
         try {
+            toggleOverlay(true);
          const response = await fetch(API_URL,{
              method:'POST',
                 headers: {
@@ -84,6 +85,7 @@ export function statementSubmitScreen({navigation}){
        } catch (error) {
          console.error(error);
        } finally {
+           toggleOverlay(false);
         // setLoading(false);
         console.log("done");
        }
@@ -204,6 +206,12 @@ const pickImage = async () => {
                 title="Submit"
                 onPress={()=>insertStatement(title, des, images)}
             /> 
+            <Overlay isVisible={isLoading}>
+                <View style={{height:100, width:250, margin:10}}>
+                    <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
+                    <LinearProgress color={COLORS.primary}/>
+                </View>
+            </Overlay>
         </ScrollView>
 
     );

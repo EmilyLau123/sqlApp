@@ -1,11 +1,12 @@
 import {createStore, combineReducers} from "redux";
-import {statReducer,nicknameReducer, roleReducer, userIdReducer, emailReducer, passwordReducer} from "./reducer.js";
+import {statReducer, usernameReducer, nicknameReducer, roleReducer, userIdReducer, emailReducer, passwordReducer} from "./reducer.js";
 // import roleReducer from "./reducer.js";
 
 
 const authReducer = combineReducers({
     roleReducer,
     nicknameReducer,
+    usernameReducer,
     userIdReducer,
     statReducer,
     passwordReducer,

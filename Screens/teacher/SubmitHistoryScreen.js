@@ -47,11 +47,6 @@ export function HistoryFullList({navigation}){
       console.log(error);
     }
 
-
-  
-   
-
-
  useEffect(() => {
   getHistories(user_id);
  }, []);
@@ -116,11 +111,11 @@ return(
           
         <View style={{paddingBottom:SIZES.listPaddingBottom}}>
           <FlatList
-          data={data}
-          renderItem= {renderItem}
-          keyExtractor={item => item._id}
-          onRefresh={() => getHistories(user_id)}
-          refreshing={isLoading}
+            data={data}
+            renderItem= {renderItem}
+            keyExtractor={item => item._id}
+            onRefresh={() => getHistories(user_id)}
+            refreshing={isLoading}
             
           /> 
         

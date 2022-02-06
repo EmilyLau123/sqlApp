@@ -35,7 +35,7 @@ export function requestSubmitScreen({navigation}){
     const [option3 , setOption3] = useState("");
     const [option4 , setOption4] = useState("");
     const [images, setImages] = useState([]);
-    const author_id = useSelector(state => state.userIdReducer.user_id);
+    const username = useSelector(state => state.usernameReducer.username);
     const role = useSelector(state => state.roleReducer.role);
    
 
@@ -57,7 +57,7 @@ export function requestSubmitScreen({navigation}){
         setIsLoading(!isLoading);
     };
 
-    const insertQuiz = async (question, difficulty, answer, options, author_id, role) => {
+    const insertQuiz = async (question, difficulty, answer, options, username, role) => {
         
 
         console.log(question, difficulty, answer, options);
@@ -79,7 +79,7 @@ export function requestSubmitScreen({navigation}){
                 difficulty: difficulty,
                 answer: answer,
                 options: options,
-                author: author_id,
+                author: username,
                 role: role ,// admin,
                 images:images
             }),
@@ -245,19 +245,16 @@ const pickImage = async () => {
                                 difficulty,
                                 answer,
                                 [option1,option2,option3,option4],
-                                author_id,
+                                username,
                                 role
                             )}
             /> 
 
-<Overlay isVisible={isLoading}>
-        <View style={{height:100, width:250, margin:10}}>
-            
-            <Text style={{padding:10, alignSelf:"center", paddingBottom:10, fontSize:16}}>Loading...</Text>
-            <LinearProgress color={COLORS.primary}/>
-        
-        </View>
-                
+            <Overlay isVisible={isLoading}>
+                <View style={{height:100, width:250, margin:10}}>
+                    <Text style={{padding:10, alignSelf:"center", paddingBottom:10, fontSize:16}}>Loading...</Text>
+                    <LinearProgress color={COLORS.primary}/>
+                </View>
             </Overlay>
 
         </ScrollView>

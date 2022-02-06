@@ -4,6 +4,7 @@ import {COLORS, SIZES, ICONS, STRINGS, REQUEST_STATUS, STYLES} from '../../compo
 import {  Text, Button, ListItem, Card} from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export function requestList({navigation}){
@@ -22,6 +23,7 @@ export function requestList({navigation}){
       const API_URL = 'https://mufyptest.herokuapp.com/api/requests/find/';
   
       try {
+        setLoading(true);
        const response = await fetch(API_URL);
        const json = await response.json();
        console.log(json);
@@ -33,9 +35,17 @@ export function requestList({navigation}){
       console.log("done");
      }
    }
-  useEffect(() => {
-    getRequests();
-   }, []);
+   useFocusEffect(
+    React.useCallback(() => {
+      getRequests();
+      // Do something when the screen is focused
+      return () => {
+        console.log('not focused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+   );
    
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
@@ -77,7 +87,7 @@ export function requestList({navigation}){
     }
     return(
         
-        <SafeAreaView style={{flex:1,backgroundColor:COLORS.background, paddingBottom:SIZES.tabBarheight}}>
+        <SafeAreaView style={{flex:1, paddingBottom:SIZES.tabBarheight}}>
             {isLoading?<ActivityIndicator/>:(
                 <FlatList
                 data={data}

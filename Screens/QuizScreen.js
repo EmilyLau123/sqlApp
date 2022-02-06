@@ -11,10 +11,11 @@ import {
 import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView, Model } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
-import {ANSWER,COLORS,SIZES,DIFFICULTY} from '../components/style/theme.js';
+import {ANSWER,COLORS,SIZES,DIFFICULTY,USER_ROLE} from '../components/style/theme.js';
 import moment from 'moment';
 //auth
-import { Provider, useSelector } from 'react-redux';
+import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,changePassword} from '../model/action'
+import { useDispatch, useSelector } from 'react-redux';
 
 export function askSignInScreen({route,navigation}){
   return(
@@ -171,8 +172,8 @@ export function Quiz({route, navigation}){
   //   var totalQuestion = 9;
   //   var modelAnswer=DATA[0].answer;
   const user_id = useSelector(state => state.userIdReducer.user_id);
-
-
+  const user_role = useSelector(state => state.roleReducer.role);
+  const dispatch = useDispatch(); 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState("");
   const [score, setScore] = useState(0);
@@ -196,7 +197,12 @@ export function Quiz({route, navigation}){
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
-
+    if(user_role != USER_ROLE.student){
+      toggleOverlay(false);
+      navigation.navigate("Congrats",{
+          score:score
+        });
+    }
     try {
      const response = await fetch(API_URL,{
          method:'POST',
@@ -211,8 +217,10 @@ export function Quiz({route, navigation}){
         
      });
      const json = await response.json();
+     
      if(response.status == 200){
-        console.log("json",json);
+        console.log("storingData",storingData);
+        dispatch(changeStat(storingData));
         navigation.navigate("Congrats",{
           score:score
         });
