@@ -13,6 +13,8 @@ import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementLi
 import {HistoryFullList, HistoryFullDetail} from './teacher/SubmitHistoryScreen';
 import {PasswordEmailScreen} from './form/PasswordEmailScreen';
 import {PasswordResetScreen} from './form/PasswordResetScreen';
+import {teacherMainAccountScreen} from './teacher/TeacherAccountScreen';
+
 
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../components/style/theme.js';
 import 'react-native-gesture-handler';
@@ -206,80 +208,6 @@ function adminMainAccountScreen({navigation}){
 }
 
 
-function teacherMainAccountScreen({navigation}){
-    const stat = useSelector(state => state.statReducer.stat);
-    const nickname = useSelector(state => state.nicknameReducer.nickname);
-    const dispatch = useDispatch(); 
-
-
-    const renderItem = ({ item }) => (
-        <ListItem>
-            <Icon name="check" size={20} />
-            <ListItem.Content>
-            <ListItem.Title>{item.title}, This thing is checked</ListItem.Title>
-            </ListItem.Content>
-        </ListItem>
-        );
-    return(
-        <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
-                <Card borderRadius={SIZES.round}>
-                    <Card.Title>Your Information</Card.Title>
-                    <Card.Divider />
-                    <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
-                    <Text style={{padding:SIZES.padding}}>Requests you have made : 10</Text>
-                    <Text style={{padding:SIZES.padding}}>Approved Requests: 10/100</Text>
-                </Card>
-
-                    {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-                <Button title={STRINGS.submitHistory}
-                    buttonStyle={{
-                        backgroundColor: COLORS.primary,
-                        borderWidth: 2,
-                        borderColor: COLORS.secondary,
-                        borderRadius: 30,
-                        }}
-                    containerStyle={{
-                        width: 'auto',
-                        marginHorizontal: 50,
-                        marginVertical: 10,
-                        }}
-                    titleStyle={{ fontWeight: 'bold' }}  
-                    onPress={()=>navigation.navigate("SubmitHistory")}>
-                </Button>
-    
-                <Button title={STRINGS.accountSetting}
-                    buttonStyle={{
-                        backgroundColor: COLORS.secondary,
-                        borderWidth: 2,
-                        borderColor: COLORS.secondary,
-                        borderRadius: 30,
-                        }}
-                    containerStyle={{
-                        width: 'auto',
-                        marginHorizontal: 50,
-                        marginVertical: 10,
-                        }}
-                    titleStyle={{ fontWeight: 'bold' }}  
-                    onPress={()=>navigation.navigate("AccountSetting")}>
-                </Button>
-                <Button title={STRINGS.logOut}
-                    buttonStyle={{
-                        backgroundColor: COLORS.black,
-                        borderWidth: 2,
-                        borderColor: COLORS.black,
-                        borderRadius: 30,
-                        }}
-                    containerStyle={{
-                        width: 'auto',
-                        marginHorizontal: 50,
-                        marginVertical: 10,
-                        }}
-                    titleStyle={{ fontWeight: 'bold' }} 
-                    onPress={()=>logOut(dispatch)}>
-                </Button>
-        </SafeAreaView>
-        );
-}
 
 function studnetMainAccountScreen({navigation}){
     const stat = useSelector(state => state.statReducer.stat);
