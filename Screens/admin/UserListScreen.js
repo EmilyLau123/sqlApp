@@ -191,17 +191,18 @@ export function userDetail({route,navigation}){
          const json = await response.json();
          if(response.status == 200){
             // setUpdate(true);
+            toggleOverlay();
             console.log("json",json);
-            toggleOverlay(true);
-            // Alert.alert("Success","User deleted",
-            // [
-            //     {
-            //       text: "Close",
-            //       onPress: () => navigation.navigate("UserList"),
-            //       style: "close",
-            //     },
-            //   ]
-            // );
+            
+            Alert.alert("Success","User deleted",
+            [
+                {
+                  text: "Close",
+                  onPress: () => navigation.navigate("UserList"),
+                  style: "close",
+                },
+              ]
+            );
          }
        } catch (error) {
          console.error(error);

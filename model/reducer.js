@@ -30,13 +30,23 @@ const passwordInitState = {
 
 export const statReducer = (state = statInitState, action) => {
   switch (action.type) {
-    case actions.CHANGE_USERNAME:
+    case actions.CHANGE_STAT:
     // state.nickname = [action.payload.nickname]
     // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
         // stat: action.payload.stat
         stat: [...state.stat, action.payload.stat]
+        // ...state, nickname:[action.payload.nickname]
+        // state
+      }
+    case actions.EMPTY_STAT:
+    // state.nickname = [action.payload.nickname]
+    // console.log(state.nickname,action.payload.nickname);
+      return{
+        ...state,
+        // stat: action.payload.stat
+        stat: action.payload.stat
         // ...state, nickname:[action.payload.nickname]
         // state
       }

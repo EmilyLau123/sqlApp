@@ -5,7 +5,15 @@ export const CHANGE_STAT = 'CHANGE_STAT';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGE_USERNAME = 'CHANGE_USERNAME';
+export const EMPTY_STAT = 'EMPTY_STAT';
 
+
+export const emptyStat = stat => ({
+    type: EMPTY_STAT,
+    payload: {
+      stat,
+    },
+  });
 
 export const changeStat = stat => ({
     type: CHANGE_STAT,

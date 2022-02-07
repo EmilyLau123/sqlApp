@@ -88,10 +88,13 @@ const SignInScreen = ({navigation}) => {
             // setLoggedIn(true);
             // setNickname(json[0].nickname);
             if(json[0].status == USER_STATUS.approved){
+                console.log('quizDone:',json[0].quizDone.length);
+                if(json[0].quizDone.length != 0){
+                    dispatch(changeStat(json[0].quizDone));
+                }
                 dispatch(changeUserId(json[0]._id));
                 dispatch(changeRole(userRole));
                 dispatch(changeNickname(json[0].nickname));
-                dispatch(changeStat(json[0].quizDone));
                 dispatch(changeEmail(json[0].email));
                 dispatch(changePassword(json[0].password));
                 dispatch(changeUsername(json[0].username));

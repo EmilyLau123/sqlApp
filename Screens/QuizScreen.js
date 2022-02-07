@@ -193,7 +193,7 @@ export function Quiz({route, navigation}){
 
 
   const updateUser = async (user_id, storingData, score, {navigation}) => {
-    console.log(user_id, storingData, score);
+    // console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
@@ -242,31 +242,19 @@ export function Quiz({route, navigation}){
 
       if(questionIndex >= totalQuestion){
         //Add result to the user's quizeDone array[obj_id, mark(1/0)]
-        // const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
-
-        // try {
-        //   const response = await fetch(API_URL);
-        //   const json = await response.json();
-        //   console.log(json);
-        //   setData(json);
-        // } catch (error) {
-        //   console.error(error);
-        // } finally {
-        //   setLoading(false);
-        //   console.log("done");
-        // }
+        
         if(questionIndex == totalQuestion){
           toggleOverlay(true);
           console.log(isLast);
           if(data[questionIndex].answer==key){
             console.log("right");
-  
+            setScore(oldScore + 1);
             // alert(this.DATA[this.state.questionNumberIndex].answer);
             storingData.push({question_id:data[questionIndex]._id, 
                               point: 1,
                               answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                             });
-            setScore(oldScore + 1);
+            console.log(score);
             setStoringData(storingData);
             
           }else{
@@ -279,17 +267,14 @@ export function Quiz({route, navigation}){
             setStoringData(storingData);
   
           }
-          
-        }
-        
-        var result = updateUser(user_id,storingData, score,{navigation});
-        result.then(function(){
-          console.log("success")}
-        ).catch(function(err){
-          console.log("Fail:",err)}
-        );
+          var result = updateUser(user_id,storingData, score,{navigation});
+          result.then(function(){
+            console.log("success")}
+          ).catch(function(err){
+            console.log("Fail:",err)}
+          );
 
-        
+        }     
       
       }else{
         if(data[questionIndex].answer==key){
@@ -355,9 +340,9 @@ console.log(API_URL);
     getQuestions(difficulty);
   }, []);
   
-console.log('data',data[questionIndex]);
+// console.log('data',data[questionIndex]);
 // console.log('index',questionIndex);
-console.log("storingData: ",storingData);
+// console.log("storingData: ",storingData);
 
 
 // if(data == ""){

@@ -20,10 +20,13 @@ import {
     LineChart,
   } from "react-native-chart-kit";
 //auth
-import {changeNickname, changeRole, changeUserId, changeStat, changeEmail, changePassword} from '../model/action'
+import {changeNickname, changeRole, changeUserId, emptyStat, changeEmail, changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
-
-  //auth using redux
+//time
+import moment from 'moment';
+// import Moment from 'react-moment';
+// import 'moment-timezone';  
+//auth using redux
 // import { Provider } from "react-redux";
 // import { authStore } from "./model/store.js";
 // import { useSelector } from 'react-redux';
@@ -41,7 +44,7 @@ function logOut(dispatch){
     dispatch(changeUserId(""));
     dispatch(changePassword(""));
     dispatch(changeEmail(""));
-    dispatch(changeStat([]));
+    dispatch(emptyStat([]));
     console.log("Logged out");
     return alert("Logged out");
 }
@@ -303,39 +306,56 @@ function teacherMainAccountScreen({navigation}){
 
 function studnetMainAccountScreen({navigation}){
     const stat = useSelector(state => state.statReducer.stat);
-    // const stat = [];
     const nickname = useSelector(state => state.nicknameReducer.nickname);
     const dispatch = useDispatch(); 
     var totalPoints = 0;
     var counter = 0;
-    var dateLabels = [];
+    var graph = true;
     var index = 0;
     var data = [];
+    var dateLabels = [];
     var label = "";
-    console.log(useSelector(state => state.statReducer.stat));
-    stat.forEach(item => {
-        console.log("set:",item);
+    var avg = 0;
 
-        // item.forEach(detail => {
-        //     var itemTime = detail.answerTime;
+    var dateLabelsTest = {};
+    dateLabelsTest[moment().subtract(5,'M').format("MM/YYYY")] = 0;
+    dateLabelsTest[moment().subtract(4,'M').format("MM/YYYY")] = 0;
+    dateLabelsTest[moment().subtract(3,'M').format("MM/YYYY")] = 0;
+    dateLabelsTest[moment().subtract(2,'M').format("MM/YYYY")] = 0;
+    dateLabelsTest[moment().subtract(1,'M').format("MM/YYYY")] = 0;
+    dateLabelsTest[moment().format("MM/YYYY")] = 0;
+
+    if(stat.length != 0){
+        // for(let i = 0; i < stat.length; i++){//quiz number
+        //     var itemTime = stat[i][0].answerTime;
         //     label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
-        //     // console.log(itemTime.split('-'));
-        //     if(!dateLabels.includes(label)){
-        //         dateLabels.push(label);
+        //     console.log('---------');
+        //     console.log('time #',i,': ',stat[i][0].answerTime);
+        //     console.log('stat #',i,': ',stat[i]);
+        //     for(let k = 0; k < 10; k++){//question number
+        //         // var itemTime = stat[0][0].answerTime;
+        //         // label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
+        //         console.log('item #',k,': ',stat[i][k]);
+        //         totalPoints += stat[i][k].point;
+        //         dateLabelsTest[label] = totalPoints;
         //     }
-        //     console.log(itemTime);
-        //     totalPoints += detail.point;
-        //     data[index] = totalPoints;
+        // }
+        stat.forEach(item => {
+            var itemTime = item[0].answerTime;
+            label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
+            item.forEach(detail => { // = item[i]
+                totalPoints += detail.point;
+                dateLabelsTest[label] = totalPoints;
+        //        
+            });
+        });
+        avg = totalPoints/stat.length;
 
-        //     // console.log(totalPoints, stat.length);
-
-        // });
-    });
-
-
-    console.log(dateLabels);
-    var avg = totalPoints/stat.length;
-
+    }else{
+        graph = false;
+    }
+    data = Object.values(dateLabelsTest);
+    dateLabels = Object.keys(dateLabelsTest);
     return(
     <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
         <ScrollView>
@@ -348,10 +368,12 @@ function studnetMainAccountScreen({navigation}){
                 <Text style={{padding:SIZES.padding}}>Quizes average score: {avg.toFixed(0)}</Text>
             </Card>
             <Card borderRadius={SIZES.round}>
-                <Card.Title>Perfromance</Card.Title>
+            <Card.Title>Perfromance graph</Card.Title>
                 <Card.Divider />
                 {/* https://github.com/indiespirit/react-native-chart-kit */}
-                <LineChart
+                {graph?(
+                    <>
+                    <LineChart
                     data={{
                     labels: dateLabels
                     //  labels: ["01/2022", "02/2022", "03/2022", "04/2022", "05/2022",]
@@ -394,6 +416,12 @@ function studnetMainAccountScreen({navigation}){
                 />
                 <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
                 <Text style={{padding:SIZES.padding}}>you are improving!!</Text>
+                </>
+                ):(
+                    <Text>No quiz record, Let's do some quiz!</Text>
+                )}
+                
+                
 
                 {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
             </Card>
