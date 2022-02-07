@@ -176,7 +176,7 @@ export function Quiz({route, navigation}){
   const dispatch = useDispatch(); 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState("");
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(1);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [storingData, setStoringData] = useState([]);
   // const [isSending, setIsSending] = useState(false);
@@ -189,10 +189,10 @@ export function Quiz({route, navigation}){
 
   const totalQuestion = 9;
   const {difficulty} = route.params;
-  console.log(difficulty);
+  // console.log(difficulty);
 
 
-  const updateUser = async (user_id, storingData, score, {navigation}) => {
+  const updateUser = async (user_id, storingData,score) => {
     // console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
@@ -202,43 +202,43 @@ export function Quiz({route, navigation}){
       navigation.navigate("Congrats",{
           score:score
         });
-    }
-    try {
-     const response = await fetch(API_URL,{
-         method:'POST',
-            headers: {
-                'Content-Type':'application/json',
-                'Accept':'application/json'
-            },
-         body: JSON.stringify({
-            user_id: user_id,
-            quizDone: storingData,
-        }),
-        
-     });
-     const json = await response.json();
-     
-     if(response.status == 200){
-        console.log("storingData",storingData);
-        dispatch(changeStat(storingData));
-        navigation.navigate("Congrats",{
-          score:score
+    }else{
+      try {
+        const response = await fetch(API_URL,{
+            method:'POST',
+                headers: {
+                    'Content-Type':'application/json',
+                    'Accept':'application/json'
+                },
+            body: JSON.stringify({
+                user_id: user_id,
+                quizDone: storingData,
+            }),
+            
         });
-     }
-   } catch (error) {
-     console.error(error);
-   } finally {
-    // setLoading(false);
-    toggleOverlay(false);
-    console.log("done");
-   }
+        const json = await response.json();
+        
+        if(response.status == 200){
+            // console.log("storingData",storingData);
+            dispatch(changeStat(storingData));
+            navigation.navigate("Congrats",{
+              score:score
+            });
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        // setLoading(false);
+        toggleOverlay(false);
+        console.log("done");
+        console.log(score);
+      }
+    }
+    
  }
 
 
-  function nextQuestion(key){
-      var oldScore = score;
-      var oldQuestionIndex = questionIndex;
-
+  const nextQuestion = (key) => {
 
       if(questionIndex >= totalQuestion){
         //Add result to the user's quizeDone array[obj_id, mark(1/0)]
@@ -247,14 +247,15 @@ export function Quiz({route, navigation}){
           toggleOverlay(true);
           console.log(isLast);
           if(data[questionIndex].answer==key){
-            console.log("right");
-            setScore(oldScore + 1);
+            console.log("right",questionIndex);
+            setScore(score + 1);
+            alert(score);
             // alert(this.DATA[this.state.questionNumberIndex].answer);
             storingData.push({question_id:data[questionIndex]._id, 
                               point: 1,
                               answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                             });
-            console.log(score);
+            
             setStoringData(storingData);
             
           }else{
@@ -267,7 +268,7 @@ export function Quiz({route, navigation}){
             setStoringData(storingData);
   
           }
-          var result = updateUser(user_id,storingData, score,{navigation});
+          var result = updateUser(user_id,storingData,score);
           result.then(function(){
             console.log("success")}
           ).catch(function(err){
@@ -285,8 +286,9 @@ export function Quiz({route, navigation}){
                             point: 1,
                             answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                           });
-          setScore(oldScore + 1);
-          setQuestionIndex(oldQuestionIndex + 1);
+          setQuestionIndex(questionIndex + 1);
+          setScore(score + 1);
+          
           setStoringData(storingData);
         }else{
           console.log("wrong");
@@ -295,13 +297,13 @@ export function Quiz({route, navigation}){
                             answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                           });
 
-          setQuestionIndex(oldQuestionIndex + 1);
+          setQuestionIndex(questionIndex + 1);
           setStoringData(storingData);
 
         }
         
       }
-
+            console.log(score);
     }
 
   const getQuestions = async (difficulty) => {
@@ -375,7 +377,7 @@ console.log(API_URL);
         {isLoading?<ActivityIndicator/>:(
         <View>
           <Card borderRadius={SIZES.round}>
-            <Text style={{alignSelf:"flex-end", fontSize:16}}>Score: {score} / 10</Text>
+            <Text style={{alignSelf:"flex-end", fontSize:16}}>Score: {score-1} / 10</Text>
             <Text style={{fontWeight:"bold", alignSelf:"center", fontSize:24, paddingBottom:SIZES.padding}}>{questionIndex+1} / 10</Text>
             
             <Card.Divider />
@@ -445,7 +447,7 @@ console.log(API_URL);
                   onPress={()=>nextQuestion(3)}/>
 
           </Card>
-            <Overlay isVisible={isLast}>
+            <Overlay isVisible={isLast} >
               <View style={{height:100, width:250, margin:10}}>
                 <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
                 <LinearProgress color={COLORS.primary}/>
