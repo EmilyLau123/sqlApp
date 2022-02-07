@@ -53,8 +53,8 @@ export function requestSubmitScreen({navigation}){
 
     }
     
-    const toggleOverlay =() => {
-        setIsLoading(!isLoading);
+    const toggleOverlay =(status) => {
+        setIsLoading(status);
     };
 
     const insertQuiz = async (question, difficulty, answer, options, username, role) => {
@@ -67,7 +67,7 @@ export function requestSubmitScreen({navigation}){
         const API_URL = 'https://mufyptest.herokuapp.com/api/question/insert/';
     
         try {
-            toggleOverlay();
+            toggleOverlay(true);
          const response = await fetch(API_URL,{
              method:'POST',
                 headers: {
@@ -87,7 +87,7 @@ export function requestSubmitScreen({navigation}){
          });
          const json = await response.json();
          if(response.status == 200){
-             toggleOverlay();
+             toggleOverlay(false);
             console.log("json",json);
             Alert.alert("Success","Submit success",
             [

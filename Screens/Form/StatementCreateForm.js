@@ -68,7 +68,7 @@ export function statementSubmitScreen({navigation}){
             [
                 {
                   text: "Back to home",
-                  onPress: () => navigation.navigate("Home",{
+                  onPress: () => navigation.navigate("HomePage",{
                       role:1,
                       status:true,
                   }),

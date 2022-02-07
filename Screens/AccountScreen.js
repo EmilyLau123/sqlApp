@@ -10,7 +10,7 @@ import { userList,userDetail } from './admin/UserListScreen';
 import {requestList,requestDetail} from './admin/RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementList';
-import {HistoryFullList} from './teacher/SubmitHistoryScreen';
+import {HistoryFullList, HistoryFullDetail} from './teacher/SubmitHistoryScreen';
 import {PasswordEmailScreen} from './form/PasswordEmailScreen';
 import {PasswordResetScreen} from './form/PasswordResetScreen';
 
@@ -212,20 +212,6 @@ function teacherMainAccountScreen({navigation}){
     const dispatch = useDispatch(); 
 
 
-    const DATA = [
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            title: 'First Item',
-          },
-          {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            title: 'Second Item',
-          },
-          {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Third Item',
-          },
-    ];
     const renderItem = ({ item }) => (
         <ListItem>
             <Icon name="check" size={20} />
@@ -240,36 +226,27 @@ function teacherMainAccountScreen({navigation}){
                     <Card.Title>Your Information</Card.Title>
                     <Card.Divider />
                     <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
-                    <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text>
                     <Text style={{padding:SIZES.padding}}>Requests you have made : 10</Text>
                     <Text style={{padding:SIZES.padding}}>Approved Requests: 10/100</Text>
                 </Card>
-                <Card borderRadius={SIZES.round}>
-                    <Card.Title>Record</Card.Title>
-                    <Card.Divider />
-                    <FlatList
-                        data={DATA}
-                        renderItem={renderItem}
-                        keyExtractor={item => item.id}
-                    />
-    
+
                     {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-                    <Button title={STRINGS.submitHistory}
-                        buttonStyle={{
-                            backgroundColor: COLORS.primary,
-                            borderWidth: 2,
-                            borderColor: COLORS.secondary,
-                            borderRadius: 30,
-                            }}
-                        containerStyle={{
-                            width: 'auto',
-                            marginHorizontal: 50,
-                            marginVertical: 10,
-                            }}
-                        titleStyle={{ fontWeight: 'bold' }}  
-                        onPress={()=>navigation.navigate("SubmitHistory")}>
-                    </Button>
-                </Card>
+                <Button title={STRINGS.submitHistory}
+                    buttonStyle={{
+                        backgroundColor: COLORS.primary,
+                        borderWidth: 2,
+                        borderColor: COLORS.secondary,
+                        borderRadius: 30,
+                        }}
+                    containerStyle={{
+                        width: 'auto',
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                        }}
+                    titleStyle={{ fontWeight: 'bold' }}  
+                    onPress={()=>navigation.navigate("SubmitHistory")}>
+                </Button>
+    
                 <Button title={STRINGS.accountSetting}
                     buttonStyle={{
                         backgroundColor: COLORS.secondary,
@@ -414,8 +391,8 @@ function studnetMainAccountScreen({navigation}){
                     borderRadius: 16
                     }}
                 />
-                <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
-                <Text style={{padding:SIZES.padding}}>you are improving!!</Text>
+                {/* <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
+                <Text style={{padding:SIZES.padding}}>you are improving!!</Text> */}
                 </>
                 ):(
                     <Text>No quiz record, Let's do some quiz!</Text>
@@ -469,6 +446,8 @@ const AccountScreen = () => {
                     <AccountStack.Screen name="TeacherAccountMain" component={teacherMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
                     <AccountStack.Screen name="SubmitHistory" component={HistoryFullList} options={{ title: 'Submit History' }}/>
+                    <AccountStack.Screen name="SubmitHistoryDetail" component={HistoryFullDetail} options={{ title: 'History Detail' }}/>
+
 
                 </AccountStack.Navigator>
             );
