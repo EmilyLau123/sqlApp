@@ -4,6 +4,8 @@ import React, {Component, useState} from 'react';
 import {View, StyleSheet, SafeAreaView,Alert,ScrollView, Model, ActivityIndicator} from 'react-native';
 import { Text, Button, Input, Card, Tab, TabView, LinearProgress, Overlay, Image } from 'react-native-elements';
 import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
+import * as ImagePicker from 'expo-image-picker';
+
 //import { Form, FormItem } from 'react-native-form-component';
 //https://www.npmjs.com/package/react-native-form-component
 //image
@@ -19,13 +21,22 @@ const SignUpScreen = ({navigation}) => {
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
+<<<<<<< HEAD
     const [image, setImage] = useState({});
+=======
+    const [images, setImages] = useState([]);
+>>>>>>> image
     const [role, setRole] = useState(0);
     const [index, setIndex] = useState(0);
     const [haveImage, setHaveImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+<<<<<<< HEAD
     const [showImage, setShowImage] = useState(false);
     const formData = new FormData();
+=======
+    const formData = new FormData();
+
+>>>>>>> image
     const toggleOverlay = (status) => {
         setIsLoading(status);
     };
@@ -87,6 +98,71 @@ const SignUpScreen = ({navigation}) => {
     // }
     // }
 
+    //to upload image NOT DONE
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        // base64:true
+        });
+        // console.log(result);
+        if (!result.cancelled) {
+            // var base64 = 'data:image/jpg;base64,' + result.base64;
+            formData.append('image', {
+                uri:result.uri,
+                name: Date.now() + '-' + Math.round(Math.random() * 1E9),
+                type: result.type,
+                
+            });
+            images.push(result.uri);
+            setImages(images);
+            console.log(formData);
+            
+            // console.log(Date.now() + '-' + Math.round(Math.random() * 1E9));
+        }
+    };
+
+    const insertImage = async(formData) => {
+        const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/images/';
+    
+        try {
+            toggleOverlay(true);
+            const response = await fetch(API_URL,{
+             method:"POST",
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Accept:'application/json',
+                },
+         body: formData,
+        });
+        const json = await response.json();
+    //      if(response.status == 200){
+            
+    //         console.log("json",json);
+    //         Alert.alert("Success","Sign up success",
+    //         [
+    //             {
+    //               text: "Close",
+    //               onPress: () => navigation.goBack(),
+    //               style: "close",
+    //             },
+    //           ]
+    //         );
+    //      }else{
+    //          alert("Account already exist!");
+    //      }
+       } catch (error) {
+         console.error(error);
+       } finally {
+           toggleOverlay(false);
+        // setLoading(false);
+        console.log("done");
+       }
+    }
+
     const insertUser = async () => {
         console.log(username,password,nickname, role, email);
         //https://reactnative.dev/movies.json
@@ -108,6 +184,11 @@ const SignUpScreen = ({navigation}) => {
                 nickname: nickname,
                 role: role,
                 email: email,
+<<<<<<< HEAD
+=======
+                // name: listing.title,
+                // type: listing.image.type,
+>>>>>>> image
             }),
             
          });
@@ -138,10 +219,7 @@ const SignUpScreen = ({navigation}) => {
             [
                 {
                   text: "Close",
-                  onPress: () => navigation.navigate("HomePage",{
-                      role:8,
-                      status:true,
-                  }),
+                  onPress: () => navigation.goBack(),
                   style: "close",
                 },
               ]
@@ -216,6 +294,13 @@ console.log(index, role);
                                     secureTextEntry={true}
 
                                 />
+                            <Text>Email</Text>
+                                <Input
+                                    style={STYLES.input}
+                                    onChangeText={email => setEmail(email)}
+                                    defaultValue={email}
+                                    placeholder="For password reset"
+                                />
                             <Button title='SIGN UP'
                                 buttonStyle={{
                                     backgroundColor: '#77afac',
@@ -275,9 +360,12 @@ console.log(index, role);
                                     onChangeText={email => setEmail(email)}
                                     defaultValue={email}
                                     placeholder="we will notify you via email"
-                                    secureTextEntry={true}
                                 />
+<<<<<<< HEAD
                             <Button title='Image to proof'
+=======
+                            <Button title='Images to proof'
+>>>>>>> image
                                 buttonStyle={{
                                     backgroundColor: COLORS.attention,
                                     borderWidth: 2,
@@ -291,6 +379,7 @@ console.log(index, role);
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
                                 onPress={()=>pickImage()}
+<<<<<<< HEAD
                             />
                         {haveImage?(
                             <Button title='View uploaded image'
@@ -307,6 +396,8 @@ console.log(index, role);
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
                                 onPress={()=>setShowImage(true)}
+=======
+>>>>>>> image
                             />
                         ):(
                             <></>
