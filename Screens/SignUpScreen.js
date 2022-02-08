@@ -21,22 +21,16 @@ const SignUpScreen = ({navigation}) => {
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
-<<<<<<< HEAD
+
     const [image, setImage] = useState({});
-=======
-    const [images, setImages] = useState([]);
->>>>>>> image
+
     const [role, setRole] = useState(0);
     const [index, setIndex] = useState(0);
     const [haveImage, setHaveImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-<<<<<<< HEAD
     const [showImage, setShowImage] = useState(false);
     const formData = new FormData();
-=======
-    const formData = new FormData();
 
->>>>>>> image
     const toggleOverlay = (status) => {
         setIsLoading(status);
     };
@@ -184,11 +178,7 @@ const SignUpScreen = ({navigation}) => {
                 nickname: nickname,
                 role: role,
                 email: email,
-<<<<<<< HEAD
-=======
-                // name: listing.title,
-                // type: listing.image.type,
->>>>>>> image
+
             }),
             
          });
@@ -361,11 +351,9 @@ console.log(index, role);
                                     defaultValue={email}
                                     placeholder="we will notify you via email"
                                 />
-<<<<<<< HEAD
-                            <Button title='Image to proof'
-=======
+
                             <Button title='Images to proof'
->>>>>>> image
+
                                 buttonStyle={{
                                     backgroundColor: COLORS.attention,
                                     borderWidth: 2,
@@ -379,7 +367,7 @@ console.log(index, role);
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
                                 onPress={()=>pickImage()}
-<<<<<<< HEAD
+
                             />
                         {haveImage?(
                             <Button title='View uploaded image'
@@ -396,8 +384,7 @@ console.log(index, role);
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
                                 onPress={()=>setShowImage(true)}
-=======
->>>>>>> image
+
                             />
                         ):(
                             <></>
