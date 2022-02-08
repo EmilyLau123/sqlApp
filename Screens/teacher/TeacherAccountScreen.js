@@ -30,7 +30,7 @@ const API_URL = 'https://mufyptest.herokuapp.com/api/user/questions/count/';
 var requestStatus = [];
     try {
         setIsLoading(true);
-      console.log('fetch');
+        console.log('fetch');
         const response = await fetch(API_URL,{
             method:"POST",
                 headers: {
@@ -52,9 +52,6 @@ var requestStatus = [];
                  requestStatus[st] = json[i].count;
              }
 
-            //  setApproved(json[0].count);
-           
-            // setApproved(json);
             setIsLoading(false);
             
          }else{
@@ -76,19 +73,10 @@ useEffect(()=>{
     getrequestData();
 },[]);
 
-    const renderItem = ({ item }) => (
-        <ListItem>
-            <Icon name="check" size={20} />
-            <ListItem.Content>
-            <ListItem.Title>{item.title}, This thing is checked</ListItem.Title>
-            </ListItem.Content>
-        </ListItem>
-        );
-
     return(
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
             <Card borderRadius={SIZES.round}>
-                <Card.Title>Your Information</Card.Title>
+                <Card.Title>Welcome</Card.Title>
                 <Card.Divider />
                 <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
                 <Card.Divider />

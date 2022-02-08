@@ -92,6 +92,7 @@ export function userList({navigation,route}){
             username: item.username,
             nickname:item.nickname,
             email:item.email,
+            image:item.image,
             submitted_at:item.submitted_at,
             updated_at:item.updated_at,
             statusString: statusString,
@@ -139,7 +140,7 @@ export function userList({navigation,route}){
 
 
 export function userDetail({route,navigation}){
-    const { submitted_at,user_id, iconName, statusString, username, nickname, updated_at, email } = route.params;
+    const { submitted_at,user_id, iconName, statusString, username, nickname, updated_at, email,image } = route.params;
     
     const [progress, setProgress] = useState(0);
     const [isSending, setIsSending] = useState(false);
@@ -149,7 +150,40 @@ export function userDetail({route,navigation}){
         if(back == true){
             setBack(back);
         }
-    };
+    }
+    console.log('image: ',image.buffer);
+    //convert image
+    // const imageConvert = () => {
+    //     const IMAGE_CONVERT_API_URL = 'https://mufyptest.herokuapp.com/api/image/convert/';
+    //     try{
+    //         const response = await fetch(IMAGE_CONVERT_API_URL);
+    //         const Imagejson = await response.json();
+            
+    //     }catch(error){
+    //         return alert('error');
+    //     }finally{
+    //         console.log('Converted: ', Imagejson);
+    //     }
+    // }
+
+        // const reader = new FileReader();
+        // reader.readAsDataURL(image.buffer);
+        // reader.onloadend = () => {
+        //     const img64 = reader.result;
+        //     setImage('data:image/png;base64,' + img64);
+        //     console.log(img64);
+        // };
+
+        // setImage('data:image/png;base64,' + btoa(image.buffer));
+        console.log(image);
+        // const testImage = []
+        // const img64 = new Buffer.from(image.buffer).toString("base64");
+        
+        // const buf = Buffer.from(characteristic.value, "base64");
+        // console.log(buf);
+        // console.log (buf[1]);
+        // this.setState({pulse: buf.data[1]});
+    // };
     // const progressAdjust = (amount) => {
     //     setProgress(progress+amount);
     // };
@@ -378,13 +412,15 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
 
                     <Text style={{padding:SIZES.padding}}>Submitted At: {submitted_at} </Text>
                     <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
-                    <Image 
+                    
+                </Card>
+                <Image 
                      source={{ 
-                    uri:'file:///Users/emilylau/Library/Developer/CoreSimulator/Devices/48A3C137-CB08-4F60-A9DB-ACC122C04EB9/data/Containers/Data/Application/AE41CFA0-5E22-4EA3-8BA1-F2D82399FE0F/Library/Caches/ExponentExperienceData/%2540anonymous%252FsqlApp-5983158c-a27e-43e6-a52c-78faec2afa68/ImagePicker/73C73F8C-3768-45EE-96E6-645C696B0829.jpg'
+                        uri:'data:'+image.mimetype+';base64,' + image.buffer
                     }}
+                    style={{height:200, width:200}}
                     PlaceholderContent={<ActivityIndicator />}
                      />
-                </Card>
             {/* <Button
                 title="Edit"
                 onPress={()=>} 

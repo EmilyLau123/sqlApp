@@ -1,11 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {Component, useState} from 'react';
-import {View, StyleSheet, SafeAreaView,Alert,ScrollView, Model} from 'react-native';
-import { Text, Button, Input, Card, Tab, TabView, LinearProgress, Overlay } from 'react-native-elements';
+import {View, StyleSheet, SafeAreaView,Alert,ScrollView, Model, ActivityIndicator} from 'react-native';
+import { Text, Button, Input, Card, Tab, TabView, LinearProgress, Overlay, Image } from 'react-native-elements';
 import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
 //import { Form, FormItem } from 'react-native-form-component';
 //https://www.npmjs.com/package/react-native-form-component
+//image
+import * as ImagePicker from 'expo-image-picker';
 
 const Stack = createStackNavigator();
 
@@ -17,14 +19,73 @@ const SignUpScreen = ({navigation}) => {
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
+    const [image, setImage] = useState({});
     const [role, setRole] = useState(0);
     const [index, setIndex] = useState(0);
-
+    const [haveImage, setHaveImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [showImage, setShowImage] = useState(false);
+    const formData = new FormData();
     const toggleOverlay = (status) => {
         setIsLoading(status);
     };
+  
+   
+    //to upload image NOT DONE
+    const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        // base64:true
+        });
+        // console.log(result);
+        if (!result.cancelled) {
+            // var base64 = 'data:image/jpg;base64,' + result.base64;
+            // images.push(base64);
+            
+            setImage({uri: result.uri, type:result.type});
+            
+            setHaveImage(true);
+        }
+    };
+
+    const deleteImage = () => {
+        for (var data in image) {
+            delete image[data];
+        }
+        setShowImage(false);
+        setHaveImage(false);
+        console.log(image);
+    }
+
+    // const uploadImages = async() => {
+    //     const API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/';
+    //     formData.append('image', image);
+
+    //     try {
+    //         toggleOverlay(true);
+    //         const response = await fetch(API_URL,{
+    //          method:"POST",
+    //             headers: {
+    //                 'Content-Type':'multipart/form-data',
+    //                 'Accept':'application/json'
+    //             },
+    //          body: JSON.stringify({
+    //             username : username,
+    //             image: formData
+    //         }),
+            
+    //      });
+    //      const json = await response.json();
+    // }catch(error){
+    //     return alert('error');
+    // }finally{
+    //     console.log('Images uploaded');
+    // }
+    // }
 
     const insertUser = async () => {
         console.log(username,password,nickname, role, email);
@@ -32,7 +93,7 @@ const SignUpScreen = ({navigation}) => {
         //http://localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/';
-    
+        //insert inputted text data
         try {
             toggleOverlay(true);
          const response = await fetch(API_URL,{
@@ -46,12 +107,31 @@ const SignUpScreen = ({navigation}) => {
                 password: password,
                 nickname: nickname,
                 role: role,
-                email: email
+                email: email,
             }),
             
          });
+
+         //upload img
+        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/';
+
+            const imageResponse = await fetch(IMAGES_API_URL,{
+             method:"POST",
+                headers: {
+                    'Content-Type':'multipart/form-data',
+                    'Accept':'application/json'
+                },
+             body: {
+                username: username,
+                role: role,
+                image: formData
+            },
+            
+         });
+
          const json = await response.json();
-         if(response.status == 200){
+         const imageJson = await imageResponse.json();
+         if(response.status == 200 && imageResponse.status == 200){
             
             console.log("json",json);
             Alert.alert("Success","Sign up success",
@@ -197,7 +277,7 @@ console.log(index, role);
                                     placeholder="we will notify you via email"
                                     secureTextEntry={true}
                                 />
-                            <Button title='images to proof'
+                            <Button title='Image to proof'
                                 buttonStyle={{
                                     backgroundColor: COLORS.attention,
                                     borderWidth: 2,
@@ -210,8 +290,28 @@ console.log(index, role);
                                     marginVertical: 10,
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
-                                onPress={()=>alert("for teacher to upload proof of teacher (e.g. teacher card)")}
+                                onPress={()=>pickImage()}
                             />
+                        {haveImage?(
+                            <Button title='View uploaded image'
+                                buttonStyle={{
+                                    backgroundColor: COLORS.primary,
+                                    borderWidth: 2,
+                                    borderColor: COLORS.primary,
+                                    borderRadius: 30,
+                                    }}
+                                containerStyle={{
+                                    width: 'auto',
+                                    marginHorizontal: 50,
+                                    marginVertical: 10,
+                                    }}
+                                titleStyle={{ fontWeight: 'bold' }}
+                                onPress={()=>setShowImage(true)}
+                            />
+                        ):(
+                            <></>
+                        )}
+                            
                             
                             <Button title='SIGN UP AS TEACHER'
                                 buttonStyle={{
@@ -229,16 +329,33 @@ console.log(index, role);
                                 onPress={()=>insertUser(username, nickname, password, role, email)}
                             />
                         </Card>
+                        {/* <Overlay isVisible={haveImage} on>
+                            <Text>Uploaded Images</Text>
+                            <Image
+                                source={{uri:}}
+                            
+                            />
+                        </Overlay> */}
                         </ScrollView>
                     </TabView.Item>
                 </TabView>
-
-                <Overlay isVisible={isLoading}>
-                    <View style={{height:100, width:250, margin:10}}>
-                        <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
-                        <LinearProgress color={COLORS.primary}/>
-                    </View>
-                </Overlay>
+                {/* pop up when user click the view uploaded image button */}
+                    <Overlay isVisible={showImage} onBackdropPress={()=>setShowImage(false)}>
+                            <Image
+                                source={{ uri:image.uri }}
+                                PlaceholderContent={<ActivityIndicator />}
+                                containerStyle={{width:200, height:200}}
+                            />
+                            <Button
+                                title='delete'
+                                onPress={()=>deleteImage()}
+                            />
+                            <Button
+                                title='Close'
+                                onPress={()=>setShowImage(false)}
+                            />
+                    </Overlay>
+                
                 
         </SafeAreaView>
 
