@@ -4,7 +4,6 @@ import React, {Component, useState} from 'react';
 import {View, StyleSheet, SafeAreaView,Alert,ScrollView, Model, ActivityIndicator} from 'react-native';
 import { Text, Button, Input, Card, Tab, TabView, LinearProgress, Overlay, Image } from 'react-native-elements';
 import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
-import * as ImagePicker from 'expo-image-picker';
 
 //import { Form, FormItem } from 'react-native-form-component';
 //https://www.npmjs.com/package/react-native-form-component
@@ -52,18 +51,20 @@ const SignUpScreen = ({navigation}) => {
             // images.push(base64);
             
             setImage({uri: result.uri, type:result.type});
-            
             setHaveImage(true);
+            console.log('confirm selected: ',image);
         }
     };
 
     const deleteImage = () => {
         for (var data in image) {
             delete image[data];
+            
         }
+        console.log('confirm delete: ',image);
         setShowImage(false);
         setHaveImage(false);
-        console.log(image);
+        // console.log(image);
     }
 
     // const uploadImages = async() => {
@@ -92,73 +93,48 @@ const SignUpScreen = ({navigation}) => {
     // }
     // }
 
-    //to upload image NOT DONE
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-        // base64:true
-        });
-        // console.log(result);
-        if (!result.cancelled) {
-            // var base64 = 'data:image/jpg;base64,' + result.base64;
-            formData.append('image', {
-                uri:result.uri,
-                name: Date.now() + '-' + Math.round(Math.random() * 1E9),
-                type: result.type,
-                
-            });
-            images.push(result.uri);
-            setImages(images);
-            console.log(formData);
-            
-            // console.log(Date.now() + '-' + Math.round(Math.random() * 1E9));
-        }
-    };
-
-    const insertImage = async(formData) => {
-        const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/images/';
+    // const insertImage = async(formData) => {
+    //     const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/images/';
     
-        try {
-            toggleOverlay(true);
-            const response = await fetch(API_URL,{
-             method:"POST",
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Accept:'application/json',
-                },
-         body: formData,
-        });
-        const json = await response.json();
-    //      if(response.status == 200){
-            
-    //         console.log("json",json);
-    //         Alert.alert("Success","Sign up success",
-    //         [
-    //             {
-    //               text: "Close",
-    //               onPress: () => navigation.goBack(),
-    //               style: "close",
+    //     try {
+    //         toggleOverlay(true);
+    //         const response = await fetch(API_URL,{
+    //          method:"POST",
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 Accept:'application/json',
     //             },
-    //           ]
-    //         );
-    //      }else{
-    //          alert("Account already exist!");
-    //      }
-       } catch (error) {
-         console.error(error);
-       } finally {
-           toggleOverlay(false);
-        // setLoading(false);
-        console.log("done");
-       }
-    }
+    //      body: formData,
+    //     });
+    //     const json = await response.json();
+    // //      if(response.status == 200){
+            
+    // //         console.log("json",json);
+    // //         Alert.alert("Success","Sign up success",
+    // //         [
+    // //             {
+    // //               text: "Close",
+    // //               onPress: () => navigation.goBack(),
+    // //               style: "close",
+    // //             },
+    // //           ]
+    // //         );
+    // //      }else{
+    // //          alert("Account already exist!");
+    // //      }
+    //    } catch (error) {
+    //      console.error(error);
+    //    } finally {
+    //        toggleOverlay(false);
+    //     // setLoading(false);
+    //     console.log("done");
+    //    }
+    // }
 
     const insertUser = async () => {
         console.log(username,password,nickname, role, email);
+        formData.append('image', image);
+        console.log(formData);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com
@@ -184,19 +160,18 @@ const SignUpScreen = ({navigation}) => {
          });
 
          //upload img
-        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/';
+        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/'+username+'/'+role;
+        
 
             const imageResponse = await fetch(IMAGES_API_URL,{
              method:"POST",
                 headers: {
+                    // 'Content-Type':'multipart/form-data',
                     'Content-Type':'multipart/form-data',
                     'Accept':'application/json'
                 },
-             body: {
-                username: username,
-                role: role,
-                image: formData
-            },
+             body: formData
+            ,
             
          });
 
@@ -234,7 +209,8 @@ const SignUpScreen = ({navigation}) => {
 console.log(index, role);
 
     return(
-        <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
+        <SafeAreaView style={{backgroundColor:COLORS.background,}}>
+            <ScrollView>
                 <Tab
                     value={index}
                     onChange={(e) => {setIndex(e);setRole(e)}}
@@ -308,10 +284,11 @@ console.log(index, role);
                             />
                         </Card>
                     </TabView.Item>
+                    
                     <TabView.Item style={{backgroundColor:COLORS.background, margin:20,
                                         alignItems: 'center', //Centered vertically
                                         flex:1}}>
-                        <ScrollView>
+                        
                         <Card borderRadius={SIZES.round}>
                             <Text style={{fontWeight:"bold", padding:5}}>
                             After your registration is approved,
@@ -414,8 +391,9 @@ console.log(index, role);
                             
                             />
                         </Overlay> */}
-                        </ScrollView>
+                        
                     </TabView.Item>
+                    
                 </TabView>
                 {/* pop up when user click the view uploaded image button */}
                     <Overlay isVisible={showImage} onBackdropPress={()=>setShowImage(false)}>
@@ -434,7 +412,7 @@ console.log(index, role);
                             />
                     </Overlay>
                 
-                
+               </ScrollView> 
         </SafeAreaView>
 
     )

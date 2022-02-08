@@ -414,13 +414,18 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                     <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
                     
                 </Card>
-                <Image 
-                     source={{ 
-                        uri:'data:'+image.mimetype+';base64,' + image.buffer
-                    }}
-                    style={{height:200, width:200}}
-                    PlaceholderContent={<ActivityIndicator />}
-                     />
+                <Card borderRadius={SIZES.round}>
+                    <Card.Title>User uploaded Proof</Card.Title>
+                    <Card.Divider/>
+                        <Image 
+                            source={{ 
+                                uri:'data:'+image.mimetype+';base64,' + image.buffer
+                            }}
+                            resizeMode='contain'
+                            style={{height:400, width:SIZES.width-50,justifyContent:'center', margin:10}}
+                            PlaceholderContent={<ActivityIndicator />}
+                            />
+                </Card>
             {/* <Button
                 title="Edit"
                 onPress={()=>} 
