@@ -419,7 +419,7 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                     <Card.Divider/>
                         <Image 
                             source={{ 
-                                uri:'data:'+image.mimetype+';base64,' + image.buffer
+                                uri: "https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/proofs/"+image
                             }}
                             resizeMode='contain'
                             style={{height:400, width:SIZES.width-50,justifyContent:'center', margin:10}}

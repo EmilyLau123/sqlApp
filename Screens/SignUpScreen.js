@@ -14,7 +14,6 @@ const Stack = createStackNavigator();
 
 const AuthContext = React.createContext();
 
-
 const SignUpScreen = ({navigation}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -50,7 +49,7 @@ const SignUpScreen = ({navigation}) => {
             // var base64 = 'data:image/jpg;base64,' + result.base64;
             // images.push(base64);
             
-            setImage({uri: result.uri, type:result.type});
+            setImage({uri: result.uri, name:'test.jpg', type:result.type});
             setHaveImage(true);
             console.log('confirm selected: ',image);
         }
@@ -168,12 +167,14 @@ const SignUpScreen = ({navigation}) => {
                 headers: {
                     // 'Content-Type':'multipart/form-data',
                     'Content-Type':'multipart/form-data',
-                    'Accept':'application/json'
+                    'Accept':'application/json',
+                    // enctype:"multipart/form-data"
+                    
                 },
              body: formData
             ,
             
-         });
+         }).then((response)=>console.log(response));
 
          const json = await response.json();
          const imageJson = await imageResponse.json();

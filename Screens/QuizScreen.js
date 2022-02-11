@@ -346,7 +346,6 @@ console.log(API_URL);
 // console.log('index',questionIndex);
 // console.log("storingData: ",storingData);
 
-
 // if(data == ""){
 //   return(
 //     <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height, }}>

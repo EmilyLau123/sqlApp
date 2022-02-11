@@ -31,24 +31,21 @@ const style = StyleSheet.create({
     }
 });
 
-
-
-
 const SignInScreen = ({navigation}) => {
     
-
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
+    const [adminUsername,setAdminUsername] = useState('');
+    const [adminPassword,setAdminPassword] = useState('');
+    const [teacherUsername,setTeacherUsername] = useState('');
+    const [teacherPassword,setTeacherPassword] = useState('');
     const [userRole,setUserRole] = useState(0);
-
     // const [userRole,setUserRole] = useSelector(state => state.roleReducer.role);
     const [index,setIndex] = useState(0);
     const [loggedIn,setLoggedIn] = useState(false);
     const [nickname,setNickname] = useSelector(state => state.nicknameReducer.nickname);
     const [userId,setUserId] = useSelector(state => state.userIdReducer.user_id);
     const [stat,setStat] = useSelector(state => state.statReducer.stat);
-
-
         // const [nickname,setNickname] = useSelector(store.getState());
     const dispatch = useDispatch(); 
 
@@ -223,13 +220,13 @@ const SignInScreen = ({navigation}) => {
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
                         <Text>Username : {username}</Text><Input
                                 style={STYLES.input}
-                                onChangeText={username => setUsername(username)}
+                                onChangeText={username => setTeacherUsername(teacherUsername)}
                                 defaultValue={username}
                             />
                         <Text>Password : {password}</Text>
                         <Input
                             style={STYLES.input}
-                            onChangeText={password => setPassword(password)}
+                            onChangeText={password => setTeacherPassword(teacherPassword)}
                             defaultValue={password}
                             secureTextEntry={true}
                             /> 
@@ -256,7 +253,7 @@ const SignInScreen = ({navigation}) => {
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
                             // onPress={()=>loginUser(username,password,role)}/>
-                            onPress={()=>loginUser(username,password, userRole)}/>              
+                            onPress={()=>loginUser(teacherUsername,teacherPassword, userRole)}/>              
                         
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>If you do not have an account yet, Sign up now!</Text>
                             <Button title='GO SIGN UP'
@@ -282,13 +279,13 @@ const SignInScreen = ({navigation}) => {
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
                         <Text>Username : {username}</Text><Input
                                 style={STYLES.input}
-                                onChangeText={username => setUsername(username)}
+                                onChangeText={username => setAdminUsername(adminUsername)}
                                 defaultValue={username}
                             />
                         <Text>Password : {password}</Text>
                         <Input
                             style={STYLES.input}
-                            onChangeText={password => setPassword(password)}
+                            onChangeText={password => setAdminPassword(adminPassword)}
                             defaultValue={password}
                             secureTextEntry={true}
                             /> 
@@ -315,7 +312,7 @@ const SignInScreen = ({navigation}) => {
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
                             // onPress={()=>loginUser(username,password,role)}/>
-                            onPress={()=>loginUser(username,password, userRole)}/>
+                            onPress={()=>loginUser(adminUsername,adminPassword, userRole)}/>
                     </Card> 
                 </TabView.Item>
             </TabView>

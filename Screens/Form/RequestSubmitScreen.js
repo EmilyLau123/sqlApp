@@ -26,7 +26,6 @@ export function requestSubmitScreen({navigation}){
     const [selectedIndexAnswer, setSelectedIndexAnswer] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
-
     const [question, setQuestion] = useState("");
     const [difficulty, setDifficulty] = useState(0);
     const [answer, setAnswer] = useState(0);
@@ -50,7 +49,6 @@ export function requestSubmitScreen({navigation}){
         setOption3("");
         setOption4("");
 
-
     }
     
     const toggleOverlay =(status) => {
@@ -58,7 +56,6 @@ export function requestSubmitScreen({navigation}){
     };
 
     const insertQuiz = async (question, difficulty, answer, options, username, role) => {
-        
 
         console.log(question, difficulty, answer, options);
         //https://reactnative.dev/movies.json
@@ -81,7 +78,6 @@ export function requestSubmitScreen({navigation}){
                 options: options,
                 author: username,
                 role: role ,// admin,
-                images:images
             }),
             
          });
