@@ -49,7 +49,7 @@ const SignUpScreen = ({navigation}) => {
             // var base64 = 'data:image/jpg;base64,' + result.base64;
             // images.push(base64);
             
-            setImage({uri: result.uri, name:'test.jpg', type:result.type});
+            setImage({uri: result.uri, type:result.type});// name:'test.jpg',
             setHaveImage(true);
             console.log('confirm selected: ',image);
         }

@@ -31,6 +31,8 @@ const style = StyleSheet.create({
     }
 });
 
+
+
 const SignInScreen = ({navigation}) => {
     
     const [username,setUsername] = useState('');
@@ -57,8 +59,26 @@ const SignInScreen = ({navigation}) => {
   
     //  const roleUtil = useContext(RoleContext);
 
-     const loginUser = async (username,password, userRole) => {
-        console.log(username,password, userRole);
+     const loginUser = async (inputUsername, inputPassword, inputUserRole) => {
+        //  var inputUsername;
+        //  var inputPassword;
+        //  if(username != '' && password != ''){
+        //     inputUsername == username;
+        //     inputPassword == password;
+        //  }else{
+        //      return alert('');
+        //  }
+        //  if(teacherUsername != '' && teacherPassword != ''){
+        //     inputUsername == username;
+        //     inputPassword == teacherPassword;
+        //  }
+        //  if(adminUsername != '' && adminPassword != ''){
+        //     inputUsername == username;
+        //     inputPassword == adminPassword;
+        //  }
+         
+        console.log(inputUsername,inputPassword, inputUserRole);
+
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
@@ -72,9 +92,9 @@ const SignInScreen = ({navigation}) => {
                     'Accept':'application/json'
                 },
              body: JSON.stringify({
-                username: username,
-                password: password,
-                role: userRole
+                username: inputUsername,
+                password: inputPassword,
+                role: inputUserRole
             }),
             
          });
@@ -218,16 +238,16 @@ const SignInScreen = ({navigation}) => {
                                         flex:1}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
-                        <Text>Username : {username}</Text><Input
+                        <Text>Username : {teacherUsername}</Text><Input
                                 style={STYLES.input}
-                                onChangeText={username => setTeacherUsername(teacherUsername)}
-                                defaultValue={username}
+                                onChangeText={teacherUsername => setTeacherUsername(teacherUsername)}
+                                defaultValue={teacherUsername}
                             />
-                        <Text>Password : {password}</Text>
+                        <Text>Password : {teacherPassword}</Text>
                         <Input
                             style={STYLES.input}
-                            onChangeText={password => setTeacherPassword(teacherPassword)}
-                            defaultValue={password}
+                            onChangeText={teacherPassword => setTeacherPassword(teacherPassword)}
+                            defaultValue={teacherPassword}
                             secureTextEntry={true}
                             /> 
                         <TouchableOpacity
@@ -277,16 +297,16 @@ const SignInScreen = ({navigation}) => {
                                         flex:1}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
-                        <Text>Username : {username}</Text><Input
+                        <Text>Username : {adminUsername}</Text><Input
                                 style={STYLES.input}
-                                onChangeText={username => setAdminUsername(adminUsername)}
-                                defaultValue={username}
+                                onChangeText={adminUsername => setAdminUsername(adminUsername)}
+                                defaultValue={adminUsername}
                             />
-                        <Text>Password : {password}</Text>
+                        <Text>Password : {adminPassword}</Text>
                         <Input
                             style={STYLES.input}
-                            onChangeText={password => setAdminPassword(adminPassword)}
-                            defaultValue={password}
+                            onChangeText={adminPassword => setAdminPassword(adminPassword)}
+                            defaultValue={adminPassword}
                             secureTextEntry={true}
                             /> 
                         <TouchableOpacity
@@ -312,7 +332,7 @@ const SignInScreen = ({navigation}) => {
                             }}
                             titleStyle={{ fontWeight: 'bold' }}
                             // onPress={()=>loginUser(username,password,role)}/>
-                            onPress={()=>loginUser(adminUsername,adminPassword, userRole)}/>
+                            onPress={()=>loginUser(adminUsername,adminPassword, userRole) }/>
                     </Card> 
                 </TabView.Item>
             </TabView>

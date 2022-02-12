@@ -1,10 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React, {Component, useEffect, useState} from 'react';
-import {View, StyleSheet, Alert, Model} from 'react-native';
-import { Text, Button, Input,ButtonGroup, Card, Overlay, LinearProgress } from 'react-native-elements';
+import {View, StyleSheet, Alert, Model, ActivityIndicator} from 'react-native';
+import { Text, Button, Input,ButtonGroup, Card, Overlay, LinearProgress, Image } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../../components/style/theme.js';
 import * as ImagePicker from 'expo-image-picker';
+import { SliderBox } from "react-native-image-slider-box";
+
 //auth
 import { Provider, useSelector } from 'react-redux';
 // import customButton from '../components/customButton.js';
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
 export function requestSubmitScreen({navigation}){
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [selectedIndexAnswer, setSelectedIndexAnswer] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);//submit
 
     const [question, setQuestion] = useState("");
     const [difficulty, setDifficulty] = useState(0);
@@ -34,8 +36,16 @@ export function requestSubmitScreen({navigation}){
     const [option3 , setOption3] = useState("");
     const [option4 , setOption4] = useState("");
     const [images, setImages] = useState([]);
+    const [haveImage, setHaveImage] = useState(false);
+    const [showImage, setShowImage] = useState(false);
+    
+    const [currentImage, setCurrentImage] = useState(0);
+    const [imageUris, setImageUris] = useState([]);
+
+    
     const username = useSelector(state => state.usernameReducer.username);
     const role = useSelector(state => state.roleReducer.role);
+    const formData = new FormData();
    
 
     function refresh(){
@@ -48,12 +58,28 @@ export function requestSubmitScreen({navigation}){
         setOption2("");
         setOption3("");
         setOption4("");
-
+        setImages([]);
+        setHaveImage(false);
+        setShowImage(false);
+        setCurrentImage(0);
+        setImageUris([]);
     }
     
     const toggleOverlay =(status) => {
         setIsLoading(status);
     };
+
+    // const toggleShowImage =(status, pressedIndex) => {
+    //     setImageOverlayIndex(pressedIndex);
+    //     setShowImage(status);
+
+    // };
+    
+
+    // const deleteImage = () => {
+    //     console.log(currentImage);
+
+    // }
 
     const insertQuiz = async (question, difficulty, answer, options, username, role) => {
 
@@ -81,15 +107,37 @@ export function requestSubmitScreen({navigation}){
             }),
             
          });
-         const json = await response.json();
-         if(response.status == 200){
+        const json = await response.json();
+        const question_id = '6200ef2cf2c1de001659b39f';
+        formData.append('images', images);
+
+        //upload img
+        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/questsion/images/insert/'+question_id;
+        
+
+            const imageResponse = await fetch(IMAGES_API_URL,{
+             method:"POST",
+                headers: {
+                    // 'Content-Type':'multipart/form-data',
+                    'Content-Type':'multipart/form-data',
+                    'Accept':'application/json',
+                    // enctype:"multipart/form-data"
+                    
+                },
+             body: formData
+            ,
+            
+         }).then((response)=>console.log(response));
+
+         const imageResponseJson = await imageResponse.json();
+         if(response.status == 200 && imageResponse.status == 200){
              toggleOverlay(false);
             console.log("json",json);
             Alert.alert("Success","Submit success",
             [
                 {
                   text: "Back to home",
-                  onPress: () => navigation.navigate("Home",{
+                  onPress: () => navigation.navigate("HomePage",{
                       role:1,
                       status:true,
                   }),
@@ -122,23 +170,42 @@ const pickImage = async () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64:true
+    //   base64:true
     });
     // console.log(result);
     if (!result.cancelled) {
-        var base64 = 'data:image/jpg;base64,' + result.base64;
-        images.push(base64);
+        images.push({uri:result.uri, type: result.type});
+        imageUris.push(result.uri);
+        // var base64 = 'data:image/jpg;base64,' + result.base64;
+        // images.push(base64);
         setImages(images);
+        setHaveImage(false);
+        setHaveImage(true);
+        console.log('confirm selected: ',imageUris);
         // console.log(images);
     }
   };
-//   useEffect(()=>{
-//     alert("added");
-//     return(
-//         <Text>click</Text>
-//     )
-// },[images]
-// );
+
+    const deleteImages = () => {
+        delete images[currentImage];
+        imageUris.splice(currentImage, 1);
+        console.log('confirm delete: ',images);
+        if(imageUris.length == 0){
+            setHaveImage(false);
+        }
+        
+        
+        
+        // setShowImage(false);
+        // console.log(image);
+    }
+  useEffect(()=>{
+    alert("added");
+    return(
+        <Text>click</Text>
+    )
+},[showImage]
+);
     return(
         <ScrollView style={{backgroundColor:COLORS.background}}>
             <Card borderRadius={SIZES.round}>
@@ -220,6 +287,67 @@ const pickImage = async () => {
                 // onPress={()=>choosePic().then(function(){alert("success")})
                 // .catch(function(err){alert("fail: ",err)})}
             />
+            {haveImage?(
+                <View>
+                 <SliderBox 
+                                images={imageUris}
+                                sliderBoxHeight={400}
+                                dotColor="#FFEE58"
+                                inactiveDotColor="#90A4AE"
+                                dotStyle={{
+                                    width: 10,
+                                    height: 10,
+                                    borderRadius: 15,
+                                    marginHorizontal: 10,
+                                    padding: 0,
+                                    margin: 0
+                                }}
+                                paginationBoxVerticalPadding={20}
+                                ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                                // resizeMethod={'resize'}
+                                // resizeMode={'cover'}
+                                parentWidth = {390}
+                                circleLoop
+                                imageLoadingColor={COLORS.primary}
+                                // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+                                currentImageEmitter = {(index)=>setCurrentImage(index)}
+                             />
+                             <Button title='Delete current image'
+                                titleStyle={{ fontWeight: 'bold' }}
+                                buttonStyle={{
+                                    backgroundColor: COLORS.primary,
+                                    borderWidth: 2,
+                                    borderColor: COLORS.primary,
+                                    borderRadius: 30,
+                                    }}
+                                containerStyle={{
+                                    width: 'auto',
+                                    marginHorizontal: 50,
+                                    marginVertical: 10,
+                                    }}
+                                onPress={()=>deleteImages()}
+                             
+                             />
+                            {/* <Button title='View uploaded image' */}
+                            {/* //     buttonStyle={{
+                            //         backgroundColor: COLORS.primary,
+                            //         borderWidth: 2,
+                            //         borderColor: COLORS.primary,
+                            //         borderRadius: 30,
+                            //         }}
+                            //     containerStyle={{
+                            //         width: 'auto',
+                            //         marginHorizontal: 50,
+                            //         marginVertical: 10,
+                            //         }}
+                            //     titleStyle={{ fontWeight: 'bold' }}
+                            //     onPress={()=>setShowImage(true)}
+
+                            // /> */}
+                            </View>
+                        ):(
+                            <></>
+                        )}
             </Card>
             <Button 
                 buttonStyle={{
@@ -245,6 +373,23 @@ const pickImage = async () => {
                                 role
                             )}
             /> 
+
+            {/* <Overlay isVisible={showImage} onBackdropPress={()=>setShowImage(false)}>
+                            <Image
+                                source={{ uri:images[currentImage].uri }}
+                                PlaceholderContent={<ActivityIndicator />}
+                                containerStyle={{width:200, height:200}}
+                            /> 
+                           
+                            <Button
+                                title='delete'
+                                onPress={()=>deleteImage()}
+                            />
+                            <Button
+                                title='Close'
+                                onPress={()=>setShowImage(false)}
+                            />
+                    </Overlay> */}
 
             <Overlay isVisible={isLoading}>
                 <View style={{height:100, width:250, margin:10}}>
