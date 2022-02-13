@@ -5,6 +5,7 @@ import {  Text, Button, ListItem, Card} from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useFocusEffect } from '@react-navigation/native';
+import { SliderBox } from "react-native-image-slider-box";
 
 
 export function requestList({navigation}){
@@ -66,7 +67,8 @@ export function requestList({navigation}){
             answer : item.answer,
             options : item.options,
             images : item.images,
-            author : item.author,
+            authorName : item.authorName,
+            authorRole : item.authorRole,
             status : item.status,
             submitted_at: item.submitted_at,
             updated_at: item.updated_at,
@@ -79,7 +81,7 @@ export function requestList({navigation}){
                 <Ionicons name={iconName} size={SIZES.icon} />
                 <ListItem.Content>
                 <ListItem.Title>Q: {item.question}</ListItem.Title>
-                <Text>From: {item.author}</Text>
+                {/* <Text>From: {item.author.username}</Text> */}
                 </ListItem.Content>
             </ListItem>
         </TouchableOpacity>
@@ -102,7 +104,17 @@ export function requestList({navigation}){
 }
 
 export function requestDetail({route, navigation}){
-    const {question_id,iconName, statusString, question, difficulty, answer, options, images, author, submitted_at, updated_at} = route.params;
+    const {question_id,iconName, statusString, question, difficulty, answer, options, authorName, authorRole, submitted_at, updated_at} = route.params;
+    const images = route.params.images;
+    var imageName = [];
+    console.log(images);
+    // for(let i = 0; i<images.length;i++){
+    //     imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+images[i]);
+    
+    // }
+    images.forEach(image=>{
+        imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image);
+    });
     
 //delete a question
 const deleteQuestion = async(question_id) => {
@@ -189,6 +201,7 @@ const changeQuestionStatus = async(question_id, status) => {
 
     return(
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
+            <ScrollView>
                 <Card borderRadius={SIZES.round}>
                     <Ionicons name={iconName} size={SIZES.icon} />
                     <Text style={{padding:SIZES.padding, fontSize:SIZES.text}}>Status: {statusString}</Text>
@@ -214,8 +227,31 @@ const changeQuestionStatus = async(question_id, status) => {
                             <Text style={{fontWeight:"bold",color:"white"}}>{index+1}. {item}</Text>
                         </View>
                     ))}
-                    <Text style={{padding:SIZES.padding}}>Images: should be image element{images}</Text>
-                    <Text style={{padding:SIZES.padding}}>Author: {author}</Text>
+                    <Text style={{padding:SIZES.padding}}>Uploaded images: {images.length}</Text>
+                     <SliderBox 
+                        images={imageName}
+                        sliderBoxHeight={400}
+                        dotColor="#FFFFFF"
+                        inactiveDotColor="#90A4AE"
+                        dotStyle={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: 15,
+                            marginHorizontal: 10,
+                            padding: 0,
+                            margin: 0
+                        }}
+                        paginationBoxVerticalPadding={20}
+                        ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                        // resizeMethod={'resize'}
+                        // resizeMode={'cover'}
+                        parentWidth = {390}
+                        circleLoop
+                        imageLoadingColor={COLORS.primary}
+                        // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+                        // currentImageEmitter = {(index)=>setCurrentImage(index)}
+                    />
+                    <Text style={{padding:SIZES.padding}}>Author: {authorName}</Text>
                     <Text style={{padding:SIZES.padding}}>Submitted_at: {submitted_at}</Text>
                     <Text style={{padding:SIZES.padding}}>Updated_at: {updated_at}</Text>
 
@@ -341,6 +377,7 @@ const changeQuestionStatus = async(question_id, status) => {
                     ):(
                         <View></View>
                     )}
+                </ScrollView>
             </SafeAreaView>
 
     );

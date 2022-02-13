@@ -12,7 +12,16 @@ import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS,REQUEST_STATUS} fr
 import {changeNickname, changeRole, changeUserId, emptyStat, changeEmail, changePassword} from '../../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 
-
+function logOut(dispatch){
+    dispatch(changeRole(USER_ROLE.anonymous));
+    dispatch(changeNickname("stranger"));
+    dispatch(changeUserId(""));
+    dispatch(changePassword(""));
+    dispatch(changeEmail(""));
+    dispatch(emptyStat([]));
+    console.log("Logged out");
+    return alert("Logged out");
+}
 
 export function teacherMainAccountScreen({navigation}){
     const stat = useSelector(state => state.statReducer.stat);

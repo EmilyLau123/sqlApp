@@ -9,20 +9,27 @@ import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
 //https://www.npmjs.com/package/react-native-form-component
 //image
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system'
 
 const Stack = createStackNavigator();
 
 const AuthContext = React.createContext();
 
 const SignUpScreen = ({navigation}) => {
+    const [role, setRole] = useState(0);
+
+    //student
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
-
+    //teacher
+    const [teacherUsername, setTeacherUsername] = useState("");
+    const [teacherPassword, setTeacherPassword] = useState("");
+    const [teacherNickname, setTeacherNickname] = useState("");
+    const [teacherEmail, setTeacherEmail] = useState("");
     const [image, setImage] = useState({});
-
-    const [role, setRole] = useState(0);
+    //image
     const [index, setIndex] = useState(0);
     const [haveImage, setHaveImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +55,11 @@ const SignUpScreen = ({navigation}) => {
         if (!result.cancelled) {
             // var base64 = 'data:image/jpg;base64,' + result.base64;
             // images.push(base64);
+            var sizeConfirm = checkSize(result.uri);//<= 5MB
+            if(sizeConfirm == false){
+                return alert("Image is too large, cannot exceed 5MB");
+            }
+
             
             setImage({uri: result.uri, type:result.type});// name:'test.jpg',
             setHaveImage(true);
@@ -66,72 +78,21 @@ const SignUpScreen = ({navigation}) => {
         // console.log(image);
     }
 
-    // const uploadImages = async() => {
-    //     const API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/';
-    //     formData.append('image', image);
+   const checkSize = async (imageUri) => {
+        const fileInfo = await FileSystem.getInfoAsync(imageUri);
+        if(fileInfo.size){
+            console.log(fileInfo.size);
+            if(fileInfo.size > 5000000){
+                return false;
+            }
+            return false;
+        }
+        return true;
+    }
 
-    //     try {
-    //         toggleOverlay(true);
-    //         const response = await fetch(API_URL,{
-    //          method:"POST",
-    //             headers: {
-    //                 'Content-Type':'multipart/form-data',
-    //                 'Accept':'application/json'
-    //             },
-    //          body: JSON.stringify({
-    //             username : username,
-    //             image: formData
-    //         }),
-            
-    //      });
-    //      const json = await response.json();
-    // }catch(error){
-    //     return alert('error');
-    // }finally{
-    //     console.log('Images uploaded');
-    // }
-    // }
-
-    // const insertImage = async(formData) => {
-    //     const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/images/';
-    
-    //     try {
-    //         toggleOverlay(true);
-    //         const response = await fetch(API_URL,{
-    //          method:"POST",
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data',
-    //                 Accept:'application/json',
-    //             },
-    //      body: formData,
-    //     });
-    //     const json = await response.json();
-    // //      if(response.status == 200){
-            
-    // //         console.log("json",json);
-    // //         Alert.alert("Success","Sign up success",
-    // //         [
-    // //             {
-    // //               text: "Close",
-    // //               onPress: () => navigation.goBack(),
-    // //               style: "close",
-    // //             },
-    // //           ]
-    // //         );
-    // //      }else{
-    // //          alert("Account already exist!");
-    // //      }
-    //    } catch (error) {
-    //      console.error(error);
-    //    } finally {
-    //        toggleOverlay(false);
-    //     // setLoading(false);
-    //     console.log("done");
-    //    }
-    // }
-
-    const insertUser = async () => {
-        console.log(username,password,nickname, role, email);
+   
+    const insertUser = async (inputUsername, inputPassword, inputNickname, inputRole, inputEmail) => {
+        console.log(inputUsername, inputPassword, inputNickname, inputRole, inputEmail);
         formData.append('image', image);
         console.log(formData);
         //https://reactnative.dev/movies.json
@@ -141,58 +102,73 @@ const SignUpScreen = ({navigation}) => {
         //insert inputted text data
         try {
             toggleOverlay(true);
-         const response = await fetch(API_URL,{
-             method:"POST",
-                headers: {
-                    'Content-Type':'application/json',
-                    'Accept':'application/json'
-                },
-             body: JSON.stringify({
-                username: username,
-                password: password,
-                nickname: nickname,
-                role: role,
-                email: email,
+            const response = await fetch(API_URL,{
+                method:"POST",
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Accept':'application/json'
+                    },
+                body: JSON.stringify({
+                    username: inputUsername,
+                    password: inputPassword,
+                    nickname: inputNickname,
+                    role: inputRole,
+                    email: inputEmail,
 
-            }),
-            
-         });
+                }),
+                
+            });
+            const json = await response.json();
 
-         //upload img
-        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/'+username+'/'+role;
-        
-
-            const imageResponse = await fetch(IMAGES_API_URL,{
-             method:"POST",
-                headers: {
-                    // 'Content-Type':'multipart/form-data',
-                    'Content-Type':'multipart/form-data',
-                    'Accept':'application/json',
-                    // enctype:"multipart/form-data"
+            if(response.status == 200){
+                console.log('inserted');
+                if(haveImage){
+                    console.log('uploading');
+                //upload img
+                    const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/'+inputUsername+'/'+inputRole;
                     
-                },
-             body: formData
-            ,
-            
-         }).then((response)=>console.log(response));
 
-         const json = await response.json();
-         const imageJson = await imageResponse.json();
-         if(response.status == 200 && imageResponse.status == 200){
-            
-            console.log("json",json);
-            Alert.alert("Success","Sign up success",
-            [
-                {
-                  text: "Close",
-                  onPress: () => navigation.goBack(),
-                  style: "close",
-                },
-              ]
-            );
-         }else{
-             alert("Account already exist!");
-         }
+                        const imageResponse = await fetch(IMAGES_API_URL,{
+                        method:"POST",
+                            headers: {
+                                // 'Content-Type':'multipart/form-data',
+                                'Content-Type':'multipart/form-data',
+                                'Accept':'application/json',
+                                // enctype:"multipart/form-data"
+                                
+                            },
+                        body: formData,
+                        
+                    });
+
+                    const imageJson = await imageResponse.json();
+                    if(imageResponse.status == 200){
+                        console.log('uploaded');
+                        console.log("json",json);
+                        Alert.alert("Success","Sign up success and you should recvice an email about application result in 3 days");
+                        // [{
+                        //     text: "Close",
+                        //     onPress: () => navigation.goBack(),
+                        //     style: "close",
+                        //     },
+                        // ]);
+                    }else{
+                        alert("Image file too large! Maximun: 5MB");
+                    }
+                }else{
+                    console.log('signed up');
+                    Alert.alert("Success","Sign up success",
+                        [{
+                            text: "Close",
+                            onPress: () => navigation.goBack(),
+                            style: "close",
+                            },
+                        ]);
+                }
+                
+            }else{
+                alert("Account already exist!");
+            }
        } catch (error) {
          console.error(error);
        } finally {
@@ -281,7 +257,7 @@ console.log(index, role);
                                     marginVertical: 10,
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
-                                onPress={()=>insertUser(username, nickname, password, role)}
+                                onPress={()=>insertUser(username, password, nickname, role, email)}
                             />
                         </Card>
                     </TabView.Item>
@@ -302,31 +278,31 @@ console.log(index, role);
                              
                                 <Input
                                     style={STYLES.input}
-                                    onChangeText={username => setUsername(username)}
-                                    defaultValue={username}
+                                    onChangeText={teacherUsername => setTeacherUsername(teacherUsername)}
+                                    defaultValue={teacherUsername}
                                     placeholder="For login"
                                 />
                             <Text>Nickname</Text>
                                 <Input
                                     style={STYLES.input}
-                                    onChangeText={nickname => setNickname(nickname)}
-                                    defaultValue={nickname}
+                                    onChangeText={teacherNickname => setTeacherNickname(teacherNickname)}
+                                    defaultValue={teacherNickname}
                                     placeholder="How should we call you?"
 
                                 />
                             <Text>Password*</Text>
                                 <Input
                                     style={STYLES.input}
-                                    onChangeText={password => setPassword(password)}
-                                    defaultValue={password}
+                                    onChangeText={teacherPassword => setTeacherPassword(teacherPassword)}
+                                    defaultValue={teacherPassword}
                                     placeholder="For login"
                                     secureTextEntry={true}
                                 />
                             <Text>Email</Text>
                                 <Input
                                     style={STYLES.input}
-                                    onChangeText={email => setEmail(email)}
-                                    defaultValue={email}
+                                    onChangeText={teacherEmail => setTeacherEmail(teacherEmail)}
+                                    defaultValue={teacherEmail}
                                     placeholder="we will notify you via email"
                                 />
 
@@ -382,7 +358,7 @@ console.log(index, role);
                                     marginVertical: 10,
                                     }}
                                 titleStyle={{ fontWeight: 'bold' }}
-                                onPress={()=>insertUser(username, nickname, password, role, email)}
+                                onPress={()=>insertUser(teacherUsername,teacherPassword, teacherNickname, role, teacherEmail)}
                             />
                         </Card>
                         {/* <Overlay isVisible={haveImage} on>

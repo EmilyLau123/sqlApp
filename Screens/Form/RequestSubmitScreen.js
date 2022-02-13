@@ -102,17 +102,21 @@ export function requestSubmitScreen({navigation}){
                 difficulty: difficulty,
                 answer: answer,
                 options: options,
-                author: username,
-                role: role ,// admin,
+                authorName: username, 
+                authorRole: role,
             }),
             
          });
         const json = await response.json();
-        const question_id = '6200ef2cf2c1de001659b39f';
-        formData.append('images', images);
+        const question_id = json._id.toString();
+        for(let i = 0; i<images.length;i++){
+            formData.append(i, images[i]);
+            console.log(formData);
+        }
+        // formData.append('images', images);
 
         //upload img
-        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/questsion/images/insert/'+question_id;
+        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/question/images/insert/'+question_id;
         
 
             const imageResponse = await fetch(IMAGES_API_URL,{
@@ -127,7 +131,7 @@ export function requestSubmitScreen({navigation}){
              body: formData
             ,
             
-         }).then((response)=>console.log(response));
+         });
 
          const imageResponseJson = await imageResponse.json();
          if(response.status == 200 && imageResponse.status == 200){
@@ -210,7 +214,7 @@ const pickImage = async () => {
         <ScrollView style={{backgroundColor:COLORS.background}}>
             <Card borderRadius={SIZES.round}>
                 <Text style={styles.header}>Submit a quiz question</Text>
-                <Text style={styles.header}>You may upload 1-5 pictures for one question, answer should be provided in MC format</Text>
+                <Text style={styles.header}>You may upload maximun 5 pictures for one question, answer should be provided in MC format</Text>
             
             </Card>
             <Card borderRadius={SIZES.round}>
@@ -268,66 +272,71 @@ const pickImage = async () => {
                 multiline={true}
 
             />
-            <Button 
-                buttonStyle={{
-                    backgroundColor: '#77afac',
-                    borderWidth: 2,
-                    borderColor: '#77afac',
-                    borderRadius: 30,
-                }}
-                containerStyle={{
-                    width: 'auto',
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                }}
-                titleStyle={{ fontWeight: 'bold' }}
-                style={{paddingTop:SIZES.padding}}
-                title="Upload images"
-                onPress={()=>pickImage()}
-                // onPress={()=>choosePic().then(function(){alert("success")})
-                // .catch(function(err){alert("fail: ",err)})}
-            />
+            {images.length == 5?(
+                <Button 
+                    buttonStyle={{
+                        backgroundColor: '#77afac',
+                        borderWidth: 2,
+                        borderColor: '#77afac',
+                        borderRadius: 30,
+                    }}
+                    containerStyle={{
+                        width: 'auto',
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                    }}
+                    titleStyle={{ fontWeight: 'bold' }}
+                    style={{paddingTop:SIZES.padding}}
+                    title="Upload images"
+                    onPress={()=>pickImage()}
+                    // onPress={()=>choosePic().then(function(){alert("success")})
+                    // .catch(function(err){alert("fail: ",err)})}
+                />
+            ):(
+                <></>
+            )}
+            
             {haveImage?(
                 <View>
                  <SliderBox 
-                                images={imageUris}
-                                sliderBoxHeight={400}
-                                dotColor="#FFEE58"
-                                inactiveDotColor="#90A4AE"
-                                dotStyle={{
-                                    width: 10,
-                                    height: 10,
-                                    borderRadius: 15,
-                                    marginHorizontal: 10,
-                                    padding: 0,
-                                    margin: 0
-                                }}
-                                paginationBoxVerticalPadding={20}
-                                ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
-                                // resizeMethod={'resize'}
-                                // resizeMode={'cover'}
-                                parentWidth = {390}
-                                circleLoop
-                                imageLoadingColor={COLORS.primary}
-                                // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
-                                currentImageEmitter = {(index)=>setCurrentImage(index)}
-                             />
-                             <Button title='Delete current image'
-                                titleStyle={{ fontWeight: 'bold' }}
-                                buttonStyle={{
-                                    backgroundColor: COLORS.primary,
-                                    borderWidth: 2,
-                                    borderColor: COLORS.primary,
-                                    borderRadius: 30,
-                                    }}
-                                containerStyle={{
-                                    width: 'auto',
-                                    marginHorizontal: 50,
-                                    marginVertical: 10,
-                                    }}
-                                onPress={()=>deleteImages()}
-                             
-                             />
+                    images={imageUris}
+                    sliderBoxHeight={400}
+                    dotColor="#FFEE58"
+                    inactiveDotColor="#90A4AE"
+                    dotStyle={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 15,
+                        marginHorizontal: 10,
+                        padding: 0,
+                        margin: 0
+                    }}
+                    paginationBoxVerticalPadding={20}
+                    ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                    // resizeMethod={'resize'}
+                    // resizeMode={'cover'}
+                    parentWidth = {390}
+                    circleLoop
+                    imageLoadingColor={COLORS.primary}
+                    // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+                    currentImageEmitter = {(index)=>setCurrentImage(index)}
+                />
+                <Button title='Delete current image'
+                    titleStyle={{ fontWeight: 'bold' }}
+                    buttonStyle={{
+                        backgroundColor: COLORS.primary,
+                        borderWidth: 2,
+                        borderColor: COLORS.primary,
+                        borderRadius: 30,
+                        }}
+                    containerStyle={{
+                        width: 'auto',
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                        }}
+                    onPress={()=>deleteImages()}
+                    
+                />
                             {/* <Button title='View uploaded image' */}
                             {/* //     buttonStyle={{
                             //         backgroundColor: COLORS.primary,
@@ -344,10 +353,10 @@ const pickImage = async () => {
                             //     onPress={()=>setShowImage(true)}
 
                             // /> */}
-                            </View>
-                        ):(
-                            <></>
-                        )}
+                    </View>
+                ):(
+                    <></>
+                )}
             </Card>
             <Button 
                 buttonStyle={{
