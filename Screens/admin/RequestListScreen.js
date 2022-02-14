@@ -108,10 +108,6 @@ export function requestDetail({route, navigation}){
     const images = route.params.images;
     var imageName = [];
     console.log(images);
-    // for(let i = 0; i<images.length;i++){
-    //     imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+images[i]);
-    
-    // }
     images.forEach(image=>{
         imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image);
     });

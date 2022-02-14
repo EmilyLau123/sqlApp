@@ -102,7 +102,7 @@ function adminMainAccountScreen({navigation}){
                     <Card.Title>Your Information</Card.Title>
                     <Card.Divider />
                     <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
-                    <Text style={{padding:SIZES.padding}}>Number of requests of: 100</Text>
+                    {/* <Text style={{padding:SIZES.padding}}>Number of requests of: 100</Text> */}
                     <Text></Text>
                 </Card>
                 
@@ -375,8 +375,6 @@ const AccountScreen = () => {
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
                     <AccountStack.Screen name="SubmitHistory" component={HistoryFullList} options={{ title: 'Submit History' }}/>
                     <AccountStack.Screen name="SubmitHistoryDetail" component={HistoryFullDetail} options={{ title: 'History Detail' }}/>
-
-
                 </AccountStack.Navigator>
             );
         }else if(role == USER_ROLE.student){
@@ -396,9 +394,7 @@ const AccountScreen = () => {
                     <AccountStack.Screen name="UserDetail" component={userDetail} options={{ title: 'User List' }}/>
                     <AccountStack.Screen name="RequestDetail" component={requestDetail} options={{ title: 'Request List' }}/>
                     <AccountStack.Screen name="StatementsFullList" component={StatementsFullList} options={{ title: 'All Statements' }}/>
-   
                     <AccountStack.Screen name="StatementFullDetail" component={StatementsFullDetail} options={{ title: 'Statement Detail' }}/>
-    
                 </AccountStack.Navigator>
                 );
         }else{
@@ -408,7 +404,6 @@ const AccountScreen = () => {
                         <AccountStack.Screen name="SignIn" component={SignInScreen} options={{ title: 'Sign In' }}/>
                         <AccountStack.Screen name="PasswordEmail" component={PasswordEmailScreen} options={{ title: 'Email form' }}/>
                         <AccountStack.Screen name="PasswordReset" component={PasswordResetScreen} options={{ title: 'Reset password',headerShown:false }}/>
-                    
                         <AccountStack.Screen name="SignUp" component={SignUpScreen} options={{ title: 'Sign Up' }}/>
                     </AccountStack.Navigator>
             ); 

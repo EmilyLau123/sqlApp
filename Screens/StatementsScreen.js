@@ -218,12 +218,12 @@ useEffect(()=>{
         />
           <View style={{paddingBottom:SIZES.tabBarheight+110}}>
           <FlatList
-          data={data}
-          renderItem= {renderItems}
-          keyExtractor={item => item._id}
-          onRefresh={() => getStatements("")}
-          refreshing={isLoading}
-          // height={SIZES.height-400}
+            data={data}
+            renderItem= {renderItems}
+            keyExtractor={item => item._id}
+            onRefresh={() => getStatements("")}
+            refreshing={isLoading}
+            // height={SIZES.height-400}
 
           /> 
           </View>

@@ -76,7 +76,7 @@ export function PasswordResetScreen({route,navigation}){
             [
                 {
                     text: "Close",
-                    onPress: () => navigation.navigate("HomPage"),
+                    onPress: () => navigation.navigate("HomePage"),
                     
                     style: "close",
                 },

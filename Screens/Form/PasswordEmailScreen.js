@@ -72,6 +72,8 @@ export function PasswordEmailScreen({navigation}){
             }
         }catch(error){
             alert("Something went wrong");
+        }finally{
+            toggleOverlay(false);
         }
     }
 

@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import {COLORS, SIZES, ICONS, STRINGS, STATUS, STYLES} from '../../components/style/theme.js';
 import * as ImagePicker from 'expo-image-picker';
 import { SliderBox } from "react-native-image-slider-box";
+import * as FileSystem from 'expo-file-system'
 
 //auth
 import { Provider, useSelector } from 'react-redux';
@@ -69,21 +70,8 @@ export function requestSubmitScreen({navigation}){
         setIsLoading(status);
     };
 
-    // const toggleShowImage =(status, pressedIndex) => {
-    //     setImageOverlayIndex(pressedIndex);
-    //     setShowImage(status);
-
-    // };
-    
-
-    // const deleteImage = () => {
-    //     console.log(currentImage);
-
-    // }
-
     const insertQuiz = async (question, difficulty, answer, options, username, role) => {
-
-        console.log(question, difficulty, answer, options);
+        console.log(question, difficulty, answer, options, username, role);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com/api/question/insert/
@@ -91,7 +79,7 @@ export function requestSubmitScreen({navigation}){
     
         try {
             toggleOverlay(true);
-         const response = await fetch(API_URL,{
+            const response = await fetch(API_URL,{
              method:'POST',
                 headers: {
                     'Content-Type':'application/json',
@@ -105,7 +93,6 @@ export function requestSubmitScreen({navigation}){
                 authorName: username, 
                 authorRole: role,
             }),
-            
          });
         const json = await response.json();
         const question_id = json._id.toString();
@@ -113,24 +100,15 @@ export function requestSubmitScreen({navigation}){
             formData.append(i, images[i]);
             console.log(formData);
         }
-        // formData.append('images', images);
-
         //upload img
         const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/question/images/insert/'+question_id;
-        
-
             const imageResponse = await fetch(IMAGES_API_URL,{
              method:"POST",
                 headers: {
-                    // 'Content-Type':'multipart/form-data',
                     'Content-Type':'multipart/form-data',
                     'Accept':'application/json',
-                    // enctype:"multipart/form-data"
-                    
                 },
-             body: formData
-            ,
-            
+             body: formData,
          });
 
          const imageResponseJson = await imageResponse.json();
@@ -178,6 +156,10 @@ const pickImage = async () => {
     });
     // console.log(result);
     if (!result.cancelled) {
+        var sizeConfirm = await checkSize(result.uri);//<= 5MB
+            if(sizeConfirm == false){
+                return alert("Image is too large, cannot exceed 5MB");
+            }
         images.push({uri:result.uri, type: result.type});
         imageUris.push(result.uri);
         // var base64 = 'data:image/jpg;base64,' + result.base64;
@@ -190,6 +172,18 @@ const pickImage = async () => {
     }
   };
 
+  const checkSize = async (imageUri) => {
+        const fileInfo = await FileSystem.getInfoAsync(imageUri);
+        if(fileInfo.size){
+            console.log(fileInfo.size);
+            if(fileInfo.size > 5000000){
+                return false;
+            }
+            return false;
+        }
+        return true;
+    }
+
     const deleteImages = () => {
         delete images[currentImage];
         imageUris.splice(currentImage, 1);
@@ -197,19 +191,14 @@ const pickImage = async () => {
         if(imageUris.length == 0){
             setHaveImage(false);
         }
-        
-        
-        
-        // setShowImage(false);
-        // console.log(image);
     }
-  useEffect(()=>{
-    alert("added");
-    return(
-        <Text>click</Text>
-    )
-},[showImage]
-);
+//   useEffect(()=>{
+//     alert("added");
+//     return(
+//         <Text>click</Text>
+//     )
+// },[showImage]
+// );
     return(
         <ScrollView style={{backgroundColor:COLORS.background}}>
             <Card borderRadius={SIZES.round}>
@@ -272,7 +261,7 @@ const pickImage = async () => {
                 multiline={true}
 
             />
-            {images.length == 5?(
+            {images.length != 5?(
                 <Button 
                     buttonStyle={{
                         backgroundColor: '#77afac',
@@ -335,7 +324,6 @@ const pickImage = async () => {
                         marginVertical: 10,
                         }}
                     onPress={()=>deleteImages()}
-                    
                 />
                             {/* <Button title='View uploaded image' */}
                             {/* //     buttonStyle={{

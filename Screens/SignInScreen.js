@@ -198,6 +198,14 @@ const SignInScreen = ({navigation}) => {
                             defaultValue={password}
                             secureTextEntry={true}
                             /> 
+                        <TouchableOpacity
+                            onPress={()=>navigation.navigate("PasswordEmail")}
+                            style={{alignSelf:"center"}}
+                            >
+                            <Text
+                                style={{color:'#5a5c63'}}
+                            >Forgot password?</Text>
+                        </TouchableOpacity>
                         <Button title="SIGN IN"
                             // titleStyle={{ color: '#2465a0' }}
                             buttonStyle={{
@@ -336,7 +344,7 @@ const SignInScreen = ({navigation}) => {
                     </Card> 
                 </TabView.Item>
             </TabView>
-            <Overlay isVisible={isLoading} onBackdropPress={()=>toggleOverlay(true)}>
+            <Overlay isVisible={isLoading}>
               <View style={{height:100, width:250, margin:10}}>
                 <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
                 <LinearProgress color={COLORS.primary}/>

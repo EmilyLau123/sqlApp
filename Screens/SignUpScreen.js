@@ -36,6 +36,8 @@ const SignUpScreen = ({navigation}) => {
     const [showImage, setShowImage] = useState(false);
     const formData = new FormData();
 
+        const [re, setRe] = useState();
+
     const toggleOverlay = (status) => {
         setIsLoading(status);
     };
@@ -45,7 +47,7 @@ const SignUpScreen = ({navigation}) => {
     const pickImage = async () => {
     // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
@@ -53,17 +55,18 @@ const SignUpScreen = ({navigation}) => {
         });
         // console.log(result);
         if (!result.cancelled) {
-            // var base64 = 'data:image/jpg;base64,' + result.base64;
-            // images.push(base64);
-            var sizeConfirm = checkSize(result.uri);//<= 5MB
+        
+            var sizeConfirm = await checkSize(result.uri);//<= 5MB
+        
+            console.log(sizeConfirm);
             if(sizeConfirm == false){
                 return alert("Image is too large, cannot exceed 5MB");
+            }else{
+                setImage({uri: result.uri, type:result.type});// name:'test.jpg',
+                setHaveImage(true);
+                console.log('confirm selected: ',image);
             }
-
             
-            setImage({uri: result.uri, type:result.type});// name:'test.jpg',
-            setHaveImage(true);
-            console.log('confirm selected: ',image);
         }
     };
 
@@ -78,7 +81,7 @@ const SignUpScreen = ({navigation}) => {
         // console.log(image);
     }
 
-   const checkSize = async (imageUri) => {
+    const checkSize = async (imageUri) => {
         const fileInfo = await FileSystem.getInfoAsync(imageUri);
         if(fileInfo.size){
             console.log(fileInfo.size);
@@ -387,6 +390,13 @@ console.log(index, role);
                                 title='Close'
                                 onPress={()=>setShowImage(false)}
                             />
+                    </Overlay>
+
+                    <Overlay isVisible={isLoading}>
+                        <View style={{height:100, width:250, margin:10}}>
+                            <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
+                            <LinearProgress color={COLORS.primary}/>
+                        </View>
                     </Overlay>
                 
                </ScrollView> 
