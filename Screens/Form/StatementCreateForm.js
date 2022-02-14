@@ -170,13 +170,13 @@ const checkSize = async (imageUri) => {
             if(fileInfo.size > 5000000){
                 return false;
             }
-            return false;
         }
         return true;
     }
 
 const deleteImages = () => {
-        delete images[currentImage];
+        // delete images[currentImage];
+        images.splice(currentImage, 1);
         imageUris.splice(currentImage, 1);
         console.log('confirm delete: ',images);
         if(imageUris.length == 0){
@@ -224,6 +224,7 @@ const deleteImages = () => {
           </Image>
         })} */}
             </Text>
+        {images.length != 5?(
             <Button 
                 buttonStyle={{
                     backgroundColor: '#77afac',
@@ -243,8 +244,12 @@ const deleteImages = () => {
                 // onPress={()=>choosePic().then(function(){alert("success")})
                 // .catch(function(err){alert("fail: ",err)})}
             />
+        ):(
+            <></>
+        )}
             {haveImage?(
                 <View>
+                <Text style={{alignSelf:"center"}}>Maximum 5 images. Each cannot exceed 5 MB</Text>
                  <SliderBox 
                     images={imageUris}
                     sliderBoxHeight={400}
