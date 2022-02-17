@@ -23,7 +23,7 @@ import {
   } from "react-native-chart-kit";
 
 //auth
-import {changeNickname, changeRole, changeUserId, emptyStat, emptyReward, changeEmail, changePassword} from '../model/action'
+import {changeNickname, changeRole, changeUserId, replaceStat, emptyReward, changeEmail, changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 //time
 import moment from 'moment';
@@ -47,7 +47,7 @@ function logOut(dispatch){
     dispatch(changeUserId(""));
     dispatch(changePassword(""));
     dispatch(changeEmail(""));
-    dispatch(emptyStat(""));
+    dispatch(replaceStat(""));
     dispatch(emptyReward(""));
     console.log("Logged out");
     return alert("Logged out");
@@ -211,16 +211,14 @@ function adminMainAccountScreen({navigation}){
 
 function rewardListScreen(){
     const data = [
-        { id:1, name: "All correct!!", retrieved:true, iconName:"balloon-outline"},
-        { id:2, name: "All wrong!!", retrieved:true, iconName:"balloon-outline" },
-        { id:3, name: "Get all correct in quiz ar Hard level!!", retrieved:true, iconName: "balloon"},
+        { id:1, name: "All correct!!", retrieved:true, iconName:"golf-outline"},
+        { id:2, name: "All wrong!!", retrieved:true, iconName:"golf-outline" },
+        { id:3, name: "Get all correct in quiz ar Hard level!!", retrieved:true, iconName: "golf"},
     ];
-
-    
 
     const Item = ({item}) => (
         <ListItem>
-            {/* <Ionicons name={iconName} size={SIZES.icon} /> */}
+            <Ionicons name={item.iconName} size={SIZES.icon} />
 
             {/* <ion-icon name={item.iconName} size={SIZES.icon} /> */}
                 <Text>{item.name}</Text>
@@ -265,16 +263,17 @@ function studnetMainAccountScreen({navigation}){
     if(stat.length != 0){
         console.log('stat: ', stat);
         stat.forEach(item => {
-            // var itemTime = item[0].answerTime;
-            // label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
+            console.log('item: ',item);
+            var itemTime = item.completeTime;
+            label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
             // label = ['02/2022','01/2022','12/2021','11/2021',];
-            item.forEach(detail => { // = item[i]
-                totalPoints += detail.point;
+            // item.forEach(detail => { // = item[i]
+                totalPoints += item.score;
                 // dateLabelsTest[label] = totalPoints;
-                dateLabelsTest['02/2022'] = totalPoints;
+                dateLabelsTest[label] = totalPoints;
                 
               
-            });
+            // });
         });
         avg = totalPoints/stat.length;
 
@@ -300,7 +299,7 @@ function studnetMainAccountScreen({navigation}){
                 {/* https://github.com/indiespirit/react-native-chart-kit */}
                 {graph?(
                     <>
-                    {/* <LineChart
+                    <LineChart
                     data={{
                     labels: dateLabels,
                     datasets: [
@@ -336,7 +335,7 @@ function studnetMainAccountScreen({navigation}){
                     marginVertical: 5,
                     borderRadius: 16
                     }}
-                /> */}
+                />
                 {/* <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
                 <Text style={{padding:SIZES.padding}}>you are improving!!</Text> */}
                 </>

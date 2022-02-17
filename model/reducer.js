@@ -39,7 +39,7 @@ export const statReducer = (state = statInitState, action) => {
         ...state,
         stat: [...state.stat, action.payload.stat]
       }
-    case actions.EMPTY_STAT:
+    case actions.REPLACE_STAT:
       return{
         ...state,
         stat: action.payload.stat

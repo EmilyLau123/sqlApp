@@ -61,7 +61,7 @@ export function Quiz({route, navigation}){
   const [data, setData] = useState("");
   const [score, setScore] = useState(1);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [storingData, setStoringData] = useState([]);
+  const [intDifficulty, setIntDifficulty] = useState(0);
   const [haveImage, setHaveImage] = useState(false);
   const [time, setTime] = useState(60);
   // const [isSending, setIsSending] = useState(false);
@@ -75,13 +75,15 @@ export function Quiz({route, navigation}){
   const totalQuestion = 4;
   const {difficulty} = route.params;
   
-  const updateUser = async (user_id,score) => {
+  const updateUser = async (user_id,int_difficulty,score) => {
     // console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
     const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-    console.log(currentTime);
-    const storingData = {quizDifficulty: intDifficulty, score: score, completeTime: currentTime};
+    
+    const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
+    
+    console.log(storingData);
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
     if(user_role != USER_ROLE.student){
       toggleOverlay(false);
@@ -147,7 +149,7 @@ export function Quiz({route, navigation}){
             // setStoringData(storingData);
   
           }
-          var result = updateUser(user_id,score);
+          var result = updateUser(user_id,intDifficulty, score);
           result.then(function(){
             console.log("success")}
           ).catch(function(err){
@@ -189,11 +191,15 @@ export function Quiz({route, navigation}){
     
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
+    
     var intDifficulty = DIFFICULTY.easy
+    
     if(difficulty == "Medium"){
       intDifficulty = DIFFICULTY.medium;
+      setIntDifficulty(DIFFICULTY.medium);
     }else if(difficulty == "Hard"){
       intDifficulty = DIFFICULTY.hard;
+      setIntDifficulty(DIFFICULTY.hard);
     }
 
     if(difficulty == "Easy"){
@@ -201,7 +207,7 @@ export function Quiz({route, navigation}){
     }else if(difficulty == "Medium"){
       setTime(45);
     }
-console.log('difficulty:',intDifficulty);
+// console.log('difficulty:',intDifficulty);
     const API_URL = 'https://mufyptest.herokuapp.com/api/questions/find/difficulty/'+intDifficulty;
 // console.log(API_URL);
     try {
@@ -251,15 +257,13 @@ console.log('difficulty:',intDifficulty);
               until={time}
               size={20}
               onFinish={() => {
-                dispatch(changeStat(storingData));
+                
                 Alert.alert(
                   "Message",
                   "Time is up!",
                   [{
                       text: "Ok",
-                      onPress: () => navigation.navigate("Congrats",{
-                                      score:score
-                                    }),
+                      onPress: () => updateUser(user_id,intDifficulty,score),
                       style: "cancel"
                     },
                   ]);

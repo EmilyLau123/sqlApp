@@ -5,12 +5,12 @@ export const CHANGE_STAT = 'CHANGE_STAT';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGE_USERNAME = 'CHANGE_USERNAME';
-export const EMPTY_STAT = 'EMPTY_STAT';
+export const REPLACE_STAT = 'REPLACE_STAT';
 export const EMPTY_REWARD = 'EMPTY_REWARD';
 export const CHANGE_REWARD = 'CHANGE_REWARD';
 
-export const emptyStat = stat => ({
-    type: EMPTY_STAT,
+export const replaceStat = stat => ({
+    type: REPLACE_STAT,
     payload: {
       stat,
     },

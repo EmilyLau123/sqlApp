@@ -21,7 +21,7 @@ import {changeNickname,
         changeRole,
         changeUsername, 
         changeUserId, 
-        changeStat, 
+        replaceStat, 
         changeEmail,
         changePassword,
         changeReward,
@@ -116,7 +116,7 @@ const SignInScreen = ({navigation}) => {
                 // console.log('quizDone:',json[0].quizDone.length);
                 if(json[0].quizDone){
                     console.log(json[0].quizDone);
-                    dispatch(changeStat(json[0].quizDone));
+                    dispatch(replaceStat(json[0].quizDone));
                 }
                 if(json[0].rewards){
                     dispatch(changeReward(json[0].rewards));

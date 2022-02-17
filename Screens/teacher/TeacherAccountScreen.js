@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS,REQUEST_STATUS} from '../../components/style/theme';
 
 //auth
-import {changeNickname, changeRole, changeUserId, emptyStat, changeEmail, changePassword} from '../../model/action'
+import {changeNickname, changeRole, changeUserId, replaceStat, changeEmail, changePassword} from '../../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 
 function logOut(dispatch){
@@ -18,7 +18,7 @@ function logOut(dispatch){
     dispatch(changeUserId(""));
     dispatch(changePassword(""));
     dispatch(changeEmail(""));
-    dispatch(emptyStat([]));
+    dispatch(replaceStat([]));
     console.log("Logged out");
     return alert("Logged out");
 }
