@@ -146,7 +146,7 @@ const updateUser = async(user_id, newNickname, current_password, newpassword, co
                 <Text size={SIZES.text} 
                       style={{padding:SIZES.padding, fontWeight:"bold"}}
                       
-                      >Old password:{oldPassword},{password}</Text><Input
+                      >Old password:</Text><Input
                         placeholder="Enter your old password"
                         secureTextEntry={true}
                         value={password} 

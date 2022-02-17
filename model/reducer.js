@@ -28,27 +28,21 @@ const passwordInitState = {
   password: ""
 };
 
+const rewardInitState = {
+  reward:[]
+};
+
 export const statReducer = (state = statInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_STAT:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
-        // stat: action.payload.stat
         stat: [...state.stat, action.payload.stat]
-        // ...state, nickname:[action.payload.nickname]
-        // state
       }
     case actions.EMPTY_STAT:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
-        // stat: action.payload.stat
         stat: action.payload.stat
-        // ...state, nickname:[action.payload.nickname]
-        // state
       }
     default:
       return state;
@@ -58,13 +52,9 @@ export const statReducer = (state = statInitState, action) => {
 export const usernameReducer = (state = usernameInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_USER_ID:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
         username: action.payload.username
-        // ...state, nickname:[action.payload.nickname]
-        // state
       }
     default:
       return state;
@@ -74,13 +64,9 @@ export const usernameReducer = (state = usernameInitState, action) => {
 export const userIdReducer = (state = userIdInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_USER_ID:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
         user_id: action.payload.user_id
-        // ...state, nickname:[action.payload.nickname]
-        // state
       }
     default:
       return state;
@@ -90,13 +76,9 @@ export const userIdReducer = (state = userIdInitState, action) => {
 export const roleReducer = (state = roleInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_ROLE:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
         role: action.payload.role
-        // ...state, nickname:[action.payload.nickname]
-        // state
       }
     default:
       return state;
@@ -106,13 +88,9 @@ export const roleReducer = (state = roleInitState, action) => {
 export const nicknameReducer = (state = nicknameInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_NICKNAME:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
         nickname: action.payload.nickname
-        // ...state, nickname:[action.payload.nickname]
-        // state
       }
     default:
       return state;
@@ -122,13 +100,9 @@ export const nicknameReducer = (state = nicknameInitState, action) => {
 export const emailReducer = (state = emailInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_EMAIL:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
         email: action.payload.email
-        // ...state, nickname:[action.payload.nickname]
-        // state
       }
     default:
       return state;
@@ -138,13 +112,26 @@ export const emailReducer = (state = emailInitState, action) => {
 export const passwordReducer = (state = passwordInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_PASSWORD:
-    // state.nickname = [action.payload.nickname]
-    // console.log(state.nickname,action.payload.nickname);
       return{
         ...state,
         password: action.payload.password
-        // ...state, nickname:[action.payload.nickname]
-        // state
+      }
+    default:
+      return state;
+  }
+};
+
+export const rewardReducer = (state = rewardInitState, action) => {
+  switch (action.type) {
+    case actions.EMPTY_REWARD:
+      return{
+        ...state,
+        reward: action.payload.reward
+      }
+    case actions.CHANGE_REWARD:
+      return{
+        ...state,
+        reward: [...state.reward, action.payload.reward]
       }
     default:
       return state;

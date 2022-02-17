@@ -52,10 +52,16 @@ function homeWelcomeHeader({route,navigation}){
   const role = useSelector(state => state.roleReducer.role);
   const user_id = useSelector(state => state.userIdReducer.user_id);
   const [knowledgeTitle, setknowledgeTitle] = useState("");
-  const [images, setImages] = useState([]);
+  var [knowledgeImages, setKnowledgeImages] = useState([]);
   const [knowledgeContent, setknowledgeContent] = useState("");
   const [isLoading, setLoading] = useState(true);
   const [isView, setIsView] = useState(false);
+  const [displayContent, setDisplayContent] = useState("");
+
+  
+
+  var haveImage = false;
+  var imageName = [];
 
 const toggleOverlay =() => {
         setIsView(!isView);
@@ -98,16 +104,21 @@ const loginUser = async (username,password, userRole) => {
 
   const getKnowledge = async () => {
     const API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/';
+    
 
     try {
         const response = await fetch(API_URL);
         const json = await response.json();
-        console.log(json);
+        console.log(json[0]);
         setknowledgeTitle(json[0].title);
         setknowledgeContent(json[0].description);
+        setKnowledgeImages(json[0].images);
+        setDisplayContent(json[0].description.split('.')[0]+"...");
+    
       } catch (error) {
         console.error(error);
       } finally {
+        
         setLoading(false);
         console.log("done");
       }
@@ -130,7 +141,7 @@ useEffect(() => {
         <Card borderRadius={SIZES.round}>
         <Card.Title> Welcome</Card.Title>
           <Card.Divider />
-          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi {nickname} , {role}, {user_id}!</Text>
+          <Text size={SIZES.text} style={{padding:SIZES.text}}>Hi {nickname}!</Text>
           <Text size={SIZES.text} style={{padding:SIZES.text}}>Remember practice makes perfect!</Text>
         </Card>
         <Card borderRadius={SIZES.round}>
@@ -141,7 +152,7 @@ useEffect(() => {
           ):(
             <>
             <Text size={SIZES.title} style={{padding:SIZES.text, fontWeight:"bold"}}>{knowledgeTitle}</Text>
-            <Text size={SIZES.text} style={{padding:SIZES.text}}>{knowledgeContent}</Text>
+            <Text size={SIZES.text} style={{padding:SIZES.text}}>{displayContent}</Text>
             <Button title='View Details' 
                   buttonStyle={{
                     backgroundColor: COLORS.primary,
@@ -155,7 +166,17 @@ useEffect(() => {
                     marginVertical: 10,
                   }}
                   titleStyle={{ fontWeight: 'bold' }}
-                  onPress={()=>toggleOverlay()}></Button>
+                  //onPress={()=>toggleOverlay()}
+                  onPress={() => navigation.navigate("StatementDetail",{
+        // statement_id: item._id,
+        title:knowledgeTitle,
+        description:knowledgeContent,
+        images:knowledgeImages,
+        // author:item.author, 
+        // images: item.images
+
+      })}
+                  />
             </>
           )}
           
@@ -195,15 +216,45 @@ useEffect(() => {
         
       </ScrollView>
 
-            <Overlay isVisible={isView} onBackdropPress={()=>toggleOverlay()}>
+            {/* <Overlay isVisible={isView} onBackdropPress={()=>toggleOverlay()}>
             <SafeAreaView style={{height:SIZES.height-300, width: SIZES.width-100}}>
               <ScrollView>
                 <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>{knowledgeTitle}</Text>
-                <Text style={{padding:10, fontSize:14}}>{knowledgeContent}</Text>
+                 {haveImage?(
+                <View>
+                 <SliderBox 
+                    images={imageName}
+                    sliderBoxHeight={400}
+                    dotColor="#FFEE58"
+                    inactiveDotColor="#90A4AE"
+                    dotStyle={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 15,
+                        marginHorizontal: 10,
+                        padding: 0,
+                        margin: 0
+                    }}
+                    paginationBoxVerticalPadding={20}
+                    ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                    resizeMethod={'resize'}
+                    resizeMode={'contain'}
+                    parentWidth = {390}
+                    circleLoop
+                    imageLoadingColor={COLORS.primary}
+                    // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+                    currentImageEmitter = {(index)=>setCurrentImage(index)}
+                />
+                    </View>
+                ):(
+                    <></>
+                )} */}
+                
+                {/* <Text style={{padding:10, fontSize:14}}>{knowledgeContent}</Text>
 
               </ScrollView>
-              </SafeAreaView>
-            </Overlay>
+              </SafeAreaView> */}
+            {/* </Overlay> */}
 
       {role==USER_ROLE.admin||role==USER_ROLE.teacher?(
           <FAB

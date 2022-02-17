@@ -109,7 +109,7 @@ export function PasswordResetScreen({route,navigation}){
               <Text size={SIZES.text} 
                     style={{padding:SIZES.padding, fontWeight:"bold"}}
                     >
-                  New password:{newPassword}</Text><Input
+                  New password:</Text><Input
                     placeholder="Enter your new password"
                     secureTextEntry={true}
                     value={newPassword} 
@@ -118,7 +118,7 @@ export function PasswordResetScreen({route,navigation}){
               <Text size={SIZES.text} 
                     style={{padding:SIZES.padding, fontWeight:"bold"}}
                     
-                    >Confirm new password:{confirmPassword}</Text><Input
+                    >Confirm new password:</Text><Input
                     placeholder="Enter your new password again"
                     secureTextEntry={true}
                     value={confirmPassword} 

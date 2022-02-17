@@ -4,25 +4,34 @@ import {
     Text,
     Image
     } from 'react-native-elements';
-import { SafeAreaView, ActivityIndicator, } from 'react-native';
+import { SafeAreaView, ActivityIndicator, View,ScrollView } from 'react-native';
     //import{Stacks} from './SqlSectionList';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SIZES,COLORS } from '../components/style/theme';
 // import ImgToBase64 from 'react-native-image-base64';
+import { SliderBox } from "react-native-image-slider-box";
 
 const DetailStack = createStackNavigator();
 
 const StatementDetailScreen = ({route}) => {  
+  
   const { title, description } = route.params;
   const images = route.params.images;
+  var haveImage = false;
     var imageName = [];
-    console.log(images);
-    images.forEach(image=>{
-        imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image);
-    });
+    if(images){
+      haveImage = true;
+      console.log(images);
+      images.forEach(image=>{
+          imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image);
+      });
+      console.log(imageName);
+    }
+    
 
    return (
-    <SafeAreaView style={{height:SIZES.height, backgroundColor:COLORS.background}}>
+    <SafeAreaView style={{ backgroundColor:COLORS.background}}>
+    <ScrollView>
       <Card>
         <Card.Title style={{fontSize:20}}>{title}</Card.Title>
         <Card.Divider></Card.Divider>
@@ -45,8 +54,8 @@ const StatementDetailScreen = ({route}) => {
                     }}
                     paginationBoxVerticalPadding={20}
                     ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
-                    // resizeMethod={'resize'}
-                    // resizeMode={'cover'}
+                    resizeMethod={'resize'}
+                    resizeMode={'contain'}
                     parentWidth = {390}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
@@ -58,15 +67,16 @@ const StatementDetailScreen = ({route}) => {
                     <></>
                 )}
 
-          <Image  source={{ uri: images[0] }}
+          {/* <Image  source={{ uri: images[0] }}
                 style={{ width: 300, height: 200 }}
                 PlaceholderContent={<ActivityIndicator />}>
-          </Image>
+          </Image> */}
         {/* })} */}
         
-       <Text style={{fontSize:18}}>description: {description}</Text>
+       <Text style={{fontSize:18}}>description:</Text>
+       <Text style={{fontSize:16, paddingTop:5}}>{description}</Text>
       </Card>
-      
+      </ScrollView>
     </SafeAreaView>
       );
  

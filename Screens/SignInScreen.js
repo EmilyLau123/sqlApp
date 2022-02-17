@@ -12,13 +12,20 @@ import {
     LinearProgress,
     Overlay
     } from 'react-native-elements';
-
 import {StyleSheet,Alert,SafeAreaView, Model, View, TouchableOpacity} from 'react-native';
 import { STYLES,SIZES, COLORS, USER_STATUS } from '../components/style/theme';
 import { submitForm } from 'react-native-form-component';
 
 //auth
-import {changeNickname, changeRole, changeUsername, changeUserId, changeStat, changeEmail,changePassword} from '../model/action'
+import {changeNickname, 
+        changeRole,
+        changeUsername, 
+        changeUserId, 
+        changeStat, 
+        changeEmail,
+        changePassword,
+        changeReward,
+        } from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -48,6 +55,7 @@ const SignInScreen = ({navigation}) => {
     const [nickname,setNickname] = useSelector(state => state.nicknameReducer.nickname);
     const [userId,setUserId] = useSelector(state => state.userIdReducer.user_id);
     const [stat,setStat] = useSelector(state => state.statReducer.stat);
+    const [reward,setReward] = useSelector(state => state.rewardReducer.reward);
         // const [nickname,setNickname] = useSelector(store.getState());
     const dispatch = useDispatch(); 
 
@@ -105,9 +113,13 @@ const SignInScreen = ({navigation}) => {
             // setLoggedIn(true);
             // setNickname(json[0].nickname);
             if(json[0].status == USER_STATUS.approved){
-                console.log('quizDone:',json[0].quizDone.length);
-                if(json[0].quizDone.length != 0){
+                // console.log('quizDone:',json[0].quizDone.length);
+                if(json[0].quizDone){
+                    console.log(json[0].quizDone);
                     dispatch(changeStat(json[0].quizDone));
+                }
+                if(json[0].rewards){
+                    dispatch(changeReward(json[0].rewards));
                 }
                 dispatch(changeUserId(json[0]._id));
                 dispatch(changeRole(userRole));
@@ -246,12 +258,12 @@ const SignInScreen = ({navigation}) => {
                                         flex:1}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
-                        <Text>Username : {teacherUsername}</Text><Input
+                        <Text>Username :</Text><Input
                                 style={STYLES.input}
                                 onChangeText={teacherUsername => setTeacherUsername(teacherUsername)}
                                 defaultValue={teacherUsername}
                             />
-                        <Text>Password : {teacherPassword}</Text>
+                        <Text>Password :</Text>
                         <Input
                             style={STYLES.input}
                             onChangeText={teacherPassword => setTeacherPassword(teacherPassword)}
@@ -305,12 +317,12 @@ const SignInScreen = ({navigation}) => {
                                         flex:1}}>
                     <Card borderRadius={SIZES.round}>
                         <Text style={{textAlignVertical: "center",textAlign: "center"}}>You have not login yet.</Text>
-                        <Text>Username : {adminUsername}</Text><Input
+                        <Text>Username :</Text><Input
                                 style={STYLES.input}
                                 onChangeText={adminUsername => setAdminUsername(adminUsername)}
                                 defaultValue={adminUsername}
                             />
-                        <Text>Password : {adminPassword}</Text>
+                        <Text>Password :</Text>
                         <Input
                             style={STYLES.input}
                             onChangeText={adminPassword => setAdminPassword(adminPassword)}

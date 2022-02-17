@@ -73,12 +73,12 @@ const styles = StyleSheet.create({
 
     const renderItems = ({ item }) => (
       <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-        statement_id: item._id,
+        // statement_id: item._id,
         title:item.title,
         description:item.description,
         images:item.images,
-        author:item.author, 
-        images: item.images
+        // author:item.author, 
+        // images: item.images
 
       })}>
         <ListItem>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     try {
      const response = await fetch(API_URL);
      const json = await response.json();
-     console.log(json);
+    //  console.log(json);
      setData(json);
    } catch (error) {
      console.error(error);
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
    setSearch(searchText);
    getStatements(searchText);
 
-   console.log(search);
+  //  console.log(search);
  }
 
   // const [fin,setFin] = useState("");
@@ -190,19 +190,19 @@ const styles = StyleSheet.create({
 //     getRole()
 // },{}
 //   )
-useEffect(()=>{
-  if(!mounted.current){//componentDidMount
-    // setPercent(props.value);
-    console.log("init");
+// useEffect(()=>{
+//   if(!mounted.current){//componentDidMount
+//     // setPercent(props.value);
+//     console.log("init");
 
-    mounted.current=true;
+//     mounted.current=true;
 
-    //checkRoleUtil.setRole(checkRoleUtil.role=false);
+//     //checkRoleUtil.setRole(checkRoleUtil.role=false);
     
-  }else{
-    console.log("sth changed");
-  }},[role]
-);
+//   }else{
+//     console.log("sth changed");
+//   }},[role]
+// );
     return(
       //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
@@ -229,7 +229,7 @@ useEffect(()=>{
           </View>
         </View>
           )} 
-          {role==USER_ROLE.admin||role==USER_ROLE.teacher?(
+          {role==USER_ROLE.admin?(
           <FAB
                 visible={true}
                 onPress={() =>navigation.navigate("StatementSubmit")}

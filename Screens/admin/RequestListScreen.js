@@ -223,6 +223,7 @@ const changeQuestionStatus = async(question_id, status) => {
                             <Text style={{fontWeight:"bold",color:"white"}}>{index+1}. {item}</Text>
                         </View>
                     ))}
+                    
                     <Text style={{padding:SIZES.padding}}>Uploaded images: {images.length}</Text>
                      <SliderBox 
                         images={imageName}

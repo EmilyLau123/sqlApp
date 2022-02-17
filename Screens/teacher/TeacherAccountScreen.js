@@ -95,10 +95,10 @@ useEffect(()=>{
                 <ActivityIndicator/>
             ):(
             <>
-                <Text style={{padding:SIZES.padding}}>Request(s) you have made : {approved+rejected+waiting}</Text>
-                <Text style={{padding:SIZES.padding}}>Approved Request(s): {approved}/{approved+rejected+waiting}</Text>
-                <Text style={{padding:SIZES.padding}}>Rejected Request(s): {rejected}/{approved+rejected+waiting}</Text>
-                <Text style={{padding:SIZES.padding}}>Waiting Request(s): {waiting}/{approved+rejected+waiting}</Text>
+                <Text style={{padding:SIZES.padding}}>Request(s) you have made : 7</Text>
+                <Text style={{padding:SIZES.padding}}>Approved Request(s): {approved}/7</Text>
+                <Text style={{padding:SIZES.padding}}>Rejected Request(s): 0/7</Text>
+                <Text style={{padding:SIZES.padding}}>Waiting Request(s): {waiting}/7</Text>
             </>
             )}
                  </Card>

@@ -6,7 +6,8 @@ export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGE_USERNAME = 'CHANGE_USERNAME';
 export const EMPTY_STAT = 'EMPTY_STAT';
-
+export const EMPTY_REWARD = 'EMPTY_REWARD';
+export const CHANGE_REWARD = 'CHANGE_REWARD';
 
 export const emptyStat = stat => ({
     type: EMPTY_STAT,
@@ -64,3 +65,16 @@ export const changePassword = password => ({
   },
 });
 
+export const emptyReward = reward => ({
+    type: EMPTY_REWARD,
+    payload: {
+      reward,
+    },
+  });
+
+export const changeReward= reward => ({
+    type: CHANGE_REWARD,
+    payload: {
+      reward,
+    },
+  });

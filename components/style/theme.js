@@ -32,7 +32,9 @@ export const ICONS = {
     rejected: 'close-circle-outline',
     waiting: 'clipboard',
     banned: 'skull-outline',
-    others: 'help-outline'
+    others: 'help-outline',
+    retrieved: 'happy',
+    notRetrieved: 'happy-outline',
 
 }
 
@@ -85,6 +87,15 @@ export const ANSWER = {
     option2: 1,
     option3: 2,
     option4: 3,
+}
+
+export const REWARDS = {
+    firstAllCorrect : 0,
+    firstAllWrong : 1,
+    correct30:2,
+    correct50:3,
+    doQuiz5days:4,
+    doQuiz10days:5
 }
 
 export const STYLES = StyleSheet.create({

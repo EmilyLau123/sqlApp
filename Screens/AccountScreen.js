@@ -21,8 +21,9 @@ import 'react-native-gesture-handler';
 import {
     LineChart,
   } from "react-native-chart-kit";
+
 //auth
-import {changeNickname, changeRole, changeUserId, emptyStat, changeEmail, changePassword} from '../model/action'
+import {changeNickname, changeRole, changeUserId, emptyStat, emptyReward, changeEmail, changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 //time
 import moment from 'moment';
@@ -46,7 +47,8 @@ function logOut(dispatch){
     dispatch(changeUserId(""));
     dispatch(changePassword(""));
     dispatch(changeEmail(""));
-    dispatch(emptyStat([]));
+    dispatch(emptyStat(""));
+    dispatch(emptyReward(""));
     console.log("Logged out");
     return alert("Logged out");
 }
@@ -207,11 +209,41 @@ function adminMainAccountScreen({navigation}){
     );
 }
 
+function rewardListScreen(){
+    const data = [
+        { id:1, name: "All correct!!", retrieved:true, iconName:"balloon-outline"},
+        { id:2, name: "All wrong!!", retrieved:true, iconName:"balloon-outline" },
+        { id:3, name: "Get all correct in quiz ar Hard level!!", retrieved:true, iconName: "balloon"},
+    ];
 
+    
+
+    const Item = ({item}) => (
+        <ListItem>
+            {/* <Ionicons name={iconName} size={SIZES.icon} /> */}
+
+            {/* <ion-icon name={item.iconName} size={SIZES.icon} /> */}
+                <Text>{item.name}</Text>
+                <Text>{item.retrievedTime}</Text>
+        </ListItem>
+    );
+  
+    return(
+        <FlatList
+            data={data}
+            renderItem= {Item}
+            keyExtractor={item => item.id}
+            // onRefresh={() => getStatements("")}
+            // refreshing={isLoading}
+            // height={SIZES.height-400}
+        /> 
+    );
+}
 
 function studnetMainAccountScreen({navigation}){
     const stat = useSelector(state => state.statReducer.stat);
     const nickname = useSelector(state => state.nicknameReducer.nickname);
+    const rewards = useSelector(state => state.rewardReducer.rewards);
     const dispatch = useDispatch(); 
     var totalPoints = 0;
     var counter = 0;
@@ -223,35 +255,25 @@ function studnetMainAccountScreen({navigation}){
     var avg = 0;
 
     var dateLabelsTest = {};
-    dateLabelsTest[moment().subtract(5,'M').format("MM/YYYY")] = 0;
+    // dateLabelsTest[moment().subtract(5,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(4,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(3,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(2,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(1,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().format("MM/YYYY")] = 0;
-
+    // console.log(stat);  
     if(stat.length != 0){
-        // for(let i = 0; i < stat.length; i++){//quiz number
-        //     var itemTime = stat[i][0].answerTime;
-        //     label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
-        //     console.log('---------');
-        //     console.log('time #',i,': ',stat[i][0].answerTime);
-        //     console.log('stat #',i,': ',stat[i]);
-        //     for(let k = 0; k < 10; k++){//question number
-        //         // var itemTime = stat[0][0].answerTime;
-        //         // label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
-        //         console.log('item #',k,': ',stat[i][k]);
-        //         totalPoints += stat[i][k].point;
-        //         dateLabelsTest[label] = totalPoints;
-        //     }
-        // }
+        console.log('stat: ', stat);
         stat.forEach(item => {
-            var itemTime = item[0].answerTime;
-            label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
+            // var itemTime = item[0].answerTime;
+            // label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
+            // label = ['02/2022','01/2022','12/2021','11/2021',];
             item.forEach(detail => { // = item[i]
                 totalPoints += detail.point;
-                dateLabelsTest[label] = totalPoints;
-        //        
+                // dateLabelsTest[label] = totalPoints;
+                dateLabelsTest['02/2022'] = totalPoints;
+                
+              
             });
         });
         avg = totalPoints/stat.length;
@@ -278,13 +300,9 @@ function studnetMainAccountScreen({navigation}){
                 {/* https://github.com/indiespirit/react-native-chart-kit */}
                 {graph?(
                     <>
-                    <LineChart
+                    {/* <LineChart
                     data={{
-                    labels: dateLabels
-                    //  labels: ["01/2022", "02/2022", "03/2022", "04/2022", "05/2022",]
-                            //  "06/2022","07/2022","08/2022","09/2022","09/2022",
-                            //  "10/2022","11/2022","12/2022",]
-                             ,
+                    labels: dateLabels,
                     datasets: [
                         {
                         data: data
@@ -301,7 +319,7 @@ function studnetMainAccountScreen({navigation}){
                     backgroundColor: COLORS.primary,
                     backgroundGradientFrom: COLORS.primary,
                     backgroundGradientTo: COLORS.secondary,
-                    decimalPlaces: 2, // optional, defaults to 2dp
+                    decimalPlaces: 0, // optional, defaults to 2dp
                     color: (opacity = 1) => `rgba(255, 225, 227, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     style: {
@@ -318,18 +336,30 @@ function studnetMainAccountScreen({navigation}){
                     marginVertical: 5,
                     borderRadius: 16
                     }}
-                />
+                /> */}
                 {/* <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
                 <Text style={{padding:SIZES.padding}}>you are improving!!</Text> */}
                 </>
                 ):(
                     <Text>No quiz record, Let's do some quiz!</Text>
                 )}
-                
-                
-
                 {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
             </Card>
+            <Button title="Reward list"
+                buttonStyle={{
+                    backgroundColor: COLORS.primary,
+                    borderWidth: 2,
+                    borderColor: COLORS.primary,
+                    borderRadius: 30,
+                    }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                    }}
+                titleStyle={{ fontWeight: 'bold' }} 
+                onPress={()=>navigation.navigate("RewardList")}/>
+
             <Button title={STRINGS.accountSetting}
                 buttonStyle={{
                     backgroundColor: COLORS.secondary,
@@ -344,6 +374,8 @@ function studnetMainAccountScreen({navigation}){
                     }}
                 titleStyle={{ fontWeight: 'bold' }} 
                 onPress={()=>navigation.navigate("AccountSetting")}/>
+
+                
             <Button title={STRINGS.logOut}
                 buttonStyle={{
                     backgroundColor: COLORS.black,
@@ -363,7 +395,6 @@ function studnetMainAccountScreen({navigation}){
     );
 }
 
-
 const AccountScreen = () => {
     const role = useSelector(state => state.roleReducer.role);
     
@@ -382,6 +413,8 @@ const AccountScreen = () => {
             <AccountStack.Navigator>
                 <AccountStack.Screen name="StudnetAccountMain" component={studnetMainAccountScreen} options={{ title: 'Your Account' }}/>
                 <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
+                <AccountStack.Screen name="RewardList" component={rewardListScreen} options={{ title: 'Reward List' }}/>
+
             </AccountStack.Navigator>
             );
         }else if(role == USER_ROLE.admin){

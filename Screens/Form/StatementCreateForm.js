@@ -79,10 +79,11 @@ const insertStatement = async (title, description,images) => {
         const json = await response.json();
         console.log('JSON: ',json);
         const statement_id = json._id;
+        if(haveImage){
         for(let i = 0; i<images.length;i++){
             formData.append(i, images[i]);
             console.log(formData);
-        }
+        }}
         //upload img
         const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/statement/images/insert/'+statement_id;
             const imageResponse = await fetch(IMAGES_API_URL,{
