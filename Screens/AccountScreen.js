@@ -211,8 +211,7 @@ function adminMainAccountScreen({navigation}){
 
 function rewardListScreen({route}){
     const user_rewards = route.params.rewards;
-    console.log(user_rewards);
-    var rewardList = [];
+    
     
     // for(let i = 0; i<user_rewards.length; i++){
     //     rewardList.push(REWARDS[user_rewards[i]]);
@@ -230,10 +229,8 @@ function rewardListScreen({route}){
     const Item = ({item}) => (
         <ListItem bottomDivider>
             <Ionicons name="golf" size={SIZES.icon} />
-
             <Text style={{lineHeight:20}}>{item.name}{"\n"}
               Obtained at: {item.retrieveTime}
-            
             </Text>
         </ListItem>
     );

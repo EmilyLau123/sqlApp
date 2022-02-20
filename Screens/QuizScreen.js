@@ -97,17 +97,19 @@ export function Quiz({route, navigation}){
     // console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
-    
-    const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
-
-    var retrievedReward = [];
+   
+    var userRewardId = [];
     //all correct in one quiz (first time only)
-    if(score >= 5){
+    user_reward.forEach(item => {
+        userRewardId.push(item.id);
+    });
+    if(score >= 5 && userRewardId.includes(0) == false){
       retrievedReward.push({id:0, name:REWARDS[0],retrieveTime: currentTime});
     }
-      retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
-    
+      // retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
+    const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+    const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
+
     console.log(storingData);
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/quiz/update/';
     if(user_role != USER_ROLE.student){

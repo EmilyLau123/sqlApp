@@ -29,6 +29,7 @@ export function statementSubmitScreen({navigation}){
    
     const [title, setTitle] = useState("");
     const [des, setDes] = useState("");
+    const [difficulty, setDifficulty] = useState(0);
 
     const [isLoading,setIsLoading] = useState(false);
 
@@ -74,6 +75,7 @@ const insertStatement = async (title, description,images) => {
              body: JSON.stringify({
                 title: title,
                 description: description,
+                difficulty: difficulty,
             }),
          });
         const json = await response.json();
