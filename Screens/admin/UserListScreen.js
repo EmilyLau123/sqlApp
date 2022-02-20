@@ -140,8 +140,8 @@ export function userList({navigation,route}){
 
 
 export function userDetail({route,navigation}){
-    const { submitted_at,user_id, iconName, statusString, username, nickname, updated_at, email,image } = route.params;
-    
+    const { submitted_at,user_id, iconName, statusString, username, nickname, updated_at, email } = route.params;
+    const image = route.params.image;
     const [progress, setProgress] = useState(0);
     const [isSending, setIsSending] = useState(false);
     const [back, setBack] = useState(false);
@@ -150,57 +150,7 @@ export function userDetail({route,navigation}){
         if(back == true){
             setBack(back);
         }
-    }
-    console.log('image: ',image.buffer);
-    //convert image
-    // const imageConvert = () => {
-    //     const IMAGE_CONVERT_API_URL = 'https://mufyptest.herokuapp.com/api/image/convert/';
-    //     try{
-    //         const response = await fetch(IMAGE_CONVERT_API_URL);
-    //         const Imagejson = await response.json();
-            
-    //     }catch(error){
-    //         return alert('error');
-    //     }finally{
-    //         console.log('Converted: ', Imagejson);
-    //     }
-    // }
-
-        // const reader = new FileReader();
-        // reader.readAsDataURL(image.buffer);
-        // reader.onloadend = () => {
-        //     const img64 = reader.result;
-        //     setImage('data:image/png;base64,' + img64);
-        //     console.log(img64);
-        // };
-
-        // setImage('data:image/png;base64,' + btoa(image.buffer));
-        console.log(image);
-        // const testImage = []
-        // const img64 = new Buffer.from(image.buffer).toString("base64");
-        
-        // const buf = Buffer.from(characteristic.value, "base64");
-        // console.log(buf);
-        // console.log (buf[1]);
-        // this.setState({pulse: buf.data[1]});
-    // };
-    // const progressAdjust = (amount) => {
-    //     setProgress(progress+amount);
-    // };
-
-// useEffect(() => {
-//     let subs = true;
-//     if (progress < 1 && progress !== 0) {
-//       setTimeout(() => {
-//         if (subs) {
-//           setProgress(progress + 0.1);
-//         }
-//       }, 100);
-//     }
-//     return () => {
-//       subs = false;
-//     };
-//   }, [progress]);
+    }    
 
     //delete a user
     const deleteUser = async(user_id) => {
@@ -270,22 +220,7 @@ const changeUserStatus = async(user_id, status) => {
      });
      const json = await response.json();
      toggleOverlay(true);
-    //  return response;
-    //  if(response.status == 200){
-    //     console.log("json",json);
-    //     Alert.alert("Success","User updated",
-    //     [
-    //         {
-    //           text: "Close",
-    //           onPress: () => navigation.navigate("UserList"),
-    //           style: "close",
-    //         },
-    //       ]
-    //     );
-    //  }else{
-    //     console.log("Fail");
-
-    //  }
+  
    } catch (error) {
      console.error(error);
    } finally {
@@ -414,9 +349,10 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                     <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
                     
                 </Card>
-                <Card borderRadius={SIZES.round}>
-                    <Card.Title>User uploaded Proof</Card.Title>
-                    <Card.Divider/>
+                {image?(
+                    <Card borderRadius={SIZES.round}>
+                        <Card.Title>User uploaded Proof</Card.Title>
+                        <Card.Divider/>
                         <Image 
                             source={{ 
                                 uri: "https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/proofs/"+image
@@ -425,7 +361,11 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                             style={{height:400, width:SIZES.width-50,justifyContent:'center', margin:10}}
                             PlaceholderContent={<ActivityIndicator />}
                             />
-                </Card>
+                    </Card>
+                ):(
+                    <></>
+                )}
+                
             {/* <Button
                 title="Edit"
                 onPress={()=>} 
