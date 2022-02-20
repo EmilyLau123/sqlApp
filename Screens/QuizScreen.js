@@ -74,14 +74,17 @@ export function Quiz({route, navigation}){
   const user_id = useSelector(state => state.userIdReducer.user_id);
   const user_role = useSelector(state => state.roleReducer.role);
   const user_reward = useSelector(state => state.rewardReducer.reward);
+  const user_stat = useSelector(state => state.statReducer.stat);
   const dispatch = useDispatch(); 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState("");
-  const [score, setScore] = useState(1);
+  const [score, setScore] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [intDifficulty, setIntDifficulty] = useState(0);
   const [haveImage, setHaveImage] = useState(false);
   const [time, setTime] = useState(60);
+  const [timerStatus, setTimerStatus] = useState(true);
+  
   // const [isSending, setIsSending] = useState(false);
 
   const [isLast, setIsLast] = useState(false);
@@ -97,8 +100,9 @@ export function Quiz({route, navigation}){
     // console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-   
+   setTimerStatus(false);
     var userRewardId = [];
+    var retrievedReward = [];
     //all correct in one quiz (first time only)
     user_reward.forEach(item => {
         userRewardId.push(item.id);
@@ -106,7 +110,20 @@ export function Quiz({route, navigation}){
     if(score >= 5 && userRewardId.includes(0) == false){
       retrievedReward.push({id:0, name:REWARDS[0],retrieveTime: currentTime});
     }
-      // retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
+    //all wrong
+    if(score <= 0 && userRewardId.includes(1) == false){
+      retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
+    }
+    var cumlativeScore = 0;
+    //cumulated 30 scores
+    user_stat.forEach(item => {
+        cumlativeScore += item.score;
+    });
+    if(cumlativeScore+score >= 30 && userRewardId.includes(2) == false){
+      retrievedReward.push({id:2, name:REWARDS[2],retrieveTime: currentTime});
+    }
+    
+    // retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
     const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
 
@@ -152,7 +169,7 @@ export function Quiz({route, navigation}){
     }
  }
 
-  const nextQuestion = (key) => {
+  const nextQuestion = async(key) => {
       if(questionIndex >= totalQuestion){
         //Add result to the user's quizeDone array[obj_id, mark(1/0)]
         if(questionIndex == totalQuestion){
@@ -178,12 +195,14 @@ export function Quiz({route, navigation}){
             // setStoringData(storingData);
   
           }
-          var result = updateUser(user_id,intDifficulty, score);
-          result.then(function(){
-            console.log("success")}
-          ).catch(function(err){
-            console.log("Fail:",err)}
-          );
+          console.log('score: ', score);
+          var result = await updateUser(user_id,intDifficulty, score);
+          console.log('result: ', result);
+          // result.then(function(){
+          //   console.log("success")}
+          // ).catch(function(err){
+          //   console.log("Fail:",err)}
+          // );
         }   
       }else{
         if(data[questionIndex].answer==key){
@@ -272,7 +291,9 @@ export function Quiz({route, navigation}){
     getQuestions(difficulty);
   }, []);
   
-
+// setTimeout(() => {
+//   setTime(time-1);
+// }, 1000);
   //For making questions show randomly
   const dataLength = data.length;
 
@@ -282,6 +303,20 @@ export function Quiz({route, navigation}){
         {isLoading?<ActivityIndicator/>:(
         <View>
           <Card borderRadius={SIZES.round}>
+          {/* {time == 0?(
+            Alert.alert(
+                  "Message",
+                  "Time is up!",
+                  [{
+                      text: "Ok",
+                      onPress: () => updateUser(user_id,intDifficulty,score),
+                      style: "cancel"
+                    },
+                  ])
+          ):(
+            <Text>{time}</Text>
+          )} */}
+            
             <CountDown
               until={time}
               size={20}
@@ -301,8 +336,9 @@ export function Quiz({route, navigation}){
               digitTxtStyle={{color: COLORS.attention}}
               timeToShow={['M', 'S']}
               timeLabels={{m: 'minutes', s: 'second'}}
+              running = {timerStatus}
             />
-            <Text style={{alignSelf:"flex-end", fontSize:16}}>Score: {score-1} / 5</Text>
+            <Text style={{alignSelf:"flex-end", fontSize:16}}>Score: {score} / 5</Text>
             <Text style={{fontWeight:"bold", alignSelf:"center", fontSize:24, paddingBottom:SIZES.padding}}>{questionIndex+1} / 5</Text>
             
             <Card.Divider />
