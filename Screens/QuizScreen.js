@@ -14,7 +14,7 @@ import { Divider } from 'react-native-elements/dist/divider/Divider';
 import {ANSWER,COLORS,SIZES,DIFFICULTY,USER_ROLE, REWARDS} from '../components/style/theme.js';
 import moment from 'moment';
 //auth
-import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,changePassword} from '../model/action'
+import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,changePassword,changeReward,} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 //image
 import { SliderBox } from "react-native-image-slider-box";
@@ -38,6 +38,9 @@ export function askSignInScreen({route,navigation}){
 
 export function congratScreen({route,navigation}){
   const {score} = route.params;
+  var rewards = route.params.rewards;
+  // var rewards = [0,1];
+  console.log(rewards);
   return(
     <SafeAreaView
         style={{backgroundColor:COLORS.background, height:SIZES.height,
@@ -45,6 +48,20 @@ export function congratScreen({route,navigation}){
           alignItems: 'center', //Centered vertically
           flex:1}}>
       <Text style={{color:"white", fontWeight:"bold", fontSize:20, padding:20}}>Score: {score} / 5</Text>
+      {rewards.length != 0?(
+        <>
+         
+        <Text style={{color:"white", fontWeight:"bold", fontSize:20, padding:20}}>You have earn reward(s):</Text>
+        
+        {rewards.map(item =>{
+          return <Text style={{color:"white", fontWeight:"bold", fontSize:18, padding:5}}>
+            {item.name}
+          </Text>})}
+        </>
+            ):(
+              <></>
+            )}   
+        
       <Button title="Back to Home" 
               onPress={()=>navigation.navigate("HomePage")}/>
     </SafeAreaView>
@@ -56,6 +73,7 @@ export function Quiz({route, navigation}){
   //   var modelAnswer=DATA[0].answer;
   const user_id = useSelector(state => state.userIdReducer.user_id);
   const user_role = useSelector(state => state.roleReducer.role);
+  const user_reward = useSelector(state => state.rewardReducer.reward);
   const dispatch = useDispatch(); 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState("");
@@ -71,10 +89,10 @@ export function Quiz({route, navigation}){
   const toggleOverlay =(status) => {
         setIsLast(status);
     };
-
   const totalQuestion = 4;
   const {difficulty} = route.params;
   
+
   const updateUser = async (user_id,int_difficulty,score) => {
     // console.log(user_id, storingData, score);
     //https://reactnative.dev/movies.json
@@ -82,9 +100,16 @@ export function Quiz({route, navigation}){
     const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     
     const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
+
+    var retrievedReward = [];
+    //all correct in one quiz (first time only)
+    if(score >= 5){
+      retrievedReward.push({id:0, name:REWARDS[0],retrieveTime: currentTime});
+    }
+      retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
     
     console.log(storingData);
-    const API_URL = 'https://mufyptest.herokuapp.com/api/user/update/';
+    const API_URL = 'https://mufyptest.herokuapp.com/api/user/quiz/update/';
     if(user_role != USER_ROLE.student){
       toggleOverlay(false);
       navigation.navigate("Congrats",{
@@ -101,15 +126,17 @@ export function Quiz({route, navigation}){
             body: JSON.stringify({
                 user_id: user_id,
                 quizDone: storingData,
+                rewards: retrievedReward,
             }),
-            
         });
         const json = await response.json();
         if(response.status == 200){
             // console.log("storingData",storingData);
             dispatch(changeStat(storingData));
+            dispatch(changeReward(retrievedReward));
             navigation.navigate("Congrats",{
-              score:score
+              score:score,
+              rewards: retrievedReward,
             });
         }
       } catch (error) {
@@ -248,7 +275,7 @@ export function Quiz({route, navigation}){
   const dataLength = data.length;
 
   return(
-    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>
+    <SafeAreaView style={{backgroundColor:COLORS.background}}>
       <ScrollView>
         {isLoading?<ActivityIndicator/>:(
         <View>
@@ -308,7 +335,6 @@ export function Quiz({route, navigation}){
           <></>
         )}
         
-
          <Button title={data[questionIndex].options[0]}
                   buttonStyle={{
                     backgroundColor: COLORS.primary,
@@ -392,7 +418,6 @@ export function Quiz({route, navigation}){
               //                   onPress={()=>navigation.navigate("Home")}/>
               //     </View>
             
-      
         )}
         </ScrollView>
       </SafeAreaView>

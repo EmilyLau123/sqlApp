@@ -89,14 +89,14 @@ export const ANSWER = {
     option4: 3,
 }
 
-export const REWARDS = {
-    firstAllCorrect : 0,
-    firstAllWrong : 1,
-    correct30:2,
-    correct50:3,
-    doQuiz5days:4,
-    doQuiz10days:5
-}
+export const REWARDS = [
+    "First quiz that got all correct !!",
+    "First quiz that got all wrong !!",
+    "Earn accumnlate 30 points in quizzes !!",
+    "Earn accumnlate 70 points in quizzes !!",
+    "doQuiz5days",
+    "doQuiz10days"
+]
 
 export const STYLES = StyleSheet.create({
     input: {

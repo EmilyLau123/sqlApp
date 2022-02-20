@@ -24,7 +24,7 @@ import {changeNickname,
         replaceStat, 
         changeEmail,
         changePassword,
-        changeReward,
+        replaceReward,
         } from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -119,7 +119,8 @@ const SignInScreen = ({navigation}) => {
                     dispatch(replaceStat(json[0].quizDone));
                 }
                 if(json[0].rewards){
-                    dispatch(changeReward(json[0].rewards));
+                    console.log('fetched rewards: ',json[0].rewards);
+                    dispatch(replaceReward(json[0].rewards));
                 }
                 dispatch(changeUserId(json[0]._id));
                 dispatch(changeRole(userRole));
@@ -129,8 +130,7 @@ const SignInScreen = ({navigation}) => {
                 dispatch(changeUsername(json[0].username));
 
 
-                
-                console.log("json",json);
+                console.log("user Info",json);
                 Alert.alert("Success","Sign In success",
                 [
                     {

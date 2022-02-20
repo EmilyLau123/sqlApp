@@ -49,6 +49,23 @@ export const statReducer = (state = statInitState, action) => {
   }
 };
 
+export const rewardReducer = (state = rewardInitState, action) => {
+  switch (action.type) {
+    case actions.REPLACE_REWARD:
+      return{
+        ...state,
+        reward: action.payload.reward
+      }
+    case actions.CHANGE_REWARD:
+      return{
+        ...state,
+        reward: [...state.reward, action.payload.reward]
+      }
+    default:
+      return state;
+  }
+};
+
 export const usernameReducer = (state = usernameInitState, action) => {
   switch (action.type) {
     case actions.CHANGE_USER_ID:
@@ -121,22 +138,7 @@ export const passwordReducer = (state = passwordInitState, action) => {
   }
 };
 
-export const rewardReducer = (state = rewardInitState, action) => {
-  switch (action.type) {
-    case actions.EMPTY_REWARD:
-      return{
-        ...state,
-        reward: action.payload.reward
-      }
-    case actions.CHANGE_REWARD:
-      return{
-        ...state,
-        reward: [...state.reward, action.payload.reward]
-      }
-    default:
-      return state;
-  }
-};
+
 // export default nicknameReducer;
 // export default roleReducer;
 

@@ -23,7 +23,7 @@ import {
   } from "react-native-chart-kit";
 
 //auth
-import {changeNickname, changeRole, changeUserId, replaceStat, emptyReward, changeEmail, changePassword} from '../model/action'
+import {changeNickname, changeRole, changeUserId, replaceStat, replaceReward, changeEmail, changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
 //time
 import moment from 'moment';
@@ -47,8 +47,8 @@ function logOut(dispatch){
     dispatch(changeUserId(""));
     dispatch(changePassword(""));
     dispatch(changeEmail(""));
-    dispatch(replaceStat(""));
-    dispatch(emptyReward(""));
+    dispatch(replaceStat([]));
+    dispatch(replaceReward([]));
     console.log("Logged out");
     return alert("Logged out");
 }
@@ -209,26 +209,38 @@ function adminMainAccountScreen({navigation}){
     );
 }
 
-function rewardListScreen(){
-    const data = [
-        { id:1, name: "All correct!!", retrieved:true, iconName:"golf-outline"},
-        { id:2, name: "All wrong!!", retrieved:true, iconName:"golf-outline" },
-        { id:3, name: "Get all correct in quiz ar Hard level!!", retrieved:true, iconName: "golf"},
-    ];
+function rewardListScreen({route}){
+    const user_rewards = route.params.rewards;
+    console.log(user_rewards);
+    var rewardList = [];
+    
+    // for(let i = 0; i<user_rewards.length; i++){
+    //     rewardList.push(REWARDS[user_rewards[i]]);
+    // }
+    // [
+    //     { id:1, name: "All correct!!", retrieved:true, iconName:"golf-outline"},
+    //     { id:2, name: "All wrong!!", retrieved:true, iconName:"golf-outline" },
+    //     { id:3, name: "Get all correct in quiz ar Hard level!!", retrieved:true, iconName: "golf"},
+    // ];
+
+    // user_rewards.forEach(item => {
+        
+    // });
 
     const Item = ({item}) => (
-        <ListItem>
-            <Ionicons name={item.iconName} size={SIZES.icon} />
+        <ListItem bottomDivider>
+            <Ionicons name="golf" size={SIZES.icon} />
 
-            {/* <ion-icon name={item.iconName} size={SIZES.icon} /> */}
-                <Text>{item.name}</Text>
-                <Text>{item.retrievedTime}</Text>
+            <Text style={{lineHeight:20}}>{item.name}{"\n"}
+              Obtained at: {item.retrieveTime}
+            
+            </Text>
         </ListItem>
     );
   
     return(
         <FlatList
-            data={data}
+            data={user_rewards}
             renderItem= {Item}
             keyExtractor={item => item.id}
             // onRefresh={() => getStatements("")}
@@ -241,7 +253,7 @@ function rewardListScreen(){
 function studnetMainAccountScreen({navigation}){
     const stat = useSelector(state => state.statReducer.stat);
     const nickname = useSelector(state => state.nicknameReducer.nickname);
-    const rewards = useSelector(state => state.rewardReducer.rewards);
+    const rewards = useSelector(state => state.rewardReducer.reward);
     const dispatch = useDispatch(); 
     var totalPoints = 0;
     var counter = 0;
@@ -251,6 +263,9 @@ function studnetMainAccountScreen({navigation}){
     var dateLabels = [];
     var label = "";
     var avg = 0;
+
+
+    console.log('rewards: ',rewards);
 
     var dateLabelsTest = {};
     // dateLabelsTest[moment().subtract(5,'M').format("MM/YYYY")] = 0;
@@ -271,8 +286,6 @@ function studnetMainAccountScreen({navigation}){
                 totalPoints += item.score;
                 // dateLabelsTest[label] = totalPoints;
                 dateLabelsTest[label] = totalPoints;
-                
-              
             // });
         });
         avg = totalPoints/stat.length;
@@ -357,7 +370,9 @@ function studnetMainAccountScreen({navigation}){
                     marginVertical: 10,
                     }}
                 titleStyle={{ fontWeight: 'bold' }} 
-                onPress={()=>navigation.navigate("RewardList")}/>
+                onPress={()=>navigation.navigate("RewardList",{
+                    rewards:rewards
+                })}/>
 
             <Button title={STRINGS.accountSetting}
                 buttonStyle={{
