@@ -29,7 +29,6 @@ export function statementSubmitScreen({navigation}){
    
     const [title, setTitle] = useState("");
     const [des, setDes] = useState("");
-    const [difficulty, setDifficulty] = useState(0);
 
     const [isLoading,setIsLoading] = useState(false);
 
@@ -39,6 +38,10 @@ export function statementSubmitScreen({navigation}){
     
     const [currentImage, setCurrentImage] = useState(0);
     const [imageUris, setImageUris] = useState([]);
+
+    const [difficulty, setDifficulty] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
     const formData = new FormData();
 
     const toggleOverlay = (status) => {
@@ -201,6 +204,18 @@ const deleteImages = () => {
                 defaultValue={title}
                 placeholder="Enter statement name"
                 multiline={true}
+            />
+            <Text>Difficulty: </Text>
+            <Text>For tailor-made today's knowledge card </Text>
+            <ButtonGroup
+                textStyle={{fontWeight:"bold"}}
+                buttons={['Easy', 'Medium', 'Hard']}
+                selectedIndex={selectedIndex}
+                onPress={(value) => {
+                    setSelectedIndex(value);
+                    setDifficulty(value);
+                }}
+                containerStyle={{ marginBottom: 20 }}
             />
            {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}	style={{ flex: 1 }}>
                     <Text>Description:</Text>
