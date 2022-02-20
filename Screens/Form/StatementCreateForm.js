@@ -328,12 +328,12 @@ const deleteImages = () => {
                 title="Submit"
                 onPress={()=>insertStatement(title, des, images)}
             /> 
-            {/* <Overlay isVisible={isLoading}>
-                <View style={{height:100, width:250, margin:10}}>
-                    <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
-                    <LinearProgress color={COLORS.primary}/>
-                </View>
-            </Overlay> */}
+            <Overlay isVisible={isLoading} >
+              <View style={{height:100, width:250, margin:10}}>
+                <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
+                <LinearProgress color={COLORS.primary}/>
+              </View>
+            </Overlay>
         </ScrollView>
 
     );
