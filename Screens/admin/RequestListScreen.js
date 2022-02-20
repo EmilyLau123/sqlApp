@@ -106,12 +106,23 @@ export function requestList({navigation}){
 export function requestDetail({route, navigation}){
     const {question_id,iconName, statusString, question, difficulty, answer, options, authorName, authorRole, submitted_at, updated_at} = route.params;
     const images = route.params.images;
-    var imageName = [];
-    console.log(images);
-    images.forEach(image=>{
-        imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image);
-    });
-    
+    var imagesLength = 0;
+    if(images){
+        console.log('images: ',images);
+        imagesLength = images.length;
+        var imageName = [];
+        console.log(images);
+        images.forEach(image=>{
+            imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image);
+        });
+    }
+    var difficultyString = "Easy";
+    if(difficulty == 1){
+        difficultyString = "Medium";
+    }
+    if(difficulty == 2){
+        difficultyString = "Hard";
+    }
 //delete a question
 const deleteQuestion = async(question_id) => {
     console.log(question_id);
@@ -201,8 +212,9 @@ const changeQuestionStatus = async(question_id, status) => {
                 <Card borderRadius={SIZES.round}>
                     <Ionicons name={iconName} size={SIZES.icon} />
                     <Text style={{padding:SIZES.padding, fontSize:SIZES.text}}>Status: {statusString}</Text>
-                    <Text style={{padding:SIZES.padding}}>Question: {question}</Text>
-                    <Text style={{padding:SIZES.padding}}>Difficulty: {difficulty}</Text>
+                    <Text style={{padding:SIZES.padding}}>Question: </Text>
+                    <Text style={{padding:SIZES.padding}}>{question}</Text>
+                    <Text style={{padding:SIZES.padding}}>Difficulty: {difficultyString}</Text>
                     <Text style={{padding:SIZES.padding}}>Answer: </Text>
                     <View  style={{padding:SIZES.padding, borderRadius: 10,
                             borderWidth: 2,
@@ -224,8 +236,9 @@ const changeQuestionStatus = async(question_id, status) => {
                         </View>
                     ))}
                     
-                    <Text style={{padding:SIZES.padding}}>Uploaded images: {images.length}</Text>
-                     <SliderBox 
+                    <Text style={{padding:SIZES.padding}}>Uploaded images: {imagesLength}</Text>
+                    {images?(
+                        <SliderBox 
                         images={imageName}
                         sliderBoxHeight={400}
                         dotColor="#FFFFFF"
@@ -240,14 +253,18 @@ const changeQuestionStatus = async(question_id, status) => {
                         }}
                         paginationBoxVerticalPadding={20}
                         ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
-                        // resizeMethod={'resize'}
-                        // resizeMode={'cover'}
+                        resizeMethod={'resize'}
+                        resizeMode={'contain'}
                         parentWidth = {390}
                         circleLoop
                         imageLoadingColor={COLORS.primary}
                         // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
                         // currentImageEmitter = {(index)=>setCurrentImage(index)}
                     />
+                    ):(
+                        <></>
+                    )}
+                    
                     <Text style={{padding:SIZES.padding}}>Author: {authorName}</Text>
                     <Text style={{padding:SIZES.padding}}>Submitted_at: {submitted_at}</Text>
                     <Text style={{padding:SIZES.padding}}>Updated_at: {updated_at}</Text>
