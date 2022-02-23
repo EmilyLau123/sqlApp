@@ -11,7 +11,8 @@ import StatementDetailScreen from '../StatementDetailScreen.js';
 import { COLORS, SIZES, ICONS } from '../../components/style/theme.js';
 import { statementSubmitScreen } from '../form/StatementCreateForm.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+//image
+import { SliderBox } from "react-native-image-slider-box";
 
 
 
@@ -48,13 +49,13 @@ export function StatementsFullList({navigation}){
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
 
-  const getStatements = async (searchText) => {
+  const getStatements = async () => {
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
-    const API_URL = 'https://mufyptest.herokuapp.com/api/statements/all/find/'+searchText;
+    const API_URL = 'https://mufyptest.herokuapp.com/api/statements/all/find/';
 
     try {
-      console.log('searchText',searchText);
+      // console.log('searchText',searchText);
       setLoading(true);
      const response = await fetch(API_URL);
      const json = await response.json();
@@ -70,7 +71,7 @@ export function StatementsFullList({navigation}){
 
 useFocusEffect(
     React.useCallback(() => {
-      getStatements("");
+      getStatements();
       // Do something when the screen is focused
       return () => {
         console.log('not focused');
@@ -95,7 +96,7 @@ return(
         title: item.title,
         description:item.description,
         images:item.images,
-        author:item.author,
+        // author:item.author,
         submitted_at:item.submitted_at,
         updated_at:item.updated_at,
         iconName : iconName,
@@ -105,7 +106,7 @@ return(
         <ListItem>
         <Ionicons name={iconName} size={SIZES.icon} />
         <ListItem.Content>
-        <ListItem.Title>{item.title} ({item.author})</ListItem.Title>
+        <ListItem.Title>{item.title}</ListItem.Title>
         <Text>Submitted_at: {item.submitted_at}</Text>
         </ListItem.Content>
     </ListItem>
@@ -118,24 +119,24 @@ return(
 //   getStatements("");
 //  }, []);
 
- const searchButton = (searchText) => {
-    // setLoading(true);
-    setSearch(searchText);
-    getStatements(searchText);
-//    console.log(search);
- }
+//  const searchButton = (searchText) => {
+//     // setLoading(true);
+//     setSearch(searchText);
+//     getStatements();
+// //    console.log(search);
+//  }
 
 
     return(
       //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
-        <SearchBar 
+        {/* <SearchBar 
           searchIcon={true}
           clearIcon={true}
           placeholder="Type Here..."
           onChangeText={(value)=>searchButton(value)}
           value={search}
-        />
+        /> */}
         {isLoading?<ActivityIndicator/>:(
           <View>
           
@@ -164,8 +165,16 @@ return(
 
 
 export function StatementsFullDetail({route, navigation}){
-    const {images,hide,statement_id,iconName, title, description, author, submitted_at, updated_at} = route.params;
-    
+  const {hide,statement_id,iconName, title, description, submitted_at, updated_at} = route.params;
+  var images = route.params.images;
+  var imageName = [];
+  if(images){
+    console.log(images);
+    images.forEach(image=>{
+        imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image);
+    });
+    console.log(imageName);
+  }
 //delete a question
 const deleteStatement = async(statement_id) => {
     console.log(statement_id);
@@ -251,18 +260,48 @@ const changeStatementHide = async(statement_id, status) => {
     <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
         <ScrollView>
             <Card borderRadius={SIZES.round}>
+                
+                {/* <Text style={{padding:SIZES.padding}}>Author: {author} </Text> */}
+                <Text style={{padding:SIZES.padding, alignSelf:"center", fontWeight:"bold"}}>Title: {title} </Text>
+                <Card.Divider />  
                 <Ionicons name={iconName} size={SIZES.icon} />
                 <Text style={{padding:SIZES.padding}}>Status: {hide==1?("Hidden"):("Showing")} </Text>
-                <Text style={{padding:SIZES.padding}}>Author: {author} </Text>
-                <Text style={{padding:SIZES.padding}}>Title: {title} </Text>
-                {images[0]?(
-                    <Image  source={{ uri: images[0] }}
-                    style={{ width: 300, height: 200 }}
-                    PlaceholderContent={<ActivityIndicator />}>
-                </Image>
-                ):(<View></View>)}
-                
-                <Text style={{padding:SIZES.padding}}>Description: {description} </Text>
+                <Card.Divider />  
+                {images?(
+                <View>
+                <Card.Title>Uploaded images</Card.Title>
+                <Card.Divider />
+                 <SliderBox 
+                    images={imageName}
+                    sliderBoxHeight={400}
+                    dotColor="#FFEE58"
+                    inactiveDotColor="#90A4AE"
+                    dotStyle={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 15,
+                        marginHorizontal: 10,
+                        padding: 0,
+                        margin: 0
+                    }}
+                    paginationBoxVerticalPadding={20}
+                    ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                    resizeMethod={'resize'}
+                    resizeMode={'contain'}
+                    parentWidth = {390}
+                    circleLoop
+                    imageLoadingColor={COLORS.primary}
+                    // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+                    currentImageEmitter = {(index)=>setCurrentImage(index)}
+                />
+                    </View>
+                ):(
+                    <></>
+                )}
+                <Card.Title>Description</Card.Title>
+                <Card.Divider />
+                <Text style={{padding:SIZES.padding}}>{description} </Text>
+                <Card.Divider />
                 <Text style={{padding:SIZES.padding}}>Submitted At: {submitted_at} </Text>
                 <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
             </Card>

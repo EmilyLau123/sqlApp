@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 
 
 function homeWelcomeHeader({route,navigation}){
+  const username = useSelector(state => state.usernameReducer.username);
   const nickname = useSelector(state => state.nicknameReducer.nickname);
   const role = useSelector(state => state.roleReducer.role);
   const user_id = useSelector(state => state.userIdReducer.user_id);
@@ -102,9 +103,12 @@ const loginUser = async (username,password, userRole) => {
        }
      }
 
-  const getKnowledge = async () => {
-    const API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/';
-    
+  const getKnowledge = async (userRole) => {
+    console.log("know. role: ", userRole,username);
+    var API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/'+username;
+    if(userRole != 0){
+      API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/any';
+    }
 
     try {
         const response = await fetch(API_URL);
@@ -124,7 +128,7 @@ const loginUser = async (username,password, userRole) => {
       }
     }
 useEffect(() => {
-  getKnowledge();
+  getKnowledge(role,username);
  }, []);
 
   // const { role,nickname } = useUsername();

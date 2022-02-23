@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SIZES,COLORS } from '../components/style/theme';
 // import ImgToBase64 from 'react-native-image-base64';
 import { SliderBox } from "react-native-image-slider-box";
+import { WebView } from 'react-native-webview';
 
 const DetailStack = createStackNavigator();
 
@@ -18,15 +19,15 @@ const StatementDetailScreen = ({route}) => {
   const { title, description } = route.params;
   const images = route.params.images;
   var haveImage = false;
-    var imageName = [];
-    if(images){
-      haveImage = true;
-      console.log(images);
-      images.forEach(image=>{
-          imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image);
-      });
-      console.log(imageName);
-    }
+  var imageName = [];
+  if(images){
+    haveImage = true;
+    console.log(images);
+    images.forEach(image=>{
+        imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image);
+    });
+    console.log(imageName);
+  }
     
 
    return (
@@ -72,8 +73,16 @@ const StatementDetailScreen = ({route}) => {
                 PlaceholderContent={<ActivityIndicator />}>
           </Image> */}
         {/* })} */}
-        
-       <Text style={{fontSize:18}}>description:</Text>
+        <Card.Divider />
+       <Card.Title>Description</Card.Title>
+      <Card.Divider />
+      
+      <WebView
+        style={{flex:1, height:800}}
+        originWhitelist={['*']}
+        source={{ html: '<h1>This is a static HTML source!</h1>' }}
+      />
+      
        <Text style={{fontSize:16, paddingTop:5}}>{description}</Text>
       </Card>
       </ScrollView>
