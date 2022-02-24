@@ -29,7 +29,7 @@ const StatementDetailScreen = ({route}) => {
     
 
    return (
-    <SafeAreaView style={{ backgroundColor:COLORS.background}}>
+    <SafeAreaView style={{ backgroundColor:COLORS.background, height:SIZES.height-SIZES.listPaddingBottom}}>
     <ScrollView>
       <Card>
         <Card.Title style={{fontSize:20}}>{title}</Card.Title>

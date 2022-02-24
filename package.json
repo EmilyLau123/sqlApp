@@ -27,6 +27,8 @@
     "expo-status-bar": "~1.1.0",
     "express": "~4.17.1",
     "install": "^0.13.0",
+    "jodit": "^3.14.3",
+    "jodit-react": "^1.2.6",
     "moment": "^2.29.1",
     "npm": "^8.1.4",
     "react": "17.0.1",

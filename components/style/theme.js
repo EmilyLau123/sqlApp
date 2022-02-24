@@ -23,7 +23,7 @@ export const SIZES = {
     padding:5,
     margin:5,
     tabBarheight:90,
-    listPaddingBottom: 90+ 180
+    listPaddingBottom: 180
 
 }
 

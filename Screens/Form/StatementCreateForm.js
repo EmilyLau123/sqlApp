@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { SliderBox } from "react-native-image-slider-box";
 import * as FileSystem from 'expo-file-system'
 import {actions, RichEditor, RichToolbar} from "react-native-pell-rich-editor";
+// import {JoditEditor} from "jodit-react";
 
 // import {checkSize} from '../SignUpScreen';
 // import customButton from '../components/customButton.js';
@@ -260,6 +261,13 @@ const deleteImages = () => {
                 placeholder="Enter statement details"
 
                     />
+                    {/* <JoditEditor
+        ref={editor}
+        value={content}
+        config={config}
+        onBlur={handleUpdate}
+        onChange={(newContent) => {}}
+      /> */}
 
             <Text>
             {/* {images.forEach(image => {
