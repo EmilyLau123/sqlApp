@@ -41,6 +41,8 @@ export function statementSubmitScreen({navigation}){
 
     const [difficulty, setDifficulty] = useState(0);
     const [selectedIndex, setSelectedIndex] = useState(0);
+    //editor
+    const richText = React.useRef();
 
     const formData = new FormData();
 
@@ -217,23 +219,48 @@ const deleteImages = () => {
                 }}
                 containerStyle={{ marginBottom: 20 }}
             />
-           {/* <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}	style={{ flex: 1 }}>
-                    <Text>Description:</Text>
-                    <RichEditor
-                        // ref={des}
-                        onChange={ des => {
-                            setDes(des);
-                            console.log("descriptionText:", des);
-                        }}
-                    />
-                </KeyboardAvoidingView> */}
-            <Text>Description</Text><Input
+           
+            <Text>Description</Text>
+            {/* <Input
                 style={STYLES.input}
                 onChangeText={des => setDes(des)}
                 defaultValue={des}
                 placeholder="Enter statement details"
                 multiline={true}
+            /> */}
+            <RichToolbar
+                editor={richText}
+                actions={[  actions.setBold,
+                            actions.setItalic, 
+                            actions.setUnderline, 
+                            actions.heading1,
+                            actions.insertBulletsList,
+		                    actions.insertOrderedList, 
+                            actions.checkboxList, 
+                            actions.undo, 
+                            actions.redo,
+                            actions.removeFormat,
+                            actions.indent,
+                            actions.outdent,
+                            actions.table,
+                            actions.code,
+                            actions.alignRight,
+                            actions.alignLeft,
+                            actions.alignCenter,
+                            actions.fontSize,
+                            ]}
+                iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}
+                // customAction = {}
             />
+            <RichEditor
+                ref={richText}
+                onChange={ des => setDes(des)}
+                usecontainer = {true}
+                defaultValue={des}
+                placeholder="Enter statement details"
+
+                    />
+
             <Text>
             {/* {images.forEach(image => {
           <Image  source={{ uri: image }}
@@ -334,6 +361,7 @@ const deleteImages = () => {
                 <LinearProgress color={COLORS.primary}/>
               </View>
             </Overlay>
+            
         </ScrollView>
 
     );

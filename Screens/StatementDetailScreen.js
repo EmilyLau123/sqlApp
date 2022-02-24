@@ -18,10 +18,8 @@ const StatementDetailScreen = ({route}) => {
   
   const { title, description } = route.params;
   const images = route.params.images;
-  var haveImage = false;
   var imageName = [];
   if(images){
-    haveImage = true;
     console.log(images);
     images.forEach(image=>{
         imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image);
@@ -35,10 +33,10 @@ const StatementDetailScreen = ({route}) => {
     <ScrollView>
       <Card>
         <Card.Title style={{fontSize:20}}>{title}</Card.Title>
-        <Card.Divider></Card.Divider>
+        <Card.Divider />
         {/* {images.map(image => {
                     console.log('image',image); */}
-          {haveImage?(
+          {images.length!=0?(
                 <View>
                  <SliderBox 
                     images={imageName}
@@ -63,27 +61,24 @@ const StatementDetailScreen = ({route}) => {
                     // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
                     currentImageEmitter = {(index)=>setCurrentImage(index)}
                 />
-                    </View>
+                  <Card.Divider />
+
+                  </View>
                 ):(
                     <></>
                 )}
 
-          {/* <Image  source={{ uri: images[0] }}
-                style={{ width: 300, height: 200 }}
-                PlaceholderContent={<ActivityIndicator />}>
-          </Image> */}
-        {/* })} */}
-        <Card.Divider />
+    
        <Card.Title>Description</Card.Title>
       <Card.Divider />
-      
-      <WebView
-        style={{flex:1, height:800}}
+      <View style= {{ height:200 }}>
+      <WebView 
+        style={{flex:1}}
         originWhitelist={['*']}
-        source={{ html: '<h1>This is a static HTML source!</h1>' }}
+        source={{ html: '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body>'+description+'</body></html>' }}
       />
-      
-       <Text style={{fontSize:16, paddingTop:5}}>{description}</Text>
+      </View>
+       {/* <Text style={{fontSize:16, paddingTop:5}}>{description}</Text> */}
       </Card>
       </ScrollView>
     </SafeAreaView>
