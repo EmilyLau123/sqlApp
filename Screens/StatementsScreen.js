@@ -216,8 +216,8 @@ const styles = StyleSheet.create({
           onChangeText={(value)=>searchButton(value)}
           value={search}
         />
-          <View style={{paddingBottom:SIZES.tabBarheight+110}}>
           <FlatList
+            style={{height:SIZES.height - SIZES.tabBarheight-180}}
             data={data}
             renderItem= {renderItems}
             keyExtractor={item => item._id}
@@ -225,8 +225,7 @@ const styles = StyleSheet.create({
             refreshing={isLoading}
             // height={SIZES.height-400}
 
-          /> 
-          </View>
+          > </FlatList>
         </View>
           )} 
           {role==USER_ROLE.admin?(
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
                 placement="right"
                 icon={{ name: 'add', color: 'white' }}
                 color={COLORS.attention}
-                style={{zIndex:1, position:"absolute"}}
+                style={{zIndex:2, position:"absolute"}}
                 />
             ):(
               <View></View>
