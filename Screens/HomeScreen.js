@@ -24,6 +24,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 //auth
 import { Provider, useSelector } from 'react-redux';
 
+import { WebView } from 'react-native-webview';
+
 
 const styles = StyleSheet.create({
   Text: {
@@ -117,6 +119,8 @@ const loginUser = async (username,password, userRole) => {
         setknowledgeTitle(json[0].title);
         setknowledgeContent(json[0].description);
         setKnowledgeImages(json[0].images);
+        var des = '';
+        des = json[0].description.split('.')[0].substring(8);
         setDisplayContent(json[0].description.split('.')[0]+"...");
     
       } catch (error) {
@@ -155,8 +159,16 @@ useEffect(() => {
             <ActivityIndicator/>
           ):(
             <>
+            
             <Text size={SIZES.title} style={{padding:SIZES.text, fontWeight:"bold"}}>{knowledgeTitle}</Text>
-            <Text size={SIZES.text} style={{padding:SIZES.text}}>{displayContent}</Text>
+            {/* <Text size={SIZES.text} style={{padding:SIZES.text}}>{displayContent}</Text> */}
+            {/* <View style={{height:100}}> */}
+            <WebView 
+              style={{flex:1,height:80}}
+              originWhitelist={['*']}
+              source={{ html: '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: Optima">'+displayContent+'</body></html>' }}
+            />
+            {/* </View> */}
             <Button title='View Details' 
                   buttonStyle={{
                     backgroundColor: COLORS.primary,

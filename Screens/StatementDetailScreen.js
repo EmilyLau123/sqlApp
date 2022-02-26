@@ -71,11 +71,11 @@ const StatementDetailScreen = ({route}) => {
     
        <Card.Title>Description</Card.Title>
       <Card.Divider />
-      <View style= {{ height:200 }}>
+      <View style= {{ height:580 }}>
       <WebView 
         style={{flex:1}}
         originWhitelist={['*']}
-        source={{ html: '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body>'+description+'</body></html>' }}
+        source={{ html: '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: Optima">'+description+'</body></html>' }}
       />
       </View>
        {/* <Text style={{fontSize:16, paddingTop:5}}>{description}</Text> */}

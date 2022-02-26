@@ -13,6 +13,7 @@ import { statementSubmitScreen } from '../form/StatementCreateForm.js';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //image
 import { SliderBox } from "react-native-image-slider-box";
+import { WebView } from 'react-native-webview';
 
 
 
@@ -300,7 +301,13 @@ const changeStatementHide = async(statement_id, status) => {
                 )}
                 <Card.Title>Description</Card.Title>
                 <Card.Divider />
-                <Text style={{padding:SIZES.padding}}>{description} </Text>
+                <View style= {{ height:200 }}>
+                  <WebView 
+                    style={{flex:1}}
+                    originWhitelist={['*']}
+                    source={{ html: '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: Optima">'+description+'</body></html>' }}
+                  />
+                </View>
                 <Card.Divider />
                 <Text style={{padding:SIZES.padding}}>Submitted At: {submitted_at} </Text>
                 <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
