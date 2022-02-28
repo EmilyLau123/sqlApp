@@ -31,7 +31,7 @@ const StatementDetailScreen = ({route}) => {
    return (
     <SafeAreaView style={{ backgroundColor:COLORS.background, height:SIZES.height-SIZES.listPaddingBottom}}>
     <ScrollView>
-      <Card>
+      <Card containerStyle={{paddingBottom:20,marginBottom:30}}>
         <Card.Title style={{fontSize:20}}>{title}</Card.Title>
         <Card.Divider />
         {/* {images.map(image => {
@@ -59,7 +59,7 @@ const StatementDetailScreen = ({route}) => {
                     circleLoop
                     imageLoadingColor={COLORS.primary}
                     // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
-                    currentImageEmitter = {(index)=>setCurrentImage(index)}
+                    // currentImageEmitter = {(index)=>setCurrentImage(index)}
                 />
                   <Card.Divider />
 
