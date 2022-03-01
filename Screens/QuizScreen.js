@@ -101,6 +101,7 @@ export function Quiz({route, navigation}){
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
    setTimerStatus(false);
+    const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     var userRewardId = [];
     var retrievedReward = [];
     //all correct in one quiz (first time only)
@@ -108,10 +109,12 @@ export function Quiz({route, navigation}){
         userRewardId.push(item.id);
     });
     if(score >= 5 && userRewardId.includes(0) == false){
+      dispatch(changeReward({id:0, name:REWARDS[0],retrieveTime: currentTime}));
       retrievedReward.push({id:0, name:REWARDS[0],retrieveTime: currentTime});
     }
     //all wrong
     if(score <= 0 && userRewardId.includes(1) == false){
+      dispatch(changeReward({id:1, name:REWARDS[1],retrieveTime: currentTime}));
       retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
     }
     var cumlativeScore = 0;
@@ -120,14 +123,14 @@ export function Quiz({route, navigation}){
         cumlativeScore += item.score;
     });
     if(cumlativeScore+score >= 30 && userRewardId.includes(2) == false){
+      dispatch(changeReward({id:2, name:REWARDS[2],retrieveTime: currentTime}));
       retrievedReward.push({id:2, name:REWARDS[2],retrieveTime: currentTime});
     }
     
     // retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
-    const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
 
-    console.log(storingData);
+    console.log("storingData: ",storingData,"retrievedReward: ",retrievedReward);
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/quiz/update/';
     if(user_role != USER_ROLE.student){
       toggleOverlay(false);
@@ -152,7 +155,7 @@ export function Quiz({route, navigation}){
         if(response.status == 200){
             // console.log("storingData",storingData);
             dispatch(changeStat(storingData));
-            dispatch(changeReward(retrievedReward));
+            // dispatch(changeReward(retrievedReward));
             navigation.navigate("Congrats",{
               score:score,
               rewards: retrievedReward,
