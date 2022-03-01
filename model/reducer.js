@@ -68,7 +68,7 @@ export const rewardReducer = (state = rewardInitState, action) => {
 
 export const usernameReducer = (state = usernameInitState, action) => {
   switch (action.type) {
-    case actions.CHANGE_USER_ID:
+    case actions.CHANGE_USERNAME:
       return{
         ...state,
         username: action.payload.username

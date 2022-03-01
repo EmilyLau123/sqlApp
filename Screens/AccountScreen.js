@@ -20,6 +20,7 @@ import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS} from '../componen
 import 'react-native-gesture-handler';
 import {
     LineChart,
+    PieChart,
   } from "react-native-chart-kit";
 
 //auth
@@ -76,26 +77,6 @@ function adminMainAccountScreen({navigation}){
             </ListItem>
             );
     }
-    // const requestRenderItem = ({ item }) => {
-    //     var iconName = ICONS.approved;
-    //     var status = item.status;
-    //     if(status == STATUS.rejected){
-    //         iconName = ICONS.rejected;
-    //     }else if(status == STATUS.waiting){
-    //         iconName = ICONS.waiting;
-    //     }
-        // else{
-        //     iconName = ICONS.others;
-        // }
-    //     return(
-    //     <ListItem>
-    //         <Ionicons name={iconName} size={SIZES.icon} />
-    //         <ListItem.Content>
-    //         <Text size={SIZES.text}>{item.question}</Text>
-    //         </ListItem.Content>
-    //     </ListItem>
-    //     );
-    // }
 
     return(
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
@@ -105,17 +86,7 @@ function adminMainAccountScreen({navigation}){
                     <Card.Divider />
                     <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
                     {/* <Text style={{padding:SIZES.padding}}>Number of requests of: 100</Text> */}
-                    <Text></Text>
                 </Card>
-                
-                    {/* <Card borderRadius={SIZES.round}>
-                        <Card.Title>User list</Card.Title>
-                        <Card.Divider />
-                        <FlatList
-                            data={USERDATA}
-                            renderItem={userRenderItem}
-                            keyExtractor={item => item.id}
-                        /> */}
                     
                         <Button title='View User List'
                             buttonStyle={{
@@ -132,17 +103,6 @@ function adminMainAccountScreen({navigation}){
                             titleStyle={{ fontWeight: 'bold' }}  
                          onPress={()=>navigation.navigate("UserList")}/>
                     
-                        {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-                    {/* </Card> */}
-                {/* <Card borderRadius={SIZES.round}>
-                    <Card.Title>Reqest from teacher</Card.Title>
-
-                    <Card.Divider />
-                    <FlatList
-                        data={REQUESTDATA}
-                        renderItem={requestRenderItem}
-                        keyExtractor={item => item.id}
-                    /> */}
                     <Button title='View Request List'
                             buttonStyle={{
                                 backgroundColor: COLORS.primary,
@@ -171,8 +131,7 @@ function adminMainAccountScreen({navigation}){
                                 }}
                             titleStyle={{ fontWeight: 'bold' }}  
                          onPress={()=>navigation.navigate("StatementsFullList")}/>     
-                    {/* <Button title='ScrollView Details' onPress={()=>navigation.navigate("Performance")}></Button> */}
-                {/* </Card> */}
+                 
                 <Button title={STRINGS.accountSetting}
                     buttonStyle={{
                         backgroundColor: COLORS.secondary,
@@ -211,20 +170,6 @@ function adminMainAccountScreen({navigation}){
 
 function rewardListScreen({route}){
     const user_rewards = route.params.rewards;
-    
-    
-    // for(let i = 0; i<user_rewards.length; i++){
-    //     rewardList.push(REWARDS[user_rewards[i]]);
-    // }
-    // [
-    //     { id:1, name: "All correct!!", retrieved:true, iconName:"golf-outline"},
-    //     { id:2, name: "All wrong!!", retrieved:true, iconName:"golf-outline" },
-    //     { id:3, name: "Get all correct in quiz ar Hard level!!", retrieved:true, iconName: "golf"},
-    // ];
-
-    // user_rewards.forEach(item => {
-        
-    // });
 
     const Item = ({item}) => (
         <ListItem bottomDivider>
@@ -260,38 +205,93 @@ function studnetMainAccountScreen({navigation}){
     var dateLabels = [];
     var label = "";
     var avg = 0;
-
+    var total_quiz_easy = 0;
+    var total_quiz_medium = 0;
+    var total_quiz_hard = 0;
+    var comment = "Keep it up!!"; // same as last month
+    var percentage = 0;
+    var iconName = "arrow-forward";
+    var iconColor = "black";
 
     console.log('rewards: ',rewards);
 
     var dateLabelsTest = {};
-    // dateLabelsTest[moment().subtract(5,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(4,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(3,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(2,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().subtract(1,'M').format("MM/YYYY")] = 0;
     dateLabelsTest[moment().format("MM/YYYY")] = 0;
+    
     // console.log(stat);  
     if(stat.length != 0){
         console.log('stat: ', stat);
         stat.forEach(item => {
             console.log('item: ',item);
+            //graph
             var itemTime = item.completeTime;
             label = itemTime.split('-')[1]+"/"+itemTime.split('-')[0];
-            // label = ['02/2022','01/2022','12/2021','11/2021',];
-            // item.forEach(detail => { // = item[i]
-                totalPoints += item.score;
-                // dateLabelsTest[label] = totalPoints;
-                dateLabelsTest[label] = totalPoints;
-            // });
+            totalPoints += item.score;
+            dateLabelsTest[label] += item.score;
+            console.log("data: ",dateLabelsTest,"label: ",label);
+            //quiz analysis
+            if(item.quizDifficulty == 0){
+                total_quiz_easy += 1;
+            }
+            if(item.quizDifficulty == 1){
+                total_quiz_medium += 1;
+            }
+            if(item.quizDifficulty == 2){
+                total_quiz_hard += 1;
+            }
+            
         });
         avg = totalPoints/stat.length;
 
     }else{
         graph = false;
     }
+    
     data = Object.values(dateLabelsTest);
     dateLabels = Object.keys(dateLabelsTest);
+    percentage = data[data.length-1] - data[data.length-2];
+    percentage = percentage / data[data.length-1];
+    percentage = percentage * 100 ;
+    percentage = Math.round(percentage, -2) ;
+    if(percentage < 0){
+        iconName = "arrow-down";
+        iconColor = "red";
+        comment = "Your Performance is dropping, try to read more, and gain more points in the quiz!!";
+
+    }else if(percentage > 0){
+        iconName = "arrow-up";
+        iconColor = "green";
+        comment = "You are improving!!";
+    }
+    //pie chart data
+    const pieData = [
+        {
+            name: "Easy",
+            population: total_quiz_easy,
+            color: "rgba(65, 223, 170, 1)",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 13
+        },
+        {
+            name: "Medium",
+            population: total_quiz_medium,
+            color: "rgba(131, 167, 234, 1)",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 13
+        },
+        {
+            name: "Hard",
+            population: total_quiz_hard,
+            color: "rgba(238, 164, 80, 1)",
+            legendFontColor: "#7F7F7F",
+            legendFontSize: 13
+        },
+    ]
+
     return(
     <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
         <ScrollView>
@@ -299,16 +299,34 @@ function studnetMainAccountScreen({navigation}){
                 <Card.Title>Your Information</Card.Title>
                 <Card.Divider />
                 <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
+                <Card.Divider />
+                <Card.Title>Overall quiz record</Card.Title>
+                <Card.Divider />
+                <PieChart
+                    data={pieData}
+                    width={SIZES.width}
+                    height={220}
+                    chartConfig={{
+                        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+                    }}
+                    accessor={"population"}
+                    backgroundColor={"transparent"}
+                    paddingLeft={"15"}
+                    center={[5, 5]}
+                    absolute
+                    />
                 {/* <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text> */}
                 <Text style={{padding:SIZES.padding}}>Quizes done: {stat.length}</Text>
                 <Text style={{padding:SIZES.padding}}>Quizes average score: {avg.toFixed(0)}</Text>
             </Card>
             <Card borderRadius={SIZES.round}>
-            <Card.Title>Perfromance graph</Card.Title>
+            <Card.Title>Perfromance graph (Recent 5 months)</Card.Title>
                 <Card.Divider />
                 {/* https://github.com/indiespirit/react-native-chart-kit */}
                 {graph?(
                     <>
+                    <Text><Ionicons name={iconName} size={SIZES.icon} style={{color:iconColor}}/>
+                    {percentage} %</Text>
                     <LineChart
                     data={{
                     labels: dateLabels,
@@ -325,20 +343,20 @@ function studnetMainAccountScreen({navigation}){
                     yAxisInterval={1} // optional, defaults to 1
                     xAxisInterval={1} 
                     chartConfig={{
-                    backgroundColor: COLORS.primary,
-                    backgroundGradientFrom: COLORS.primary,
-                    backgroundGradientTo: COLORS.secondary,
-                    decimalPlaces: 0, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 225, 227, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    style: {
-                        borderRadius: 5
-                    },
-                    propsForDots: {
-                        r: "6",
-                        strokeWidth: "2",
-                        stroke: "#4BB1B9"
-                    }
+                        backgroundColor: COLORS.primary,
+                        backgroundGradientFrom: COLORS.primary,
+                        backgroundGradientTo: COLORS.secondary,
+                        decimalPlaces: 0, // optional, defaults to 2dp
+                        color: (opacity = 1) => `rgba(255, 225, 227, ${opacity})`,
+                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        style: {
+                            borderRadius: 5
+                        },
+                        propsForDots: {
+                            r: "6",
+                            strokeWidth: "2",
+                            stroke: "#4BB1B9"
+                        }
                     }}
                     // bezier //make line smooth
                     style={{
@@ -346,8 +364,10 @@ function studnetMainAccountScreen({navigation}){
                     borderRadius: 16
                     }}
                 />
-                {/* <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
-                <Text style={{padding:SIZES.padding}}>you are improving!!</Text> */}
+                <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
+                <Text style={{padding:SIZES.padding}}>{comment}</Text>
+                    
+                
                 </>
                 ):(
                     <Text>No quiz record, Let's do some quiz!</Text>

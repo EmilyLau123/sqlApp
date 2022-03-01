@@ -70,8 +70,8 @@ const toggleOverlay =() => {
         setIsView(!isView);
     };
 
-const loginUser = async (username,password, userRole) => {
-        console.log(username,password, userRole);
+const loginUser = async (inputUsername,password, userRole) => {
+        console.log(inputUsername,password, userRole);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
@@ -84,7 +84,7 @@ const loginUser = async (username,password, userRole) => {
                     'Accept':'application/json'
                 },
              body: JSON.stringify({
-                username: username,
+                username: inputUsername,
                 password: password,
                 role: userRole
             }),
@@ -105,7 +105,7 @@ const loginUser = async (username,password, userRole) => {
        }
      }
 
-  const getKnowledge = async (userRole) => {
+  const getKnowledge = async (userRole, username) => {
     console.log("know. role: ", userRole,username);
     var API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/'+username;
     if(userRole != 0){
@@ -115,7 +115,7 @@ const loginUser = async (username,password, userRole) => {
     try {
         const response = await fetch(API_URL);
         const json = await response.json();
-        console.log(json[0]);
+        console.log("knowledge card content:", json[0]);
         setknowledgeTitle(json[0].title);
         setknowledgeContent(json[0].description);
         setKnowledgeImages(json[0].images);
