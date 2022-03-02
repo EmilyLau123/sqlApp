@@ -22,7 +22,7 @@ import {
     LineChart,
     PieChart,
   } from "react-native-chart-kit";
-
+import {LinearGradient} from 'expo-linear-gradient';
 //auth
 import {changeNickname, changeRole, changeUserId, replaceStat, replaceReward, changeEmail, changePassword} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
@@ -172,9 +172,21 @@ function rewardListScreen({route}){
     const user_rewards = route.params.rewards;
 
     const Item = ({item}) => (
-        <ListItem bottomDivider>
-            <Ionicons name="golf" size={SIZES.icon} />
-            <Text style={{lineHeight:20}}>{item.name}{"\n"}
+        <ListItem 
+            linearGradientProps={{
+                colors: ['#3ba9f7','#4a84f0' ],
+                start: { x: 1, y: 3 },
+                end: { x: 0.2, y: 2 },
+            }}
+            ViewComponent={LinearGradient}
+            margin={10}
+            // containerStyle = {{rounded}}
+            pad={20}
+            containerStyle={{borderRadius:30}}
+        >
+        
+            <Ionicons name="golf" size={SIZES.icon} color="white"/>
+            <Text style={{lineHeight:25, color:"white", fontSize:16, fontWeight:"bold", fontFamily:"AmericanTypewriter-Bold"}}>{item.name}{"\n"}
               Obtained at: {item.retrieveTime}
             </Text>
         </ListItem>
