@@ -220,7 +220,8 @@ function studnetMainAccountScreen({navigation}){
     var total_quiz_easy = 0;
     var total_quiz_medium = 0;
     var total_quiz_hard = 0;
-    var comment = "Keep it up!!"; // same as last month
+    var performanceComment = "Keep it up!!"; // same as last month
+    var difficultyComment = "Seems like you have done many easy level quiz,let's try medium "; // same as last month
     var percentage = 0;
     var iconName = "arrow-forward";
     var iconColor = "black";
@@ -272,12 +273,12 @@ function studnetMainAccountScreen({navigation}){
     if(percentage < 0){
         iconName = "arrow-down";
         iconColor = "red";
-        comment = "Your Performance is dropping, try to read more, and gain more points in the quiz!!";
+        performanceComment = "Your Performance is dropping, try to read more, and gain more points in the quiz!!";
 
     }else if(percentage > 0){
         iconName = "arrow-up";
         iconColor = "green";
-        comment = "You are improving!!";
+        performanceComment = "You are improving!!";
     }
     //pie chart data
     const pieData = [
@@ -330,6 +331,8 @@ function studnetMainAccountScreen({navigation}){
                 {/* <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text> */}
                 <Text style={{padding:SIZES.padding}}>Quizes done: {stat.length}</Text>
                 <Text style={{padding:SIZES.padding}}>Quizes average score: {avg.toFixed(0)}</Text>
+                {/* <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
+                <Text style={{padding:SIZES.padding}}>{difficultyComment}</Text> */}
             </Card>
             <Card borderRadius={SIZES.round}>
             <Card.Title>Perfromance graph (Recent 5 months)</Card.Title>
@@ -377,7 +380,7 @@ function studnetMainAccountScreen({navigation}){
                     }}
                 />
                 <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
-                <Text style={{padding:SIZES.padding}}>{comment}</Text>
+                <Text style={{padding:SIZES.padding}}>{performanceComment}</Text>
                     
                 
                 </>

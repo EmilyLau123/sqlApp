@@ -67,27 +67,23 @@ const styles = StyleSheet.create({
 
 // async function StatementsSectionList({navigation}){
  function StatementsFlatList({navigation}){
-  const mounted=useRef();
+  // const mounted=useRef();
   const role = useSelector(state => state.roleReducer.role);
-
-
+  // const [expanded, setExpanded] = useState(false);
     const renderItems = ({ item }) => (
       <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
-        // statement_id: item._id,
         title:item.title,
         description:item.description,
         images:item.images,
-        // author:item.author, 
-        // images: item.images
 
       })}>
         <ListItem>
           <ListItem.Content>
           <Text>{item.title}</Text>
           </ListItem.Content>
+          <ListItem.Chevron />
         </ListItem>
       </TouchableOpacity>
-//  <Text>dsa</Text>
     );
   // const [data, setData] = useState([]);
   
@@ -203,6 +199,8 @@ const styles = StyleSheet.create({
 //     console.log("sth changed");
 //   }},[role]
 // );
+    
+
     return(
       //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
@@ -225,7 +223,59 @@ const styles = StyleSheet.create({
             refreshing={isLoading}
             // height={SIZES.height-400}
 
-          > </FlatList>
+          />
+          {/* <ListItem.Accordion
+          content={
+            <>
+              <ListItem.Content>
+                <ListItem.Title>Easy</ListItem.Title>
+              </ListItem.Content>
+            </>
+          }
+          isExpanded={expanded}
+          onPress={() => {
+            setExpanded(!expanded);
+          }}>
+          {data.map((item) => (
+              <ListItem key={item.id} bottomDivideronPress={() => navigation.navigate("StatementDetail",{
+                title:item.title,
+                description:item.description,
+                images:item.images,
+              })}>
+                <ListItem.Content>
+                <Text style={{paddingLeft:10}}>{item.title}</Text>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+          ))}
+        </ListItem.Accordion>
+
+        <ListItem.Accordion
+          content={
+            <>
+              <ListItem.Content>
+                <ListItem.Title>Medium</ListItem.Title>
+              </ListItem.Content>
+            </>
+          }
+          isExpanded={expanded}
+          onPress={() => {
+            setExpanded(!expanded);
+          }}>
+          {data.map((item) => (
+              <ListItem key={item.id} bottomDivideronPress={() => navigation.navigate("StatementDetail",{
+                title:item.title,
+                description:item.description,
+                images:item.images,
+              })}>
+                <ListItem.Content>
+                <Text style={{paddingLeft:10}}>{item.title}</Text>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+          ))}
+        </ListItem.Accordion> */}
+
         </View>
           )} 
           {role==USER_ROLE.admin?(
