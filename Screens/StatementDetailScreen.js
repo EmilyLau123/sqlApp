@@ -2,14 +2,17 @@ import React, { Component, useState } from 'react';
 import {
   Card,
     Text,
-    Image
+    Image,
+    Overlay
     } from 'react-native-elements';
-import { SafeAreaView, ActivityIndicator, View,ScrollView } from 'react-native';
+import { SafeAreaView, ActivityIndicator, View, ScrollView, Modal } from 'react-native';
     //import{Stacks} from './SqlSectionList';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SIZES,COLORS } from '../components/style/theme';
-// import ImgToBase64 from 'react-native-image-base64';
+//image handling
 import { SliderBox } from "react-native-image-slider-box";
+import ImageViewer from 'react-native-image-zoom-viewer';
+//description format
 import { WebView } from 'react-native-webview';
 
 const DetailStack = createStackNavigator();
@@ -19,12 +22,23 @@ const StatementDetailScreen = ({route}) => {
   const { title, description } = route.params;
   const images = route.params.images;
   var imageName = [];
+  var imageUrlForZoom = [];
+  var [clickedIndex, setClickedIndex] = useState(0);
+  var [imageOverlay, setImageOverlay] = useState(false);
   if(images){
-    console.log(images);
+    console.log("images: ", images);
     images.forEach(image=>{
-        imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image);
+      imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image);
+      imageUrlForZoom.push({url:"https://res.cloudinary.com/emilyfyp/image/upload/v1644909267/statements/"+image});
     });
-    console.log(imageName);
+    // console.log(imageName);
+  }
+
+  function toggleImageOverlay(status, clickedIndex){
+    setImageOverlay(status);
+    setClickedIndex(clickedIndex);
+    console.log("status: ", status, "clickedIndex: ", clickedIndex);
+    console.log("imageName:",imageName);
   }
     
 
@@ -58,7 +72,7 @@ const StatementDetailScreen = ({route}) => {
                     parentWidth = {390}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
-                    // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+                    onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}
                     // currentImageEmitter = {(index)=>setCurrentImage(index)}
                 />
                   <Card.Divider />
@@ -81,6 +95,9 @@ const StatementDetailScreen = ({route}) => {
        {/* <Text style={{fontSize:16, paddingTop:5}}>{description}</Text> */}
       </Card>
       </ScrollView>
+      <Overlay visible={imageOverlay} overlayStyle={{height:600, width:400}} onBackdropPress={()=>toggleImageOverlay(false)}>
+        <ImageViewer imageUrls={imageUrlForZoom} index={clickedIndex} backgroundColor="gray" maxOverflow={200} enableSwipeDown onSwipeDown={() => toggleImageOverlay(false)}/>
+      </Overlay>
     </SafeAreaView>
       );
  

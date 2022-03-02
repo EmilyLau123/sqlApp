@@ -18,6 +18,8 @@ import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,change
 import { useDispatch, useSelector } from 'react-redux';
 //image
 import { SliderBox } from "react-native-image-slider-box";
+import ImageViewer from 'react-native-image-zoom-viewer';
+
 //counter
 import CountDown from 'react-native-countdown-component';
 
@@ -81,9 +83,15 @@ export function Quiz({route, navigation}){
   const [score, setScore] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [intDifficulty, setIntDifficulty] = useState(0);
-  const [haveImage, setHaveImage] = useState(false);
+  
   const [time, setTime] = useState(60);
-  const [timerStatus, setTimerStatus] = useState(true);
+  const [timerStatus, setTimerStatus] = useState(false);
+  //images
+  const [imageName, setImageName] = useState([]);
+  const [haveImage, setHaveImage] = useState(false);
+  const [imageUrlForZoom, setImageUrlForZoom] = useState([]);
+  const [clickedIndex, setClickedIndex] = useState(0);
+  const [imageOverlay, setImageOverlay] = useState(false);
   
   // const [isSending, setIsSending] = useState(false);
 
@@ -95,6 +103,11 @@ export function Quiz({route, navigation}){
   const totalQuestion = 4;
   const {difficulty} = route.params;
   
+  function toggleImageOverlay(status, clickedIndex){
+    setImageOverlay(status);
+    setClickedIndex(clickedIndex);
+    console.log("status: ", status, "clickedIndex: ", clickedIndex);
+  }
 
   const updateUser = async (user_id,int_difficulty,score) => {
     // console.log(user_id, storingData, score);
@@ -126,8 +139,6 @@ export function Quiz({route, navigation}){
       dispatch(changeReward({id:2, name:REWARDS[2],retrieveTime: currentTime}));
       retrievedReward.push({id:2, name:REWARDS[2],retrieveTime: currentTime});
     }
-    
-    // retrievedReward.push({id:1, name:REWARDS[1],retrieveTime: currentTime});
     const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
 
     console.log("storingData: ",storingData,"retrievedReward: ",retrievedReward);
@@ -174,62 +185,28 @@ export function Quiz({route, navigation}){
 
   const nextQuestion = async(key) => {
       if(questionIndex >= totalQuestion){
-        //Add result to the user's quizeDone array[obj_id, mark(1/0)]
         if(questionIndex == totalQuestion){
           toggleOverlay(true);
           console.log('isLast? ',isLast);
           if(data[questionIndex].answer==key){
             console.log("right",questionIndex);
             setScore(score + 1);
-            // alert(score);
-            // alert(this.DATA[this.state.questionNumberIndex].answer);
-            // storingData.push({question_id:data[questionIndex]._id, 
-            //                   point: 1,
-            //                   answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
-            //                 });
-            
-            // setStoringData(storingData);
           }else{
             console.log("wrong",questionIndex);
-            // storingData.push({question_id:data[questionIndex]._id, 
-            //                   point: 0, 
-            //                   answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
-            //                 });
-            // setStoringData(storingData);
   
           }
           console.log('score: ', score);
           var result = await updateUser(user_id,intDifficulty, score);
           console.log('result: ', result);
-          // result.then(function(){
-          //   console.log("success")}
-          // ).catch(function(err){
-          //   console.log("Fail:",err)}
-          // );
         }   
       }else{
         if(data[questionIndex].answer==key){
           console.log("right");
-
-          // alert(this.DATA[this.state.questionNumberIndex].answer);
-          // storingData.push({question_id:data[questionIndex]._id, 
-          //                   point: 1,
-          //                   answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
-          //                 });
           setQuestionIndex(questionIndex + 1);
           setScore(score + 1);
-          
-          // setStoringData(storingData);
         }else{
           console.log("wrong");
-          // storingData.push({question_id:data[questionIndex]._id, 
-          //                   point: 0, 
-          //                   answerTime:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
-          //                 });
-
           setQuestionIndex(questionIndex + 1);
-          // setStoringData(storingData);
-
         }
         
       }
@@ -237,6 +214,8 @@ export function Quiz({route, navigation}){
       console.log('questionIndex: ',questionIndex);
       console.log('NextQ: ',data[questionIndex]);
     }
+
+  
 
   const getQuestions = async (difficulty) => {
     
@@ -272,10 +251,14 @@ export function Quiz({route, navigation}){
         json.forEach(item=>{
           if(item.hasOwnProperty('images')){
             console.log("item.images:  ",item.images);
-              for(let i = 0; i< item.images.length;i++){
-            item.images[i] = 'https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/'+item.images[i];
-          console.log('item: ',item);
-          }
+              item.images.forEach(image=>{
+                var fullUrl = "https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image;
+                imageUrlForZoom.push({url:fullUrl});
+                imageName.push(fullUrl);
+                // console.log('item: ',item);
+                console.log("imageUrlForZoom: ",imageUrlForZoom, "fullUrl: ",fullUrl);
+
+              });
           // console.log(imageUris);
         }
       });
@@ -293,10 +276,6 @@ export function Quiz({route, navigation}){
   useEffect(() => {
     getQuestions(difficulty);
   }, []);
-  
-// setTimeout(() => {
-//   setTime(time-1);
-// }, 1000);
   //For making questions show randomly
   const dataLength = data.length;
 
@@ -306,20 +285,6 @@ export function Quiz({route, navigation}){
         {isLoading?<ActivityIndicator/>:(
         <View>
           <Card borderRadius={SIZES.round}>
-          {/* {time == 0?(
-            Alert.alert(
-                  "Message",
-                  "Time is up!",
-                  [{
-                      text: "Ok",
-                      onPress: () => updateUser(user_id,intDifficulty,score),
-                      style: "cancel"
-                    },
-                  ])
-          ):(
-            <Text>{time}</Text>
-          )} */}
-            
             <CountDown
               until={time}
               size={20}
@@ -350,7 +315,7 @@ export function Quiz({route, navigation}){
 
         {data[questionIndex].hasOwnProperty('images')?(
           <SliderBox 
-              images={data[questionIndex].images}
+              images={imageName}
               sliderBoxHeight={400}
               dotColor="#FFEE58"
               inactiveDotColor="#90A4AE"
@@ -369,7 +334,7 @@ export function Quiz({route, navigation}){
               parentWidth = {390}
               circleLoop
               imageLoadingColor={COLORS.primary}
-              // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+              onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}
               // currentImageEmitter = {(index)=>setCurrentImage(index)}
           />
         ):(
@@ -436,28 +401,10 @@ export function Quiz({route, navigation}){
                 <LinearProgress color={COLORS.primary}/>
               </View>
             </Overlay>
-          
-                
-            
+            <Overlay visible={imageOverlay} overlayStyle={{height:600, width:400}} onBackdropPress={()=>toggleImageOverlay(false)}>
+              <ImageViewer imageUrls={imageUrlForZoom} index={clickedIndex} backgroundColor="gray" maxOverflow={200} enableSwipeDown onSwipeDown={() => toggleImageOverlay(false)}/>
+            </Overlay>
           </View>
-              // :
-              // <View style={{backgroundColor:COLORS.background, height:SIZES.height, }}>
-              //       <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center", paddingTop:40 }}>Oops!</Text> 
-              //        <Text style={{fontSize:18, fontWeight:"bold", color:"white", alignSelf:"center"}}>No questions found!</Text> 
-              //        <Button title="Back to Home"
-              //                   buttonStyle={{
-              //                     backgroundColor: COLORS.attention,
-              //                     borderWidth: 2,
-              //                     borderColor: COLORS.attention,
-              //                     borderRadius: 30,
-              //                 }}
-              //                 containerStyle={{
-              //                     width: 'auto',
-              //                     marginHorizontal: 50,
-              //                     marginVertical: 10,
-              //                 }}
-              //                   onPress={()=>navigation.navigate("Home")}/>
-              //     </View>
             
         )}
         </ScrollView>
