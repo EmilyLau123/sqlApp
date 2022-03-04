@@ -6,13 +6,17 @@ import {
     Card,
     Button,
     Overlay,
-    LinearProgress
+    LinearProgress,
+    ListItem
     } from 'react-native-elements'; 
 import { SectionList, FlatList,View, ActivityIndicator, SafeAreaView, Model, Alert,ScrollView } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import {ANSWER,COLORS,SIZES,DIFFICULTY,USER_ROLE, REWARDS} from '../components/style/theme.js';
 import moment from 'moment';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {LinearGradient} from 'expo-linear-gradient';
+
 //auth
 import {changeNickname, changeRole, changeUserId, changeStat, changeEmail,changePassword,changeReward,} from '../model/action'
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,7 +46,7 @@ export function congratScreen({route,navigation}){
   const {score} = route.params;
   var rewards = route.params.rewards;
   // var rewards = [0,1];
-  console.log(rewards);
+  console.log("rewards: ", rewards);
   return(
     <SafeAreaView
         style={{backgroundColor:COLORS.background, height:SIZES.height,
@@ -56,9 +60,31 @@ export function congratScreen({route,navigation}){
         <Text style={{color:"white", fontWeight:"bold", fontSize:20, padding:20}}>You have earn reward(s):</Text>
         
         {rewards.map(item =>{
-          return <Text style={{color:"white", fontWeight:"bold", fontSize:18, padding:5}}>
-            {item.name}
-          </Text>})}
+          return (
+          <>
+            <ListItem 
+            linearGradientProps={{
+                colors: ['#3ba9f7','#4a84f0' ],
+                start: { x: 1, y: 3 },
+                end: { x: 0.2, y: 2 },
+            }}
+            ViewComponent={LinearGradient}
+            margin={10}
+            // containerStyle = {{rounded}}
+            pad={20}
+            containerStyle={{borderRadius:30}}
+        >
+        
+            <Ionicons name="golf" size={SIZES.icon} color="white"/>
+            <Text style={{color:"white", fontSize:16, fontWeight:"bold", fontFamily:"AmericanTypewriter-Bold"}}>{item.name}
+            </Text>
+        </ListItem>
+        </>
+        // <Text style={{color:"white", fontWeight:"bold", fontSize:18, padding:5}}>
+        //     {item.name}
+        //   </Text>
+          )
+          })}
         </>
             ):(
               <></>
@@ -121,7 +147,7 @@ export function Quiz({route, navigation}){
     user_reward.forEach(item => {
         userRewardId.push(item.id);
     });
-    if(score >= 5 && userRewardId.includes(0) == false){
+    if(score >= 4 && userRewardId.includes(0) == false){
       dispatch(changeReward({id:0, name:REWARDS[0],retrieveTime: currentTime}));
       retrievedReward.push({id:0, name:REWARDS[0],retrieveTime: currentTime});
     }
@@ -139,14 +165,15 @@ export function Quiz({route, navigation}){
       dispatch(changeReward({id:2, name:REWARDS[2],retrieveTime: currentTime}));
       retrievedReward.push({id:2, name:REWARDS[2],retrieveTime: currentTime});
     }
-    const storingData = {quizDifficulty: int_difficulty, score: score, completeTime: currentTime};
+
+    const storingData = {quizDifficulty: int_difficulty, score: score+1, completeTime: currentTime};
 
     console.log("storingData: ",storingData,"retrievedReward: ",retrievedReward);
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/quiz/update/';
     if(user_role != USER_ROLE.student){
       toggleOverlay(false);
       navigation.navigate("Congrats",{
-          score:score
+          score:score+1
         });
     }else{
       try {
@@ -168,7 +195,7 @@ export function Quiz({route, navigation}){
             dispatch(changeStat(storingData));
             // dispatch(changeReward(retrievedReward));
             navigation.navigate("Congrats",{
-              score:score,
+              score:score+1,
               rewards: retrievedReward,
             });
         }
@@ -178,7 +205,7 @@ export function Quiz({route, navigation}){
         // setLoading(false);
         toggleOverlay(false);
         console.log("User updated");
-        console.log(score);
+        console.log(score+1);
       }
     }
  }

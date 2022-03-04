@@ -1,6 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, {Component} from 'react';
-import { Alert,TouchableOpacity, Dimensions, StyleSheet, ScrollView, FlatList, SafeAreaView } from 'react-native';
+import {Alert,
+        TouchableOpacity,
+        Dimensions, 
+        StyleSheet, 
+        ScrollView, 
+        FlatList, 
+        SafeAreaView,
+        View } from 'react-native';
 import {  Text, Button, Card, ListItem, Icon, ListItemProps } from 'react-native-elements';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUpScreen from './SignUpScreen';
@@ -191,16 +198,19 @@ function rewardListScreen({route}){
             </Text>
         </ListItem>
     );
+
   
     return(
-        <FlatList
-            data={user_rewards}
-            renderItem= {Item}
-            keyExtractor={item => item.id}
-            // onRefresh={() => getStatements("")}
-            // refreshing={isLoading}
-            // height={SIZES.height-400}
-        /> 
+        <View style={{backgroundColor:"white"}}>
+                <FlatList
+                    data={user_rewards}
+                    renderItem= {Item}
+                    keyExtractor={item => item.id}
+                    // onRefresh={() => getStatements("")}
+                    // refreshing={isLoading}
+                    // height={SIZES.height-400}
+                /> 
+        </View>
     );
 }
 
