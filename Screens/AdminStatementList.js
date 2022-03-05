@@ -81,7 +81,8 @@ return(
         submitted_at:item.submitted_at,
         updated_at:item.updated_at,
         iconName : iconName,
-        hide:item.hide
+        hide:item.hide,
+        difficulty:item.difficulty
 
       })}>
         <ListItem>

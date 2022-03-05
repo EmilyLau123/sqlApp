@@ -92,7 +92,7 @@ useFocusEffect(
     }
     
 return(
-    <TouchableOpacity onPress={()=>navigation.navigate("StatementFullDetail",{
+    <TouchableOpacity onPress={()=>navigation.navigate("statementEditScreen",{
         statement_id:item._id,
         title: item.title,
         description:item.description,
@@ -101,7 +101,8 @@ return(
         submitted_at:item.submitted_at,
         updated_at:item.updated_at,
         iconName : iconName,
-        hide:item.hide
+        hide:item.hide,
+        difficulty:item.difficulty
 
       })}>
         <ListItem>

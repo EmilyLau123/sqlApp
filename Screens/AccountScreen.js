@@ -16,7 +16,9 @@ import accountSettingScreen from './AccountSettingScreen';
 import { userList,userDetail } from './admin/UserListScreen';
 import {requestList,requestDetail} from './admin/RequestListScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {StatementsFullList, StatementsFullDetail} from './admin/AdminStatementList';
+import {StatementsFullList} from './admin/AdminStatementList';
+import {statementEditScreen} from './form/AdminStatementDetail';
+
 import {HistoryFullList, HistoryFullDetail} from './teacher/SubmitHistoryScreen';
 import {PasswordEmailScreen} from './form/PasswordEmailScreen';
 import {PasswordResetScreen} from './form/PasswordResetScreen';
@@ -483,7 +485,7 @@ const AccountScreen = () => {
                     <AccountStack.Screen name="UserDetail" component={userDetail} options={{ title: 'User List' }}/>
                     <AccountStack.Screen name="RequestDetail" component={requestDetail} options={{ title: 'Request List' }}/>
                     <AccountStack.Screen name="StatementsFullList" component={StatementsFullList} options={{ title: 'All Statements' }}/>
-                    <AccountStack.Screen name="StatementFullDetail" component={StatementsFullDetail} options={{ title: 'Statement Detail' }}/>
+                    <AccountStack.Screen name="statementEditScreen" component={statementEditScreen} options={{ title: 'Statement Edit Detail' }}/>
                 </AccountStack.Navigator>
                 );
         }else{
