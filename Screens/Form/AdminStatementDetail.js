@@ -69,15 +69,18 @@ export function statementEditScreen({navigation, route}){
         setHide(!hide);
       };
     
+    const imageConvert = () => {
     if(images.length != 0){
         console.log("images: ",images);
         
         images.forEach(item => {
             let imageFullName = "https://res.cloudinary.com/emilyfyp/image/upload/v1646458947/statements/"+item;
             imageUris.push(imageFullName);
-            imageUrlForZoom.push(imageFullName);
-            console.log(imageUris);
-        });
+            
+            imageUrlForZoom.push({url:imageFullName});
+            console.log(imageUrlForZoom);
+            });
+        }
     }
     // if(images.length != 0){
     //     setHaveImage(false);
@@ -212,6 +215,11 @@ const deleteImages = () => {
             setHaveImage(false);
         }
     }
+
+    useEffect(() =>{
+            imageConvert()
+        },[]
+    );
    
 
     return(
@@ -346,7 +354,7 @@ const deleteImages = () => {
                     paginationBoxVerticalPadding={20}
                     ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
                     resizeMethod={'resize'}
-                    resizeMode={'cover'}
+                    resizeMode={'contain'}
                     parentWidth = {390}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
