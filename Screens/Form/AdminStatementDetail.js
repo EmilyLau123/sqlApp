@@ -32,7 +32,10 @@ export function statementEditScreen({navigation, route}){
         }
     );
 
-   console.log("params: ",route.params.description);
+   console.log("params: ",route.params);
+   
+
+    const [statement_id, setStatement_id] = useState(route.params.statement_id);
     const [title, setTitle] = useState(route.params.title);
     const [des, setDes] = useState(route.params.description);
     const [hide, setHide] = useState(route.params.hide);
@@ -45,9 +48,12 @@ export function statementEditScreen({navigation, route}){
     
     const [currentImage, setCurrentImage] = useState(0);
     const [imageUris, setImageUris] = useState([]);
+    const [imageAdded, setImageAdded] = useState(false);
 
     const [difficulty, setDifficulty] = useState(route.params.difficulty);
     const [selectedIndex, setSelectedIndex] = useState(route.params.difficulty);
+
+    const [checked, setChecked] = useState(route.params.hide == 0?false:true);
 
     const [imageUrlForZoom, setImageUrlForZoom] = useState([]);
     const [clickedIndex, setClickedIndex] = useState(0);
@@ -66,7 +72,9 @@ export function statementEditScreen({navigation, route}){
         console.log("status: ", status, "clickedIndex: ", clickedIndex);
     }
     const toggleSwitch = () => {
-        setHide(!hide);
+        setChecked(!checked);
+        setHide(checked == false?0:1);
+        console.log("hide: ",hide);
       };
     
     const imageConvert = () => {
@@ -82,83 +90,127 @@ export function statementEditScreen({navigation, route}){
             });
         }
     }
-    // if(images.length != 0){
-    //     setHaveImage(false);
-    //     for(let i = 0; i<images.length; i++){
-    //         imageUris.push("https://res.cloudinary.com/emilyfyp/image/upload/v1646458947/statements/"+images[i]);
-    //     }
-    //     console.log("imageUris: ", imageUris);
-    // }
-
 const updateStatement = async (title, description,images) => {
-        console.log(title, description,images);
+        // console.log("originImages: ",originImages,"images: ",imageUris);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com/api/question/insert/
         const API_URL = 'https://mufyptest.herokuapp.com/api/statement/update/';
+        var apiBody = JSON.stringify({
+            statement_id: statement_id,
+            title: title,
+            description: description,
+            difficulty: difficulty,
+            hide: hide,
+            images: images
+        });
+        if(imageAdded == true){//need image api
+            console.log("sth added");
+            try {
+                toggleOverlay(true);
+                const response = await fetch(API_URL,{
+                method:'POST',
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Accept':'application/json'
+                    },
+                body: apiBody,
+            });
+            const json = await response.json();
+            console.log('JSON: ',json);
+            if(images.length != 0){
+                for(let i = 0; i<images.length;i++){
+                    formData.append(i, images[i]);
+                    console.log('formData: ',formData);
+                }}
+            //upload img
+            const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/statement/images/insert/'+statement_id;
+                const imageResponse = await fetch(IMAGES_API_URL,{
+                method:"POST",
+                    headers: {
+                        'Content-Type':'multipart/form-data',
+                        'Accept':'application/json',
+                    },
+                body: formData,
+            });
+
+            const imageResponseJson = await imageResponse.json();
+            if(response.status == 200 && imageResponse.status == 200){
+                toggleOverlay(false);
+                console.log("json",json);
+                Alert.alert("Success","Edit success",
+                [
+                    {
+                    text: "Back to home",
+                    onPress: () => navigation.goBack(),
+                    style: "close",
+                    },
+                    
+                ]
+                );
+            }else{
+                console.log("json",json);
+                alert("error");
+
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            // setLoading(false);
+            console.log("update with image done!!");
+        }
+
+
     
+     }else{//dont need image api
+        console.log("nothing added");
+        apiBody = JSON.stringify({
+            statement_id: statement_id,
+            title: title,
+            description: description,
+            difficulty: difficulty,
+            hide: hide,
+            images: imageUris
+        });
+
         try {
             toggleOverlay(true);
             const response = await fetch(API_URL,{
-             method:'POST',
+            method:'POST',
                 headers: {
                     'Content-Type':'application/json',
                     'Accept':'application/json'
                 },
-             body: JSON.stringify({
-                title: title,
-                description: description,
-                difficulty: difficulty,
-            }),
-         });
-        const json = await response.json();
-        console.log('JSON: ',json);
-        const statement_id = json._id;
-        if(haveImage){
-        for(let i = 0; i<images.length;i++){
-            formData.append(i, images[i]);
-            console.log(formData);
-        }}
-        //upload img
-        const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/statement/images/update/'+statement_id;
-            const imageResponse = await fetch(IMAGES_API_URL,{
-             method:"POST",
-                headers: {
-                    'Content-Type':'multipart/form-data',
-                    'Accept':'application/json',
-                },
-             body: formData,
-         });
-
-         const imageResponseJson = await imageResponse.json();
-         if(response.status == 200 && imageResponse.status == 200){
-             toggleOverlay(false);
-            console.log("json",json);
-            Alert.alert("Success","Edit success",
-            [
-                {
-                  text: "Back to home",
-                  onPress: () => navigation.navigate("HomePage",{
-                      role:1,
-                      status:true,
-                  }),
-                  style: "close",
-                },
-                
-              ]
-            );
-         }else{
-            console.log("json",json);
-            alert("error");
-
-         }
-       } catch (error) {
-         console.error(error);
-       } finally {
+            body: apiBody,
+            });
+            const json = await response.json();
+            console.log('JSON: ',json);
+            
+            if(response.status == 200){
+                toggleOverlay(false);
+                console.log("json",json);
+                Alert.alert("Success","Edit success",
+                [
+                    {
+                        text: "Back to home",
+                        onPress: () => navigation.goBack(),
+                        style: "close",
+                    },
+                    
+                    ]
+                );
+            }else{
+                console.log("json",json);
+                alert("error");
+            }
+        } catch (error) {
+        console.error(error);
+        } finally {
         // setLoading(false);
-        console.log("done");
-       }
+        console.log("update with image done!!");
+        }
      }
+}
 
 //to upload image NOT DONE
 const pickImage = async () => {
@@ -174,10 +226,7 @@ const pickImage = async () => {
     if (!result.cancelled) {
         console.log(result.uri);
         var sizeConfirm = await checkSize(result.uri);//<= 5MB
-        // console.log("size: ",sizeConfirm.then(re=>{
-        //                                     if(re == false){
-        //                                         return alert("Image is too large, cannot exceed 5MB");
-        //                                         }}));
+      
         console.log(sizeConfirm);
             if(sizeConfirm == false){
                 return alert("Image is too large, cannot exceed 5MB");
@@ -190,6 +239,7 @@ const pickImage = async () => {
         setImages(images);
         setHaveImage(false);
         setHaveImage(true);
+        setImageAdded(true);
         console.log('confirm selected: ',imageUris);
         // console.log(images);
     };
@@ -214,6 +264,7 @@ const deleteImages = () => {
         if(imageUris.length == 0){
             setHaveImage(false);
         }
+        setImageAdded(false);
     }
 
     useEffect(() =>{
@@ -252,7 +303,7 @@ const deleteImages = () => {
             <Text>Hide?: </Text>
             <Switch
                     value={hide==0?false:true}
-                    onValueChange={(value) => setHide(value)}
+                    onValueChange={() => toggleSwitch()}
                 />
            
             <Text>Description</Text>
@@ -398,7 +449,7 @@ const deleteImages = () => {
                 title="Update"
                 onPress={()=>updateStatement(title, des, images)}
             /> 
-            <Overlay isVisible={isLoading} >
+            <Overlay isVisible={isLoading} onBackdropPress={()=>toggleOverlay(false)} >
               <View style={{height:100, width:250, margin:10}}>
                 <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
                 <LinearProgress color={COLORS.primary}/>

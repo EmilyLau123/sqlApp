@@ -111,10 +111,7 @@ const insertStatement = async (title, description,images) => {
             [
                 {
                   text: "Back to home",
-                  onPress: () => navigation.navigate("HomePage",{
-                      role:1,
-                      status:true,
-                  }),
+                  onPress: () => navigation.goBack(),
                   style: "close",
                 },
                 {
@@ -318,8 +315,8 @@ const deleteImages = () => {
                     }}
                     paginationBoxVerticalPadding={20}
                     ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
-                    // resizeMethod={'resize'}
-                    // resizeMode={'cover'}
+                    resizeMethod={'resize'}
+                    resizeMode={'contain'}
                     parentWidth = {390}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
