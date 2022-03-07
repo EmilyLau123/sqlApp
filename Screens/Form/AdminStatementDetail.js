@@ -424,7 +424,7 @@ const deleteImages = () => {
                 <Text style={{alignSelf:"center"}}>Maximum 5 images. Each cannot exceed 5 MB</Text>
                  <SliderBox 
                     images={imageUris}
-                    sliderBoxHeight={400}
+                    sliderBoxHeight={250}
                     dotColor="#FFEE58"
                     inactiveDotColor="#90A4AE"
                     dotStyle={{
@@ -436,10 +436,16 @@ const deleteImages = () => {
                         margin: 0
                     }}
                     paginationBoxVerticalPadding={20}
-                    ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                    ImageComponentStyle={{
+                        width: '90%', 
+                        margin:10,
+                        alignItems: "center",
+                        alignSelf: "center",
+                        justifyContent: "center",
+                      }}
                     resizeMethod={'resize'}
                     resizeMode={'contain'}
-                    parentWidth = {390}
+                    parentWidth = {360}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
                     onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}

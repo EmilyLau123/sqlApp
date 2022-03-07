@@ -66,10 +66,16 @@ const StatementDetailScreen = ({route}) => {
                         margin: 0
                     }}
                     paginationBoxVerticalPadding={20}
-                    ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                    ImageComponentStyle={{
+                      width: '90%', 
+                      margin:10,
+                      alignItems: "center",
+                      alignSelf: "center",
+                      justifyContent: "center",
+                    }}
                     resizeMethod={'resize'}
                     resizeMode={'contain'}
-                    parentWidth = {390}
+                    parentWidth = {360}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
                     onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}

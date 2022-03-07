@@ -307,11 +307,11 @@ export function Quiz({route, navigation}){
   const dataLength = data.length;
 
   return(
-    <SafeAreaView style={{backgroundColor:COLORS.background}}>
+    <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height-SIZES.tabBarheight}}>
       <ScrollView>
         {isLoading?<ActivityIndicator/>:(
         <View>
-          <Card borderRadius={SIZES.round}>
+          <Card borderRadius={SIZES.round} containerStyle={{marginBottom:15}}>
             <CountDown
               until={time}
               size={20}
@@ -343,9 +343,19 @@ export function Quiz({route, navigation}){
         {data[questionIndex].hasOwnProperty('images')?(
           <SliderBox 
               images={imageName}
-              sliderBoxHeight={400}
+              sliderBoxHeight={250}
               dotColor="#FFEE58"
               inactiveDotColor="#90A4AE"
+              paginationBoxStyle={{
+                position: "absolute",
+                bottom: 0,
+                padding: 0,
+                alignItems: "center",
+                alignSelf: "center",
+                justifyContent: "center",
+                paddingVertical: 10
+              }}
+
               dotStyle={{
                   width: 10,
                   height: 10,
@@ -355,10 +365,16 @@ export function Quiz({route, navigation}){
                   margin: 0
               }}
               paginationBoxVerticalPadding={20}
-              ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+              ImageComponentStyle={{
+                width: '90%', 
+                margin:10,
+                alignItems: "center",
+                alignSelf: "center",
+                justifyContent: "center",
+              }}
               resizeMethod={'resize'}
               resizeMode={'contain'}
-              parentWidth = {390}
+              parentWidth = {360}
               circleLoop
               imageLoadingColor={COLORS.primary}
               onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}
