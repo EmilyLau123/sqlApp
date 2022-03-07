@@ -142,14 +142,14 @@ return(
         {isLoading?<ActivityIndicator/>:(
           <View>
           
-        <View style={{paddingBottom:SIZES.listPaddingBottom}}>
+        <View >
           <FlatList
           data={data}
           renderItem= {renderItem}
           keyExtractor={item => item._id}
           onRefresh={() => getStatements("")}
           refreshing={isLoading}
-            
+          style={{paddingBottom:SIZES.listPaddingBottom-80}}
           /> 
         
           </View>

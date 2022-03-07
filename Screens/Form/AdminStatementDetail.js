@@ -12,15 +12,6 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 export function statementEditScreen({navigation, route}){
 
-    // const { hide,
-    //         statement_id,
-    //         iconName, 
-    //         title, 
-    //         description, 
-    //         submitted_at, 
-    //         updated_at
-    //     } = route.params;
-
     const styles = StyleSheet.create({
         header:{
             color:"black", 
@@ -43,7 +34,7 @@ export function statementEditScreen({navigation, route}){
     const [isLoading,setIsLoading] = useState(false);
 
     const [images, setImages] = useState(route.params.images);
-    const [haveImage, setHaveImage] = useState(images?true:false);
+    const [haveImage, setHaveImage] = useState(images.lrngth != 0?true:false);
     const [showImage, setShowImage] = useState(false);
     
     const [currentImage, setCurrentImage] = useState(0);
@@ -102,7 +93,6 @@ const updateStatement = async (title, description,images) => {
             description: description,
             difficulty: difficulty,
             hide: hide,
-            images: images
         });
         if(imageAdded == true){//need image api
             console.log("sth added");
@@ -170,7 +160,7 @@ const updateStatement = async (title, description,images) => {
             description: description,
             difficulty: difficulty,
             hide: hide,
-            images: imageUris
+            images: images
         });
 
         try {
@@ -211,6 +201,45 @@ const updateStatement = async (title, description,images) => {
         }
      }
 }
+//delete a question
+const deleteStatement = async(statement_id) => {
+    console.log(statement_id);
+    //https://reactnative.dev/movies.json
+    //http://localhost:8099/api/retrieveStatements/
+    const API_URL = 'https://mufyptest.herokuapp.com/api/statement/delete/';
+
+    try {
+     const response = await fetch(API_URL,{
+         method:"POST",
+            headers: {
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+         body: JSON.stringify({
+            statement_id: statement_id,
+            }),
+        
+     });
+     const json = await response.json();
+     if(response.status == 200){
+        console.log("json",json);
+        Alert.alert("Success","Statement deleted",
+        [
+            {
+              text: "Close",
+              onPress: () => navigation.navigate("StatementsFullList"),
+              style: "close",
+            },
+          ]
+        );
+     }
+   } catch (error) {
+     console.error(error);
+   } finally {
+    // setLoading(false);
+    console.log("done");
+   }
+ }
 
 //to upload image NOT DONE
 const pickImage = async () => {
@@ -274,6 +303,10 @@ const deleteImages = () => {
    
 
     return(
+        <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+
+        >
         <ScrollView style={{backgroundColor:COLORS.background}}>
             <Card borderRadius={SIZES.round}>
                 <Text style={styles.header}>Edit a statement's detail</Text>
@@ -449,6 +482,24 @@ const deleteImages = () => {
                 title="Update"
                 onPress={()=>updateStatement(title, des, images)}
             /> 
+            <Button
+                title="Delete"
+                buttonStyle={{
+                    backgroundColor: 'red',
+                    borderWidth: 2,
+                    borderColor: 'red',
+                    borderRadius: 30,
+                    opacity:0.8
+                    }}
+                containerStyle={{
+                    width: 'auto',
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                    }}
+                titleStyle={{ fontWeight: 'bold' }}
+                onPress={()=>deleteStatement(statement_id)}
+            />
+
             <Overlay isVisible={isLoading} onBackdropPress={()=>toggleOverlay(false)} >
               <View style={{height:100, width:250, margin:10}}>
                 <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>Loading...</Text>
@@ -460,4 +511,5 @@ const deleteImages = () => {
             </Overlay>
             
         </ScrollView>
+        </KeyboardAvoidingView>
     )}
