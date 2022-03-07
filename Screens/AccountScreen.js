@@ -203,7 +203,7 @@ function rewardListScreen({route}){
 
   
     return(
-        <View style={{backgroundColor:"white"}}>
+        <View style={{backgroundColor:"white", height:SIZES.height-SIZES.listPaddingBottom}}>
                 <FlatList
                     data={user_rewards}
                     renderItem= {Item}

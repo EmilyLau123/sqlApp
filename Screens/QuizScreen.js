@@ -337,8 +337,8 @@ export function Quiz({route, navigation}){
             <Text style={{fontWeight:"bold", alignSelf:"center", fontSize:24, paddingBottom:SIZES.padding}}>{questionIndex+1} / 5</Text>
             
             <Card.Divider />
-            <Text style={{fontSize:16, alignSelf:"center", paddingBottom:10}}>Q: {data[questionIndex].question}</Text>
-          
+            <Text style={{fontSize:16, alignSelf:"center", paddingBottom:10, fontWeight:"bold"}}>{data[questionIndex].question}</Text>
+            <Card.Divider />
 
         {data[questionIndex].hasOwnProperty('images')?(
           <SliderBox 
