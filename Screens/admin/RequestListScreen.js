@@ -240,7 +240,7 @@ const changeQuestionStatus = async(question_id, status) => {
                     {images?(
                         <SliderBox 
                         images={imageName}
-                        sliderBoxHeight={400}
+                        sliderBoxHeight={250}
                         dotColor="#FFFFFF"
                         inactiveDotColor="#90A4AE"
                         dotStyle={{
@@ -252,10 +252,16 @@ const changeQuestionStatus = async(question_id, status) => {
                             margin: 0
                         }}
                         paginationBoxVerticalPadding={20}
-                        ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
+                        ImageComponentStyle={{
+                            width: '90%', 
+                            margin:10,
+                            alignItems: "center",
+                            alignSelf: "center",
+                            justifyContent: "center",
+                          }}
                         resizeMethod={'resize'}
                         resizeMode={'contain'}
-                        parentWidth = {390}
+                        parentWidth = {360}
                         circleLoop
                         imageLoadingColor={COLORS.primary}
                         // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
@@ -293,9 +299,9 @@ const changeQuestionStatus = async(question_id, status) => {
                 <Button
                         title="Reject"
                         buttonStyle={{
-                            backgroundColor: 'green',
+                            backgroundColor: 'orange',
                             borderWidth: 2,
-                            borderColor: 'green',
+                            borderColor: 'orange',
                             borderRadius: 30,
                             opacity:0.8
                             }}
@@ -373,9 +379,9 @@ const changeQuestionStatus = async(question_id, status) => {
                     <Button
                         title="Reject"
                         buttonStyle={{
-                            backgroundColor: 'green',
+                            backgroundColor: 'orange',
                             borderWidth: 2,
-                            borderColor: 'green',
+                            borderColor: 'orange',
                             borderRadius: 30,
                             opacity:0.8
                             }}

@@ -289,7 +289,7 @@ const pickImage = async () => {
                   <Text style={{alignSelf:"center"}}>Maximum 5 images. Each cannot exceed 5 MB</Text>
                  <SliderBox 
                     images={imageUris}
-                    sliderBoxHeight={400}
+                    sliderBoxHeight={250}
                     dotColor="#FFEE58"
                     inactiveDotColor="#90A4AE"
                     dotStyle={{
@@ -300,11 +300,16 @@ const pickImage = async () => {
                         padding: 0,
                         margin: 0
                     }}
-                    paginationBoxVerticalPadding={20}
-                    ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
-                    // resizeMethod={'resize'}
-                    // resizeMode={'cover'}
-                    parentWidth = {390}
+                    ImageComponentStyle={{
+                        width: '90%', 
+                        margin:10,
+                        alignItems: "center",
+                        alignSelf: "center",
+                        justifyContent: "center",
+                      }}
+                    resizeMethod={'resize'}
+                    resizeMode={'contain'}
+                    parentWidth = {360}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
                     // onCurrentImagePressed={(index) => toggleShowImage(true, index)}

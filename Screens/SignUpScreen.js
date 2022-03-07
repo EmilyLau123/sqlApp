@@ -4,6 +4,7 @@ import React, {Component, useState} from 'react';
 import {View, StyleSheet, SafeAreaView,Alert,ScrollView, Model, ActivityIndicator} from 'react-native';
 import { Text, Button, Input, Card, Tab, TabView, LinearProgress, Overlay, Image } from 'react-native-elements';
 import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
+import { SliderBox } from "react-native-image-slider-box";
 
 //import { Form, FormItem } from 'react-native-form-component';
 //https://www.npmjs.com/package/react-native-form-component
@@ -28,12 +29,15 @@ const SignUpScreen = ({navigation}) => {
     const [teacherPassword, setTeacherPassword] = useState("");
     const [teacherNickname, setTeacherNickname] = useState("");
     const [teacherEmail, setTeacherEmail] = useState("");
-    const [image, setImage] = useState({});
+    const [image, setImage] = useState([]);
     //image
     const [index, setIndex] = useState(0);
     const [haveImage, setHaveImage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showImage, setShowImage] = useState(false);
+    const [imageUri, setImageUri] = useState([]);
+    const [currentImage, setCurrentImage] = useState(0);
+    
     const formData = new FormData();
 
         const [re, setRe] = useState();
@@ -62,8 +66,9 @@ const SignUpScreen = ({navigation}) => {
             if(sizeConfirm == false){
                 return alert("Image is too large, cannot exceed 5MB");
             }else{
-                setImage({uri: result.uri, type:result.type});// name:'test.jpg',
+                image.push({uri: result.uri, type:result.type});// name:'test.jpg',
                 setHaveImage(true);
+                imageUri.push(result.uri);
                 console.log('confirm selected: ',image);
             }
             
@@ -88,9 +93,16 @@ const SignUpScreen = ({navigation}) => {
             if(fileInfo.size > 5000000){
                 return false;
             }
-            return false;
         }
         return true;
+    }
+
+    const deleteImages = () => {
+        // delete images[currentImage];
+        image.splice(currentImage, 1);
+        imageUri.splice(currentImage, 1);
+        console.log('confirm delete: ',image);
+        setHaveImage(false);
     }
 
    
@@ -156,7 +168,7 @@ const SignUpScreen = ({navigation}) => {
                         //     },
                         // ]);
                     }else{
-                        alert("Image file too large! Maximun: 5MB");
+                        alert("Something went wrong");
                     }
                 }else{
                     console.log('signed up');
@@ -189,7 +201,7 @@ const SignUpScreen = ({navigation}) => {
 console.log(index, role);
 
     return(
-        <SafeAreaView style={{backgroundColor:COLORS.background,}}>
+        <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height-SIZES.listPaddingBottom}}>
             <ScrollView>
                 <Tab
                     value={index}
@@ -269,7 +281,7 @@ console.log(index, role);
                                         alignItems: 'center', //Centered vertically
                                         flex:1}}>
                         
-                        <Card borderRadius={SIZES.round}>
+                        <Card borderRadius={SIZES.round} containerStyle={{paddingBottom:20,marginBottom:30, height:"auto"}}>
                             <Text style={{fontWeight:"bold", padding:5}}>
                             After your registration is approved,
                              you can submit add quiz question to enlarge 
@@ -309,7 +321,58 @@ console.log(index, role);
                                     placeholder="we will notify you via email"
                                 />
 
-                            <Button title='Images to proof'
+                            
+                        {haveImage?(
+                <View>
+                <Text style={{alignSelf:"center"}}>Maximum 1 image. Image cannot exceed 5 MB</Text>
+                 <SliderBox 
+                    images={imageUri}
+                    sliderBoxHeight={250}
+                    dotColor="#FFEE58"
+                    inactiveDotColor="#90A4AE"
+                    dotStyle={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 15,
+                        marginHorizontal: 10,
+                        padding: 0,
+                        margin: 0
+                    }}
+                    paginationBoxVerticalPadding={20}
+                    ImageComponentStyle={{
+                        width: '90%', 
+                        margin:10,
+                        alignItems: "center",
+                        alignSelf: "center",
+                        justifyContent: "center",
+                      }}
+                    resizeMethod={'resize'}
+                    resizeMode={'contain'}
+                    parentWidth = {360}
+                    circleLoop
+                    imageLoadingColor={COLORS.primary}
+                    // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+                    currentImageEmitter = {(index)=>setCurrentImage(index)}
+                    />
+                    <Button title='Delete current image'
+                        titleStyle={{ fontWeight: 'bold' }}
+                        buttonStyle={{
+                            backgroundColor: COLORS.primary,
+                            borderWidth: 2,
+                            borderColor: COLORS.primary,
+                            borderRadius: 30,
+                            }}
+                        containerStyle={{
+                            width: 'auto',
+                            marginHorizontal: 50,
+                            marginVertical: 10,
+                            }}
+                        onPress={()=>deleteImages()}
+                    />
+                    </View>
+                    ):(
+                        
+                        <Button title='Images to proof'
 
                                 buttonStyle={{
                                     backgroundColor: COLORS.attention,
@@ -326,26 +389,7 @@ console.log(index, role);
                                 onPress={()=>pickImage()}
 
                             />
-                        {haveImage?(
-                            <Button title='View uploaded image'
-                                buttonStyle={{
-                                    backgroundColor: COLORS.primary,
-                                    borderWidth: 2,
-                                    borderColor: COLORS.primary,
-                                    borderRadius: 30,
-                                    }}
-                                containerStyle={{
-                                    width: 'auto',
-                                    marginHorizontal: 50,
-                                    marginVertical: 10,
-                                    }}
-                                titleStyle={{ fontWeight: 'bold' }}
-                                onPress={()=>setShowImage(true)}
-
-                            />
-                        ):(
-                            <></>
-                        )}
+                    )}
                             
                             
                             <Button title='SIGN UP AS TEACHER'
@@ -364,13 +408,6 @@ console.log(index, role);
                                 onPress={()=>insertUser(teacherUsername,teacherPassword, teacherNickname, role, teacherEmail)}
                             />
                         </Card>
-                        {/* <Overlay isVisible={haveImage} on>
-                            <Text>Uploaded Images</Text>
-                            <Image
-                                source={{uri:}}
-                            
-                            />
-                        </Overlay> */}
                         
                     </TabView.Item>
                     

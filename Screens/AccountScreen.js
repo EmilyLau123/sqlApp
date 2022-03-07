@@ -183,8 +183,8 @@ function rewardListScreen({route}){
     const Item = ({item}) => (
         <ListItem 
             linearGradientProps={{
-                colors: ['#3ba9f7','#4a84f0' ],
-                start: { x: 1, y: 3 },
+                colors: ['#89e3f5','#94c7f2' ],
+                start: { x: 1.3, y: 1},
                 end: { x: 0.2, y: 2 },
             }}
             ViewComponent={LinearGradient}
