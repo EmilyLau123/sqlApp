@@ -108,8 +108,8 @@ const SignUpScreen = ({navigation}) => {
    
     const insertUser = async (inputUsername, inputPassword, inputNickname, inputRole, inputEmail) => {
         console.log(inputUsername, inputPassword, inputNickname, inputRole, inputEmail);
-        formData.append('image', image);
-        console.log(formData);
+        // formData.append('image', image);
+        // console.log(formData);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com
@@ -138,6 +138,10 @@ const SignUpScreen = ({navigation}) => {
             if(response.status == 200){
                 console.log('inserted');
                 if(haveImage){
+                        for(let i = 0; i<image.length;i++){
+                            formData.append(i, image[i]);
+                            console.log(formData);
+                        }
                     console.log('uploading');
                 //upload img
                     const IMAGES_API_URL = 'https://mufyptest.herokuapp.com/api/user/images/insert/'+inputUsername+'/'+inputRole;
