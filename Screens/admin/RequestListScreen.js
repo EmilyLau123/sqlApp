@@ -221,7 +221,7 @@ const changeQuestionStatus = async(question_id, status) => {
                             borderColor: COLORS.primary,
                             backgroundColor: COLORS.primary,
                             marginBottom:SIZES.margin}}>
-                            <Text style={{fontWeight:"bold",color:"white"}}>{options[answer]}</Text>
+                            <Text style={{fontWeight:"bold",color:"white"}}>{answer+1}. {options[answer]}</Text>
                         </View>
                     <Text style={{padding:SIZES.padding}}>Options: </Text>
 
