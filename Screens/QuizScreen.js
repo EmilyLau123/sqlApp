@@ -111,7 +111,7 @@ export function Quiz({route, navigation}){
   const [intDifficulty, setIntDifficulty] = useState(0);
   
   const [time, setTime] = useState(60);
-  const [timerStatus, setTimerStatus] = useState(false);
+  const [timerStatus, setTimerStatus] = useState(true);
   //images
   const [imageName, setImageName] = useState([]);
   const [haveImage, setHaveImage] = useState(false);

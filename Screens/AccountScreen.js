@@ -112,7 +112,7 @@ function adminMainAccountScreen({navigation}){
                             titleStyle={{ fontWeight: 'bold' }}  
                          onPress={()=>navigation.navigate("UserList")}/>
                     
-                    <Button title='View Request List'
+                    <Button title='View Question List'
                             buttonStyle={{
                                 backgroundColor: COLORS.primary,
                                 borderWidth: 2,
@@ -204,6 +204,7 @@ function rewardListScreen({route}){
   
     return(
         <View style={{backgroundColor:"white", height:SIZES.height-SIZES.listPaddingBottom}}>
+            {user_rewards.length != 0 ?(
                 <FlatList
                     data={user_rewards}
                     renderItem= {Item}
@@ -212,6 +213,10 @@ function rewardListScreen({route}){
                     // refreshing={isLoading}
                     // height={SIZES.height-400}
                 /> 
+            ):(
+                <Text style={{fontSize:16, fontWeight:"bold", alignSelf:"center", margin:10}}>You have not obtain any rewards yet!</Text>
+            )}
+                
         </View>
     );
 }
@@ -278,10 +283,20 @@ function studnetMainAccountScreen({navigation}){
     
     data = Object.values(dateLabelsTest);
     dateLabels = Object.keys(dateLabelsTest);
-    percentage = data[data.length-1] - data[data.length-2];
-    percentage = percentage / data[data.length-1];
-    percentage = percentage * 100 ;
-    percentage = Math.round(percentage, -2) ;
+    var preMonth = data[data.length-2];
+    var currentMonth = data[data.length-1];
+   
+    if(currentMonth < preMonth){
+        currentMonth = preMonth - currentMonth;
+    }else if(currentMonth > preMonth){
+        percentage = currentMonth - preMonth;
+        percentage = percentage / preMonth;
+        percentage = percentage * 100 ;
+        percentage = Math.round(percentage, -2) ;
+    }else{
+        percentage = 0;
+    }
+    
     if(percentage < 0){
         iconName = "arrow-down";
         iconColor = "red";
@@ -291,6 +306,10 @@ function studnetMainAccountScreen({navigation}){
         iconName = "arrow-up";
         iconColor = "green";
         performanceComment = "You are improving!!";
+    }else{
+        iconName = "arrow-forward";
+        iconColor = "black";
+        performanceComment = "You are keep up as last month!!";
     }
     //pie chart data
     const pieData = [
@@ -327,22 +346,28 @@ function studnetMainAccountScreen({navigation}){
                 <Card.Divider />
                 <Card.Title>Overall quiz record</Card.Title>
                 <Card.Divider />
-                <PieChart
-                    data={pieData}
-                    width={SIZES.width}
-                    height={220}
-                    chartConfig={{
-                        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-                    }}
-                    accessor={"population"}
-                    backgroundColor={"transparent"}
-                    paddingLeft={"15"}
-                    center={[5, 5]}
-                    absolute
+                {graph?(
+                    <>
+                    <PieChart
+                        data={pieData}
+                        width={SIZES.width}
+                        height={220}
+                        chartConfig={{
+                            color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+                        }}
+                        accessor={"population"}
+                        backgroundColor={"transparent"}
+                        paddingLeft={"15"}
+                        center={[5, 5]}
+                        absolute
                     />
-                {/* <Text style={{padding:SIZES.padding}}>Using the app for 1 day !!</Text> */}
-                <Text style={{padding:SIZES.padding}}>Quizes done: {stat.length}</Text>
-                <Text style={{padding:SIZES.padding}}>Quizes average score: {avg.toFixed(0)}</Text>
+                    <Text style={{padding:SIZES.padding}}>Quizzes done: {stat.length}</Text>
+                    <Text style={{padding:SIZES.padding}}>Quizzes average score: {avg.toFixed(0)}</Text>
+                    </>
+                ):(
+                    <Text>No quiz record, Let's do some quiz!</Text>
+                )}
+                
                 {/* <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
                 <Text style={{padding:SIZES.padding}}>{difficultyComment}</Text> */}
             </Card>
@@ -362,7 +387,7 @@ function studnetMainAccountScreen({navigation}){
                         data: data
                         }
                     ],
-                    legend: ["Accumulated points in a month"] 
+                    legend: ["Total points in a month"] 
                     }}
                     width= {SIZES.width-55} // from react-native
                     height={200}
@@ -481,9 +506,9 @@ const AccountScreen = () => {
                     <AccountStack.Screen name="AdminAccountMain" component={adminMainAccountScreen} options={{ title: 'Your Account' }}/>
                     <AccountStack.Screen name="AccountSetting" component={accountSettingScreen} options={{ title: 'Account Setting' }}/>
                     <AccountStack.Screen name="UserList" component={userList} options={{ title: 'User List' }}/>
-                    <AccountStack.Screen name="RequestList" component={requestList} options={{ title: 'Request List' }}/> 
+                    <AccountStack.Screen name="RequestList" component={requestList} options={{ title: 'Question List' }}/> 
                     <AccountStack.Screen name="UserDetail" component={userDetail} options={{ title: 'User List' }}/>
-                    <AccountStack.Screen name="RequestDetail" component={requestDetail} options={{ title: 'Request List' }}/>
+                    <AccountStack.Screen name="RequestDetail" component={requestDetail} options={{ title: 'Question List' }}/>
                     <AccountStack.Screen name="StatementsFullList" component={StatementsFullList} options={{ title: 'All Statements' }}/>
                     <AccountStack.Screen name="statementEditScreen" component={statementEditScreen} options={{ title: 'Statement Edit Detail' }}/>
                 </AccountStack.Navigator>

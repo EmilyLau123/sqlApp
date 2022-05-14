@@ -44,7 +44,7 @@ export function requestSubmitScreen({navigation}){
     const [imageUris, setImageUris] = useState([]);
 
     
-    const username = useSelector(state => state.usernameReducer.username);
+    const userId = useSelector(state => state.userIdReducer.user_id);
     const role = useSelector(state => state.roleReducer.role);
     const formData = new FormData();
    
@@ -70,8 +70,8 @@ export function requestSubmitScreen({navigation}){
         setIsLoading(status);
     };
 
-    const insertQuiz = async (question, difficulty, answer, options, username, role) => {
-        console.log(question, difficulty, answer, options, username, role);
+    const insertQuiz = async (question, difficulty, answer, options, userId) => {
+        console.log(question, difficulty, answer, options, userId);
         //https://reactnative.dev/movies.json
         //http://localhost:8099/api/retrieveStatements/
         //https://mufyptest.herokuapp.com/api/question/insert/
@@ -90,8 +90,7 @@ export function requestSubmitScreen({navigation}){
                 difficulty: difficulty,
                 answer: answer,
                 options: options,
-                authorName: username, 
-                authorRole: role,
+                userId: userId, 
             }),
          });
         const json = await response.json();
@@ -371,8 +370,7 @@ const pickImage = async () => {
                                 difficulty,
                                 answer,
                                 [option1,option2,option3,option4],
-                                username,
-                                role
+                                userId
                             )}
             /> 
 

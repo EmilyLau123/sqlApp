@@ -108,12 +108,11 @@ const SignUpScreen = ({navigation}) => {
    
     const insertUser = async (inputUsername, inputPassword, inputNickname, inputRole, inputEmail) => {
         console.log(inputUsername, inputPassword, inputNickname, inputRole, inputEmail);
-        // formData.append('image', image);
-        // console.log(formData);
-        //https://reactnative.dev/movies.json
-        //http://localhost:8099/api/retrieveStatements/
-        //https://mufyptest.herokuapp.com
+        
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/insert/';
+        if(inputUsername == "" || inputPassword == "" || inputNickname == "" || inputEmail == ""){
+            return alert("All input field should have value!");
+        }
         //insert inputted text data
         try {
             toggleOverlay(true);
@@ -239,7 +238,7 @@ console.log(index, role);
                                     defaultValue={username}
                                     placeholder="For login"
                                 />
-                            <Text>Nickname</Text>
+                            <Text>Nickname*</Text>
                                 <Input
                                     style={STYLES.input}
                                     onChangeText={nickname => setNickname(nickname)}
@@ -256,13 +255,14 @@ console.log(index, role);
                                     secureTextEntry={true}
 
                                 />
-                            <Text>Email</Text>
+                            <Text>Email*</Text>
                                 <Input
                                     style={STYLES.input}
                                     onChangeText={email => setEmail(email)}
                                     defaultValue={email}
                                     placeholder="For password reset"
                                 />
+                            <Text style={{color: "red"}}>Username and Email CANNOT be change later, be caution!</Text>
                             <Button title='SIGN UP'
                                 buttonStyle={{
                                     backgroundColor: '#77afac',
@@ -301,7 +301,7 @@ console.log(index, role);
                                     defaultValue={teacherUsername}
                                     placeholder="For login"
                                 />
-                            <Text>Nickname</Text>
+                            <Text>Nickname*</Text>
                                 <Input
                                     style={STYLES.input}
                                     onChangeText={teacherNickname => setTeacherNickname(teacherNickname)}
@@ -317,13 +317,14 @@ console.log(index, role);
                                     placeholder="For login"
                                     secureTextEntry={true}
                                 />
-                            <Text>Email</Text>
+                            <Text>Email*</Text>
                                 <Input
                                     style={STYLES.input}
                                     onChangeText={teacherEmail => setTeacherEmail(teacherEmail)}
                                     defaultValue={teacherEmail}
                                     placeholder="we will notify you via email"
                                 />
+                            <Text style={{color: "red"}}>Username and Email CANNOT be change later, be caution!</Text>
 
                             
                         {haveImage?(

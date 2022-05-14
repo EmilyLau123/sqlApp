@@ -271,7 +271,7 @@ const changeQuestionStatus = async(question_id, status) => {
                         <></>
                     )}
                     
-                    <Text style={{padding:SIZES.padding}}>Author: {authorName}</Text>
+                    {/* <Text style={{padding:SIZES.padding}}>Author: {authorName}</Text> */}
                     <Text style={{padding:SIZES.padding}}>Submitted_at: {submitted_at}</Text>
                     <Text style={{padding:SIZES.padding}}>Updated_at: {updated_at}</Text>
 

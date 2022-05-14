@@ -53,6 +53,7 @@ function homeWelcomeHeader({route,navigation}){
   const username = useSelector(state => state.usernameReducer.username);
   const nickname = useSelector(state => state.nicknameReducer.nickname);
   const role = useSelector(state => state.roleReducer.role);
+  const stat = useSelector(state => state.statReducer.stat);
   const user_id = useSelector(state => state.userIdReducer.user_id);
   const [knowledgeTitle, setknowledgeTitle] = useState("");
   var [knowledgeImages, setKnowledgeImages] = useState([]);
@@ -72,8 +73,6 @@ const toggleOverlay =() => {
 
 const loginUser = async (inputUsername,password, userRole) => {
         console.log(inputUsername,password, userRole);
-        //https://reactnative.dev/movies.json
-        //http://localhost:8099/api/retrieveStatements/
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
     
         try {
@@ -106,9 +105,10 @@ const loginUser = async (inputUsername,password, userRole) => {
      }
 
   const getKnowledge = async (userRole, username) => {
+    
     console.log("know. role: ", userRole,username);
     var API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/'+username;
-    if(userRole != 0){
+    if(userRole != 0 || stat == []){
       API_URL = 'https://mufyptest.herokuapp.com/api/knowledge/find/any';
     }
 
@@ -135,14 +135,9 @@ useEffect(() => {
   getKnowledge(role,username);
  }, []);
 
-  // const { role,nickname } = useUsername();
 
-  // if(route.params != null){
-  //     username = route.params;
-  // }
   return(
     <SafeAreaView style={{flex:1}}>
-          {/* <ImageBackground source={{uri: "https://reactjs.org/logo-og.png"}} resizeMode="cover" style={styles.image}> */}
 
       
       <ScrollView style={{backgroundColor:COLORS.background}}>
@@ -161,14 +156,12 @@ useEffect(() => {
             <>
             
             <Text size={SIZES.title} style={{padding:SIZES.text, fontWeight:"bold"}}>{knowledgeTitle}</Text>
-            {/* <Text size={SIZES.text} style={{padding:SIZES.text}}>{displayContent}</Text> */}
-            {/* <View style={{height:100}}> */}
+      
             <WebView 
               style={{flex:1,height:80}}
               originWhitelist={['*']}
               source={{ html: '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: Optima">'+displayContent+'</body></html>' }}
             />
-            {/* </View> */}
             <Button title='View Details' 
                   buttonStyle={{
                     backgroundColor: COLORS.primary,

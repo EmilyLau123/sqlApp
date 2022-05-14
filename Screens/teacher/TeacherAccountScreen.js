@@ -3,6 +3,7 @@ import React, {Component,useEffect, useState} from 'react';
 import { Alert,TouchableOpacity, Dimensions, StyleSheet, ScrollView, FlatList, SafeAreaView,ActivityIndicator } from 'react-native';
 import {  Text, Button, Card, ListItem, Icon, ListItemProps } from 'react-native-elements';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -24,20 +25,22 @@ function logOut(dispatch){
 }
 
 export function teacherMainAccountScreen({navigation}){
-    const stat = useSelector(state => state.statReducer.stat);
-    const username = useSelector(state => state.usernameReducer.username);
+    //const stat = useSelector(state => state.statReducer.stat);
+    const userId = useSelector(state => state.userIdReducer.user_id);
     const nickname = useSelector(state => state.nicknameReducer.nickname);
     const dispatch = useDispatch(); 
 
     const [approved, setApproved] = useState(0);
     const [rejected, setRejected] = useState(0);
     const [waiting, setWaiting] = useState(0);
+    const [total, setTotal] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
-const getrequestData = async () => {
-const API_URL = 'https://mufyptest.herokuapp.com/api/user/questions/count/';
-var requestStatus = [];
+    const getrequestData = async () => {
+    const API_URL = 'https://mufyptest.herokuapp.com/api/user/questions/count/';
+    var requestStatus = [0,approved,rejected,waiting];
     try {
+        
         setIsLoading(true);
         console.log('fetch');
         const response = await fetch(API_URL,{
@@ -47,7 +50,7 @@ var requestStatus = [];
                     'Accept':'application/json'
                 },
             body: JSON.stringify({
-                username: username,
+                userId: userId,
             }),
                 
         });
@@ -56,10 +59,11 @@ var requestStatus = [];
          if(response.status == 200){
              
              for(let i = 0; i<json.length; i++){
-                 console.log(json[i]._id);
+                 console.log("json ID:"+json[i]._id + " count:" +json[i].count);
                  var st = json[i]._id;
                  requestStatus[st] = json[i].count;
              }
+             
 
             setIsLoading(false);
             
@@ -69,18 +73,36 @@ var requestStatus = [];
     }catch(error){
       console.log(error);
     }finally{
-        setApproved(requestStatus[REQUEST_STATUS.approved]);
-        setRejected(requestStatus[REQUEST_STATUS.rejected]);
-        setWaiting(requestStatus[REQUEST_STATUS.waiting]);
-      console.log("user history found");
+        console.log(approved);
+        if(requestStatus[REQUEST_STATUS.approved] != undefined){
+            setApproved(requestStatus[REQUEST_STATUS.approved]);
+        }
+        if(requestStatus[REQUEST_STATUS.rejected] != undefined){
+            setRejected(requestStatus[REQUEST_STATUS.rejected]);
+        }
+        if(requestStatus[REQUEST_STATUS.waiting] != undefined){
+            setWaiting(requestStatus[REQUEST_STATUS.waiting]);
+        }
+        setTotal(approved+rejected+waiting);
+        console.log("user history found");
+        console.log(approved+rejected+waiting);
         // console.log('requestStatus', requestStatus.keys());
 
     }
 }
 
-useEffect(()=>{
-    getrequestData();
-},[]);
+useFocusEffect(
+    React.useCallback(() => {
+        getrequestData(approved, rejected, waiting);
+      // Do something when the screen is focused
+      return () => {
+        console.log('not focused');
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [])
+   );
+
 
     return(
         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
@@ -95,10 +117,10 @@ useEffect(()=>{
                 <ActivityIndicator/>
             ):(
             <>
-                <Text style={{padding:SIZES.padding}}>Request(s) you have made : 7</Text>
-                <Text style={{padding:SIZES.padding}}>Approved Request(s): {approved}/7</Text>
-                <Text style={{padding:SIZES.padding}}>Rejected Request(s): 0/7</Text>
-                <Text style={{padding:SIZES.padding}}>Waiting Request(s): {waiting}/7</Text>
+                <Text style={{padding:SIZES.padding}}>Request(s) you have made : {total}</Text>
+                <Text style={{padding:SIZES.padding}}>Approved Request(s): {approved}/{total}</Text>
+                <Text style={{padding:SIZES.padding}}>Rejected Request(s): {rejected}/{total}</Text>
+                <Text style={{padding:SIZES.padding}}>Waiting Request(s): {waiting}/{total}</Text>
             </>
             )}
                  </Card>

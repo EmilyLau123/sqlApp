@@ -4,18 +4,16 @@ import {  Text, Button, Card, ListItem, Icon, ListItemProps } from 'react-native
 import { useDispatch, useSelector } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, SIZES, ICONS, STRINGS, USER_ROLE, USER_STATUS,REQUEST_STATUS} from '../../components/style/theme';
+import { SliderBox } from "react-native-image-slider-box";
 
 export function HistoryFullList({navigation}){
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
-  const username = useSelector(state => state.usernameReducer.username);
+  const userId = useSelector(state => state.userIdReducer.user_id);
 
-            
-
-
-  const getHistories = async (username) => {
+  const getHistories = async (userId) => {
 
     //https://reactnative.dev/movies.json
     //http://localhost:8099/api/retrieveStatements/
@@ -30,7 +28,7 @@ export function HistoryFullList({navigation}){
                     'Accept':'application/json'
                 },
             body: JSON.stringify({
-                username: username,
+                userId: userId,
             }),
                 
         });
@@ -52,7 +50,7 @@ export function HistoryFullList({navigation}){
   }
 
  useEffect(() => {
-  getHistories(username);
+  getHistories(userId);
  }, []);
 
 //  const searchButton = (searchText) => {
@@ -132,7 +130,7 @@ return(
             data={data}
             renderItem= {renderItem}
             keyExtractor={item => item._id}
-            onRefresh={() => getHistories(username)}
+            onRefresh={() => getHistories(userId)}
             refreshing={isLoading}
             height={SIZES.height-150}
             
@@ -148,7 +146,18 @@ return(
 
 //Detail page
 export function HistoryFullDetail({route,navigation}){
-  const { question,difficulty, iconName, answer, options, images, statusString,updated_at, submitted_at } = route.params;
+  const { question,difficulty, iconName, answer, options, statusString,updated_at, submitted_at } = route.params;
+  const images = route.params.images;
+  var imagesLength = 0;
+  if(images){
+    console.log('images: ',images);
+    imagesLength = images.length;
+    var imageName = [];
+    console.log(images);
+    images.forEach(image=>{
+        imageName.push("https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image);
+    });
+}
   return(
    <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
     <Card borderRadius={SIZES.round}>
@@ -176,9 +185,43 @@ export function HistoryFullDetail({route,navigation}){
                 <Text style={{fontWeight:"bold",color:"white"}}>{index+1}. {item}</Text>
             </View>
         ))}
-        <Text style={{padding:SIZES.padding}}>Images: should be image element{images}</Text>
-        <Text style={{padding:SIZES.padding}}>Submitted_at: {submitted_at}</Text>
-        <Text style={{padding:SIZES.padding}}>Updated_at: {updated_at}</Text>
+        <Text>Images: </Text>
+        {images?(
+          <SliderBox 
+            images={imageName}
+            sliderBoxHeight={250}
+            dotColor="#FFFFFF"
+            inactiveDotColor="#90A4AE"
+            dotStyle={{
+                width: 10,
+                height: 10,
+                borderRadius: 15,
+                marginHorizontal: 10,
+                padding: 0,
+                margin: 0
+            }}
+            paginationBoxVerticalPadding={20}
+            ImageComponentStyle={{
+                width: '90%', 
+                margin:10,
+                alignItems: "center",
+                alignSelf: "center",
+                justifyContent: "center",
+              }}
+            resizeMethod={'resize'}
+            resizeMode={'contain'}
+            parentWidth = {360}
+            circleLoop
+            imageLoadingColor={COLORS.primary}
+            // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
+            // currentImageEmitter = {(index)=>setCurrentImage(index)}
+          />
+          ):(
+            <Text style={{padding:SIZES.padding}}>No images being uploaded in this question</Text>
+          )}
+        
+        <Text style={{padding:SIZES.padding}}>Submitted At: {submitted_at}</Text>
+        <Text style={{padding:SIZES.padding}}>Updated At: {updated_at}</Text>
 
     </Card>
   </SafeAreaView>
