@@ -82,10 +82,6 @@ export function statementEditScreen({navigation, route}){
         }
     }
 const updateStatement = async (title, description,images) => {
-        // console.log("originImages: ",originImages,"images: ",imageUris);
-        //https://reactnative.dev/movies.json
-        //http://localhost:8099/api/retrieveStatements/
-        //https://mufyptest.herokuapp.com/api/question/insert/
         const API_URL = 'https://mufyptest.herokuapp.com/api/statement/update/';
         var apiBody = JSON.stringify({
             statement_id: statement_id,
@@ -204,8 +200,6 @@ const updateStatement = async (title, description,images) => {
 //delete a question
 const deleteStatement = async(statement_id) => {
     console.log(statement_id);
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/statement/delete/';
 
     try {
@@ -262,15 +256,11 @@ const pickImage = async () => {
             }
         images.push({uri:result.uri, type: result.type});
         imageUris.push(result.uri);
-
-        // var base64 = 'data:image/jpg;base64,' + result.base64;
-        // images.push(base64);
         setImages(images);
         setHaveImage(false);
         setHaveImage(true);
         setImageAdded(true);
         console.log('confirm selected: ',imageUris);
-        // console.log(images);
     };
   };
 
@@ -286,7 +276,6 @@ const checkSize = async (imageUri) => {
     }
 
 const deleteImages = () => {
-        // delete images[currentImage];
         images.splice(currentImage, 1);
         imageUris.splice(currentImage, 1);
         console.log('confirm delete: ',images);
@@ -340,13 +329,6 @@ const deleteImages = () => {
                 />
            
             <Text>Description</Text>
-            {/* <Input
-                style={STYLES.input}
-                onChangeText={des => setDes(des)}
-                defaultValue={des}
-                placeholder="Enter statement details"
-                multiline={true}
-            /> */}
             <RichToolbar
                 editor={richText}
                 actions={[  actions.setBold,
@@ -380,22 +362,7 @@ const deleteImages = () => {
                 initialContentHTML={des}
 
                     />
-                    {/* <JoditEditor
-        ref={editor}
-        value={content}
-        config={config}
-        onBlur={handleUpdate}
-        onChange={(newContent) => {}}
-      /> */}
-
-            <Text>
-            {/* {images.forEach(image => {
-          <Image  source={{ uri: image }}
-                style={{ width: 200, height: 200 }}
-                PlaceholderContent={<ActivityIndicator />}>
-          </Image>
-        })} */}
-            </Text>
+                  
         {images.length != 5?(
             <Button 
                 buttonStyle={{
@@ -449,7 +416,6 @@ const deleteImages = () => {
                     circleLoop
                     imageLoadingColor={COLORS.primary}
                     onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}
-                    // currentImageEmitter = {(index)=>setCurrentImage(index)}
                 />
                 <Button title='Delete current image'
                     titleStyle={{ fontWeight: 'bold' }}

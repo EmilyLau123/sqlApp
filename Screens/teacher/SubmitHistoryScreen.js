@@ -14,9 +14,6 @@ export function HistoryFullList({navigation}){
   const userId = useSelector(state => state.userIdReducer.user_id);
 
   const getHistories = async (userId) => {
-
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/questions/find/';
   console.log('try');
     try {
@@ -83,13 +80,10 @@ const renderItem = ({ item }) => {
         
 return(
     <TouchableOpacity onPress={()=>navigation.navigate("SubmitHistoryDetail",{
-        // question_id:item._id,
         question: item.question,
         difficulty: difficultyString,
         answer: item.answer,
         options: item.options,
-        // author: item.author,
-        // role: item.role ,// admin,
         images: item.images,
         submitted_at:item.submitted_at,
         updated_at:item.updated_at,
@@ -102,7 +96,6 @@ return(
         <ListItem>
         <Ionicons name={iconName} size={SIZES.icon} />
         <ListItem.Content>
-        {/* <ListItem.Title>{item.title} ({item.author})</ListItem.Title> */}
         <Text>question: {item.question}</Text>
         <Text>Submitted_at: {item.submitted_at}</Text>
         </ListItem.Content>
@@ -114,15 +107,8 @@ return(
    
 
     return(
-      //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
-        {/* <SearchBar 
-          searchIcon={true}
-          clearIcon={true}
-          placeholder="Type Here..."
-          onChangeText={(value)=>searchButton(value)}
-          value={search}
-        /> */}
+       
         {isLoading?<ActivityIndicator/>:(
           
         <View style={{paddingBottom:SIZES.listPaddingBottom}}>
@@ -213,8 +199,6 @@ export function HistoryFullDetail({route,navigation}){
             parentWidth = {360}
             circleLoop
             imageLoadingColor={COLORS.primary}
-            // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
-            // currentImageEmitter = {(index)=>setCurrentImage(index)}
           />
           ):(
             <Text style={{padding:SIZES.padding}}>No images being uploaded in this question</Text>

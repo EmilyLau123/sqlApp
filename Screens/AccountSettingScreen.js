@@ -19,29 +19,26 @@ import { Provider,useDispatch, useSelector } from 'react-redux';
 import bcrypt from 'react-native-bcrypt';
 
 const accountSettingScreen = ({navigation}) =>{
-    // const [newUsername,setNewUsername] = useState('');
-    const [password,setPassword] = useState('');
-    // const [newNickname,setNewNickname] = useState('');
-    const [newPassword,setNewPassword] = useState('');
-    const [confirmPassword,setConfirmPassword] = useState('');
-    // const [error,setError] = useState(false);
+  const email = useSelector(state => state.emailReducer.email);;
+  const [password,setPassword] = useState('');
+  const [newPassword,setNewPassword] = useState('');
+  const [confirmPassword,setConfirmPassword] = useState('');
 
-    var oldPassword = useSelector(state => state.passwordReducer.password);
+  var oldPassword = useSelector(state => state.passwordReducer.password);
 
+  var oldNickname = useSelector(state => state.nicknameReducer.nickname);
 
-var oldNickname = useSelector(state => state.nicknameReducer.nickname);
-
-    const [nickname,setNickname] = useState(oldNickname);
+  const [nickname,setNickname] = useState(oldNickname);
 
   var user_id = useSelector(state => state.userIdReducer.user_id);
 
- const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleOverlay =(status) => {
-        setIsLoading(status);
+      setIsLoading(status);
     };
 
-    const dispatch = useDispatch(); 
+  const dispatch = useDispatch(); 
   // setNickname(useSelector(state => state.nicknameReducer.nickname));
 //change password or nickname
 const updateUser = async(user_id, newNickname, current_password, newpassword, confirmPassword) => {
@@ -84,7 +81,6 @@ const updateUser = async(user_id, newNickname, current_password, newpassword, co
           nickname: newNickname,
           password: confirmPassword,
           change: change
-          // updated_at: Danow(),
       }),
       
    });
@@ -107,34 +103,18 @@ const updateUser = async(user_id, newNickname, current_password, newpassword, co
  } catch (error) {
    console.error(error);
  } finally {
-  // setLoading(false);
   console.log("done");
  }
 }
-
-
-    
 
     return(
       <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
 
         <View>
-            {/* https://reactnative.dev/docs/modal */}
-            {/* <Overlay isVisible={overlayVisible} onBackdropPress={()=>setOverlayVisible(true)}>
-              <Text size={SIZES.text}>Change username into:</Text>
-              <Input placeholder="Enter new username"></Input>
-              <Button style={{padding:SIZES.padding}} title="Change" onPress={()=>changeUserName()}/>
-              <Button style={{padding:SIZES.padding}} title="Close" onPress={()=>setOverlayVisible(false)}/>
-
-            </Overlay> */}
-      
             <Card>
+              <Text size={SIZES.text}>Email: {email}</Text>
               <Text size={SIZES.text}>Current Nickname: {nickname}</Text>
-
-              <Input placeholder="Enter new nickname" value={nickname} onChangeText={(value)=>setNickname(value)}></Input>                  
-              {/* <Text size={SIZES.text}>Username: user's username</Text>
-
-                <Input placeholder="Current username"></Input>                   */}
+              <Input placeholder="Enter new nickname" value={nickname} onChangeText={(value)=>setNickname(value)}></Input>                 
             </Card>
             
             <Card>

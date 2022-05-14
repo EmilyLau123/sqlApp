@@ -262,8 +262,6 @@ const changeStatementHide = async(statement_id, status) => {
     <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
         <ScrollView>
             <Card borderRadius={SIZES.round}>
-                
-                {/* <Text style={{padding:SIZES.padding}}>Author: {author} </Text> */}
                 <Text style={{padding:SIZES.padding, alignSelf:"center", fontWeight:"bold"}}>Title: {title} </Text>
                 <Card.Divider />  
                 <Ionicons name={iconName} size={SIZES.icon} />
@@ -293,7 +291,6 @@ const changeStatementHide = async(statement_id, status) => {
                     parentWidth = {390}
                     circleLoop
                     imageLoadingColor={COLORS.primary}
-                    // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
                     currentImageEmitter = {(index)=>setCurrentImage(index)}
                 />
                     </View>
@@ -391,20 +388,5 @@ const changeStatementHide = async(statement_id, status) => {
 );
 
 }
- 
 
-const AdminStatementStack = createStackNavigator();
-
-const StatementsScreen = () => {
-    return (
-      
-        <AdminStatementStack.Navigator>
-              {/* <AdminStatementStack.Screen name="StatementsFullList" component={StatementsFullList} options={{title:"Statements List"}}/> */}
-              {/* <AdminStatementStack.Screen name="StatementDetail" component={StatementDetailScreen} options={{title:"Statements Detail"}}/> */}
-        </AdminStatementStack.Navigator>
-      
-    );
-}
-
-export default StatementsScreen;
 

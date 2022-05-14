@@ -6,8 +6,6 @@ import { Text, Button, Input, Card, Tab, TabView, LinearProgress, Overlay, Image
 import {STYLES, COLORS, SIZES, USER_ROLE} from '../components/style/theme';
 import { SliderBox } from "react-native-image-slider-box";
 
-//import { Form, FormItem } from 'react-native-form-component';
-//https://www.npmjs.com/package/react-native-form-component
 //image
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system'
@@ -55,9 +53,7 @@ const SignUpScreen = ({navigation}) => {
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
-        // base64:true
         });
-        // console.log(result);
         if (!result.cancelled) {
         
             var sizeConfirm = await checkSize(result.uri);//<= 5MB
@@ -195,12 +191,6 @@ const SignUpScreen = ({navigation}) => {
         console.log("done");
        }
      }
-    
-    //  useEffect(() => {
-    //   getStatements();
-    //  }, []);
-
-//https://reactnavigation.org/docs/params passing values
 console.log(index, role);
 
     return(

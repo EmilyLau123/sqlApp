@@ -25,7 +25,6 @@ function logOut(dispatch){
 }
 
 export function teacherMainAccountScreen({navigation}){
-    //const stat = useSelector(state => state.statReducer.stat);
     const userId = useSelector(state => state.userIdReducer.user_id);
     const nickname = useSelector(state => state.nicknameReducer.nickname);
     const dispatch = useDispatch(); 

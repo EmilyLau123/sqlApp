@@ -38,8 +38,6 @@ const style = StyleSheet.create({
     }
 });
 
-
-
 const SignInScreen = ({navigation}) => {
     
     const [username,setUsername] = useState('');
@@ -49,14 +47,12 @@ const SignInScreen = ({navigation}) => {
     const [teacherUsername,setTeacherUsername] = useState('');
     const [teacherPassword,setTeacherPassword] = useState('');
     const [userRole,setUserRole] = useState(0);
-    // const [userRole,setUserRole] = useSelector(state => state.roleReducer.role);
     const [index,setIndex] = useState(0);
     const [loggedIn,setLoggedIn] = useState(false);
     const [nickname,setNickname] = useSelector(state => state.nicknameReducer.nickname);
     const [userId,setUserId] = useSelector(state => state.userIdReducer.user_id);
     const [stat,setStat] = useSelector(state => state.statReducer.stat);
     const [reward,setReward] = useSelector(state => state.rewardReducer.reward);
-        // const [nickname,setNickname] = useSelector(store.getState());
     const dispatch = useDispatch(); 
 
     const [isLoading,setIsLoading] = useState(false);
@@ -64,31 +60,8 @@ const SignInScreen = ({navigation}) => {
     const toggleOverlay = (status) => {
         setIsLoading(status);
     };
-  
-    //  const roleUtil = useContext(RoleContext);
-
      const loginUser = async (inputUsername, inputPassword, inputUserRole) => {
-        //  var inputUsername;
-        //  var inputPassword;
-        //  if(username != '' && password != ''){
-        //     inputUsername == username;
-        //     inputPassword == password;
-        //  }else{
-        //      return alert('');
-        //  }
-        //  if(teacherUsername != '' && teacherPassword != ''){
-        //     inputUsername == username;
-        //     inputPassword == teacherPassword;
-        //  }
-        //  if(adminUsername != '' && adminPassword != ''){
-        //     inputUsername == username;
-        //     inputPassword == adminPassword;
-        //  }
-         
-        console.log(inputUsername,inputPassword, inputUserRole);
-
-        //https://reactnative.dev/movies.json
-        //http://localhost:8099/api/retrieveStatements/
+      
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/login/';
     
         try {
@@ -153,16 +126,10 @@ const SignInScreen = ({navigation}) => {
          console.error(error);
        } finally {
            toggleOverlay(false);
-        // setLoading(false);
         console.log("done");
        }
      }
 
-// useEffect(()=>{
-//     console.log("change");
-// },[loggedIn]
-
-// )
 
     return(
         <SafeAreaView style={{backgroundColor:COLORS.background, height:SIZES.height}}>

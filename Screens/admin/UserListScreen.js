@@ -17,22 +17,14 @@ export function userList({navigation,route}){
     const [data, setData] = useState([]);
     const [search, setSearch] = useState("");
     const mounted=useRef(false);
-    // const [update, setUpdate] = useState(false);
-    
-    // if(route.params != null){
-    //         setUpdate(true);
-    //     }
     //get user list
     const getUsers = async () => {
-      //https://reactnative.dev/movies.json
-      //http://localhost:8099/api/retrieveStatements/
       const API_URL = 'https://mufyptest.herokuapp.com/api/find/users/';
   
       try {
         setLoading(true);
         const response = await fetch(API_URL);
         const json = await response.json();
-    //    console.log(json);
        setData(json);
      } catch (error) {
        console.error(error);
@@ -52,25 +44,6 @@ export function userList({navigation,route}){
       };
     }, [])
    );
-//    useEffect(() => {
-//        if(mounted.current===false){
-//            getUsers();
-//         mounted.current=true;
-//         /* 下面是 第一次渲染後 */
-    
-    
-//         /* 上面是 第一次渲染後 */      
-//       }
-//       else{
-//           getUsers();
-//         /* 下面是元件更新後 */
-    
-    
-//         /* 上面是元件更新後 */
-
-//       }
-    
-//    }, []);
     const renderItem = ({ item }) => {
         var iconName = ICONS.approved;
         var statusString = 'Approved';
@@ -155,8 +128,6 @@ export function userDetail({route,navigation}){
     //delete a user
     const deleteUser = async(user_id) => {
         console.log(user_id);
-        //https://reactnative.dev/movies.json
-        //http://localhost:8099/api/retrieveStatements/
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/delete';
     
         try {
@@ -199,8 +170,6 @@ export function userDetail({route,navigation}){
 //change a user status, not send email
 const changeUserStatus = async(user_id, status) => {
     console.log(user_id);
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/user/status/change';
 
     try {
@@ -248,16 +217,10 @@ const sendEmail = async(email, status) => {
                },
             body: JSON.stringify({
                email: email,
-            //    status: status,
-               // updated_at: Danow(),
            }),
            
         });
-        
-        // var emailJson = await emailResponse.json();
         return emailResponse;
-     
-     
     } catch (error) {
         console.error(error);
     } finally {
@@ -269,11 +232,7 @@ const sendEmail = async(email, status) => {
 
 //change a user status, DO send email
 const changeUserStatusAndEmail = async(user_id, email, status) => {
-    // const [progress, setProgress] = React.useState(0);
-    // console.log("change");
     try{
-        // const [progress, setProgress] = useState(0);
-        // setIsSending(true);
         toggleOverlay();
         //send email
         var EMAIL_API_URL = 'https://mufyptest.herokuapp.com/api/sendEmail/rejected';
@@ -290,13 +249,9 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                },
             body: JSON.stringify({
                email: email,
-            //    status: status,
-               // updated_at: Danow(),
            }),
            
         });
-        //var emailResponse = await sendEmail(email, status);
-        //change status
         const API_URL = 'https://mufyptest.herokuapp.com/api/user/status/change';
 
         const response = await fetch(API_URL,{
@@ -308,7 +263,6 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
             body: JSON.stringify({
                 user_id: user_id,
                 status: status,
-                // updated_at: Danow(),
             }),
             
         });
@@ -316,7 +270,6 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
         const emailJson = await emailResponse.json();
 
         if(emailResponse.status == 200 && response.status == 200){
-            // alert("User approved and notified!");
             
             console.log("approved and emailed");
             
@@ -365,11 +318,7 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
                 ):(
                     <></>
                 )}
-                
-            {/* <Button
-                title="Edit"
-                onPress={()=>} 
-            /> */}
+              
             {statusString == "Approved"?(
                 <View>
                 <Button
@@ -565,16 +514,3 @@ const changeUserStatusAndEmail = async(user_id, email, status) => {
 
 const Stack = createStackNavigator();
 
-// function userListScreen(){
-//     return(
-//         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
-//                 <Stack.Navigator>
-//                     <Stack.Screen name="UserList" component={userList} options={{ title: 'User List', headerShown: false}}/>
-//                     <Stack.Screen name="UserDetail" component={userDetail} options={{ title: 'User Detail', headerShown: true }}/>
-
-//                 </Stack.Navigator>
-//         </SafeAreaView>
-//     );
-// }
-
-// export default userListScreen;

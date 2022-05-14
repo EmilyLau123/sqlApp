@@ -1,4 +1,3 @@
-//import { createStackNavigator } from '@react-navigation/stack';
 import React, { Component,useState, useEffect } from 'react';
 import {
     Text,
@@ -70,7 +69,6 @@ export function congratScreen({route,navigation}){
             }}
             ViewComponent={LinearGradient}
             margin={10}
-            // containerStyle = {{rounded}}
             pad={20}
             containerStyle={{borderRadius:30}}
         >
@@ -80,9 +78,6 @@ export function congratScreen({route,navigation}){
             </Text>
         </ListItem>
         </>
-        // <Text style={{color:"white", fontWeight:"bold", fontSize:18, padding:5}}>
-        //     {item.name}
-        //   </Text>
           )
           })}
         </>
@@ -97,8 +92,6 @@ export function congratScreen({route,navigation}){
 }
 
 export function Quiz({route, navigation}){
-  //   var totalQuestion = 9;
-  //   var modelAnswer=DATA[0].answer;
   const user_id = useSelector(state => state.userIdReducer.user_id);
   const user_role = useSelector(state => state.roleReducer.role);
   const user_reward = useSelector(state => state.rewardReducer.reward);
@@ -118,9 +111,6 @@ export function Quiz({route, navigation}){
   const [imageUrlForZoom, setImageUrlForZoom] = useState([]);
   const [clickedIndex, setClickedIndex] = useState(0);
   const [imageOverlay, setImageOverlay] = useState(false);
-  
-  // const [isSending, setIsSending] = useState(false);
-
   const [isLast, setIsLast] = useState(false);
 
   const toggleOverlay =(status) => {
@@ -136,9 +126,6 @@ export function Quiz({route, navigation}){
   }
 
   const updateUser = async (user_id,int_difficulty,score) => {
-    // console.log(user_id, storingData, score);
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
    setTimerStatus(false);
     const currentTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     var userRewardId = [];
@@ -191,9 +178,7 @@ export function Quiz({route, navigation}){
         });
         const json = await response.json();
         if(response.status == 200){
-            // console.log("storingData",storingData);
             dispatch(changeStat(storingData));
-            // dispatch(changeReward(retrievedReward));
             navigation.navigate("Congrats",{
               score:score+1,
               rewards: retrievedReward,
@@ -202,7 +187,6 @@ export function Quiz({route, navigation}){
       } catch (error) {
         console.error(error);
       } finally {
-        // setLoading(false);
         toggleOverlay(false);
         console.log("User updated");
         console.log(score+1);
@@ -246,8 +230,6 @@ export function Quiz({route, navigation}){
 
   const getQuestions = async (difficulty) => {
     
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     
     var intDifficulty = DIFFICULTY.easy
     
@@ -264,9 +246,7 @@ export function Quiz({route, navigation}){
     }else if(difficulty == "Medium"){
       setTime(45);
     }
-// console.log('difficulty:',intDifficulty);
     const API_URL = 'https://mufyptest.herokuapp.com/api/questions/find/difficulty/'+intDifficulty;
-// console.log(API_URL);
     try {
       console.log("fetching");
       const response = await fetch(API_URL);
@@ -282,11 +262,9 @@ export function Quiz({route, navigation}){
                 var fullUrl = "https://res.cloudinary.com/emilyfyp/image/upload/v1644578522/questions/"+image;
                 imageUrlForZoom.push({url:fullUrl});
                 imageName.push(fullUrl);
-                // console.log('item: ',item);
                 console.log("imageUrlForZoom: ",imageUrlForZoom, "fullUrl: ",fullUrl);
 
               });
-          // console.log(imageUris);
         }
       });
       setData(json);
@@ -378,7 +356,6 @@ export function Quiz({route, navigation}){
               circleLoop
               imageLoadingColor={COLORS.primary}
               onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}
-              // currentImageEmitter = {(index)=>setCurrentImage(index)}
           />
         ):(
           <></>
@@ -511,37 +488,3 @@ export function quizChooseScreen({navigation}){
     </SafeAreaView>
   );
 }
-
-// const QuizStack = createStackNavigator();
-
-
-// export function QuizScreen(){
-//     return (
-//       // <QuizStack.Navigator>
-//       //   <QuizStack.Screen name="Easy" component={Quiz} 
-//       //     // initialParams={{DATA:{questions: ['Q1','Q2','Q3'],
-//       //     // difficulty: 'Easy',
-//       //     // answer:1,
-//       //     // options:['option A', 'option B', 'option C', 'option D'],
-//       //     // images: '',
-//       //     // author: 'Admin'}}}
-//       //    optios={{title:"Home"}}/>
-//       //   <QuizStack.Screen name="Medium" component={Quiz} optios={{title:"Daily Knowledge"}}/>
-//       //   <QuizStack.Screen name="Hard" component={Quiz} optios={{title:"Quiz"}}/>
-  
-//       // </QuizStack.Navigator>
-//       <QuizStack.Navigator>
-//         <QuizStack.Screen name="Choose" component={quizChooseScreen} options={{title:"Choose", headerShown: false}}/>
-//         <QuizStack.Screen name="Quiz" component={Quiz} options={{title:"Quiz",headerShown: false}}/>
-//         <QuizStack.Screen name="Congrats" component={congratScreen} options={{title:"congrats", headerShown: false}}/>
-
-        
-//       </QuizStack.Navigator>
-//       // </QuizStack.Navigator>
-//       // <View>
-//       //   <Button title="Easy" />
-//       //   <Button title="Medium" />
-//       //   <Button title="Hard" />
-//       // </View>
-//     );
-// }

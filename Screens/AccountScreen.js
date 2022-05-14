@@ -37,19 +37,8 @@ import {changeNickname, changeRole, changeUserId, replaceStat, replaceReward, ch
 import { useDispatch, useSelector } from 'react-redux';
 //time
 import moment from 'moment';
-// import Moment from 'react-moment';
-// import 'moment-timezone';  
-//auth using redux
-// import { Provider } from "react-redux";
-// import { authStore } from "./model/store.js";
-// import { useSelector } from 'react-redux';
-// import { useDispatch } from 'react-redux';
 
 const AccountStack = createStackNavigator();
-// function ckeckLogIn(){
-//     var userStatus = [false,""];
-//     return userStatus;
-// }
 
 function logOut(dispatch){
     dispatch(changeRole(USER_ROLE.anonymous));
@@ -94,7 +83,6 @@ function adminMainAccountScreen({navigation}){
                     <Card.Title>Your Information</Card.Title>
                     <Card.Divider />
                     <Text style={{padding:SIZES.padding}}>Hello! {nickname}</Text>
-                    {/* <Text style={{padding:SIZES.padding}}>Number of requests of: 100</Text> */}
                 </Card>
                     
                         <Button title='View User List'
@@ -209,9 +197,6 @@ function rewardListScreen({route}){
                     data={user_rewards}
                     renderItem= {Item}
                     keyExtractor={item => item.id}
-                    // onRefresh={() => getStatements("")}
-                    // refreshing={isLoading}
-                    // height={SIZES.height-400}
                 /> 
             ):(
                 <Text style={{fontSize:16, fontWeight:"bold", alignSelf:"center", margin:10}}>You have not obtain any rewards yet!</Text>
@@ -368,13 +353,10 @@ function studnetMainAccountScreen({navigation}){
                     <Text>No quiz record, Let's do some quiz!</Text>
                 )}
                 
-                {/* <Text style={{padding:SIZES.padding, fontWeight:"bold"}}>Comments: </Text>
-                <Text style={{padding:SIZES.padding}}>{difficultyComment}</Text> */}
             </Card>
             <Card borderRadius={SIZES.round}>
             <Card.Title>Perfromance graph (Recent 5 months)</Card.Title>
                 <Card.Divider />
-                {/* https://github.com/indiespirit/react-native-chart-kit */}
                 {graph?(
                     <>
                     <Text><Ionicons name={iconName} size={SIZES.icon} style={{color:iconColor}}/>

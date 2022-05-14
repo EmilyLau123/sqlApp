@@ -14,13 +14,7 @@ export function requestList({navigation}){
     const [data, setData] = useState([]);
     const [search, setSearch] = useState("");
 
-
-
-
-
     const getRequests = async () => {
-      //https://reactnative.dev/movies.json
-      //http://localhost:8099/api/retrieveStatements/
       const API_URL = 'https://mufyptest.herokuapp.com/api/requests/find/';
   
       try {
@@ -81,7 +75,6 @@ export function requestList({navigation}){
                 <Ionicons name={iconName} size={SIZES.icon} />
                 <ListItem.Content>
                 <ListItem.Title>Q: {item.question}</ListItem.Title>
-                {/* <Text>From: {item.author.username}</Text> */}
                 </ListItem.Content>
             </ListItem>
         </TouchableOpacity>
@@ -126,8 +119,6 @@ export function requestDetail({route, navigation}){
 //delete a question
 const deleteQuestion = async(question_id) => {
     console.log(question_id);
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/question/delete/';
 
     try {
@@ -166,8 +157,6 @@ const deleteQuestion = async(question_id) => {
 //approve or reject the question
 const changeQuestionStatus = async(question_id, status) => {
     console.log(question_id);
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/question/status/change/';
 
     try {
@@ -264,14 +253,10 @@ const changeQuestionStatus = async(question_id, status) => {
                         parentWidth = {360}
                         circleLoop
                         imageLoadingColor={COLORS.primary}
-                        // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
-                        // currentImageEmitter = {(index)=>setCurrentImage(index)}
                     />
                     ):(
                         <></>
                     )}
-                    
-                    {/* <Text style={{padding:SIZES.padding}}>Author: {authorName}</Text> */}
                     <Text style={{padding:SIZES.padding}}>Submitted_at: {submitted_at}</Text>
                     <Text style={{padding:SIZES.padding}}>Updated_at: {updated_at}</Text>
 
@@ -402,16 +387,3 @@ const changeQuestionStatus = async(question_id, status) => {
 
     );
 }
-
-// function requestListScreen(){
-//     return(
-//         <SafeAreaView style={{flex:1,backgroundColor:COLORS.background}}>
-//             <Stack.Navigator>
-//                 <Stack.Screen name="RequestList" component={requestList} options={{ title: 'Request List', headerShown: false}}/>
-//                 <Stack.Screen name="RequestDetail" component={requestDetail} options={{ title: 'Request Detail', headerShown: false }}/>
-//             </Stack.Navigator>
-//         </SafeAreaView>
-//     );
-// }
-
-// export default requestListScreen;

@@ -105,12 +105,10 @@ return(
     setLoading(true);
    setSearch(searchText);
    getStatements(searchText);
-//    console.log(search);
  }
 
 
     return(
-      //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
         <SearchBar 
           searchIcon={true}
@@ -120,25 +118,19 @@ return(
           value={search}
         />
         {isLoading?<ActivityIndicator/>:(
-          <View>
-          
-        <View style={{paddingBottom:SIZES.listPaddingBottom}}>
-          <FlatList
-          data={data}
-          renderItem= {renderItem}
-          keyExtractor={item => item._id}
-          onRefresh={() => getStatements("")}
-          refreshing={isLoading}
-            
-          /> 
-        
+        <View>
+          <View style={{paddingBottom:SIZES.listPaddingBottom}}>
+            <FlatList
+            data={data}
+            renderItem= {renderItem}
+            keyExtractor={item => item._id}
+            onRefresh={() => getStatements("")}
+            refreshing={isLoading}
+              
+            /> 
           </View>
-          {/* <View>
-<Button title="add"/>
-          
-          </View> */}
-          </View>
-          )}
+        </View>
+        )}
       </SafeAreaView>
       
   )
@@ -184,15 +176,12 @@ const deleteStatement = async(statement_id) => {
    } catch (error) {
      console.error(error);
    } finally {
-    // setLoading(false);
     console.log("done");
    }
  }
 
 //approve or reject the question
 const changeStatementHide = async(statement_id, status) => {
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/statement/status/change/';
     console.log(statement_id);
     try {
@@ -249,10 +238,7 @@ const changeStatementHide = async(statement_id, status) => {
                 <Text style={{padding:SIZES.padding}}>Submitted At: {submitted_at} </Text>
                 <Text style={{padding:SIZES.padding}}>Updated At: {updated_at} </Text>
             </Card>
-        {/* <Button
-            title="Edit"
-            onPress={()=>} 
-        /> */}
+     
         {hide == 1?(
             <View>
                 <Button
@@ -327,20 +313,3 @@ const changeStatementHide = async(statement_id, status) => {
 );
 
 }
- 
-
-const AdminStatementStack = createStackNavigator();
-
-const StatementsScreen = () => {
-    return (
-      
-        <AdminStatementStack.Navigator>
-              {/* <AdminStatementStack.Screen name="StatementsFullList" component={StatementsFullList} options={{title:"Statements List"}}/> */}
-              {/* <AdminStatementStack.Screen name="StatementDetail" component={StatementDetailScreen} options={{title:"Statements Detail"}}/> */}
-        </AdminStatementStack.Navigator>
-      
-    );
-}
-
-export default StatementsScreen;
-

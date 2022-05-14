@@ -6,7 +6,6 @@ import {
     Overlay
     } from 'react-native-elements';
 import { SafeAreaView, ActivityIndicator, View, ScrollView, Modal } from 'react-native';
-    //import{Stacks} from './SqlSectionList';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SIZES,COLORS } from '../components/style/theme';
 //image handling
@@ -48,8 +47,6 @@ const StatementDetailScreen = ({route}) => {
       <Card containerStyle={{paddingBottom:20,marginBottom:30}}>
         <Card.Title style={{fontSize:20}}>{title}</Card.Title>
         <Card.Divider />
-        {/* {images.map(image => {
-                    console.log('image',image); */}
           {images.length!=0?(
                 <View>
                  <SliderBox 
@@ -79,7 +76,6 @@ const StatementDetailScreen = ({route}) => {
                     circleLoop
                     imageLoadingColor={COLORS.primary}
                     onCurrentImagePressed={(index) => toggleImageOverlay(true, index)}
-                    // currentImageEmitter = {(index)=>setCurrentImage(index)}
                 />
                   <Card.Divider />
 
@@ -98,7 +94,6 @@ const StatementDetailScreen = ({route}) => {
         source={{ html: '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: Optima">'+description+'</body></html>' }}
       />
       </View>
-       {/* <Text style={{fontSize:16, paddingTop:5}}>{description}</Text> */}
       </Card>
       </ScrollView>
       <Overlay visible={imageOverlay} overlayStyle={{height:600, width:400}} onBackdropPress={()=>toggleImageOverlay(false)}>

@@ -18,7 +18,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {requestSubmitScreen} from './form/RequestSubmitScreen';
 import {Quiz, quizChooseScreen, congratScreen} from './QuizScreen';
 import {askSignInScreen} from './QuizScreen';
-// import {AccountScreen} from './AccountScreen';
 import {SIZES, COLORS, USER_ROLE} from '../components/style/theme';
 import { createStackNavigator } from '@react-navigation/stack';
 //auth
@@ -175,14 +174,10 @@ useEffect(() => {
                     marginVertical: 10,
                   }}
                   titleStyle={{ fontWeight: 'bold' }}
-                  //onPress={()=>toggleOverlay()}
                   onPress={() => navigation.navigate("StatementDetail",{
-        // statement_id: item._id,
         title:knowledgeTitle,
         description:knowledgeContent,
         images:knowledgeImages,
-        // author:item.author, 
-        // images: item.images
 
       })}
                   />
@@ -224,60 +219,6 @@ useEffect(() => {
         )}
         
       </ScrollView>
-
-            {/* <Overlay isVisible={isView} onBackdropPress={()=>toggleOverlay()}>
-            <SafeAreaView style={{height:SIZES.height-300, width: SIZES.width-100}}>
-              <ScrollView>
-                <Text style={{padding:10, alignSelf:"center", paddingBottom:40, fontSize:16}}>{knowledgeTitle}</Text>
-                 {haveImage?(
-                <View>
-                 <SliderBox 
-                    images={imageName}
-                    sliderBoxHeight={400}
-                    dotColor="#FFEE58"
-                    inactiveDotColor="#90A4AE"
-                    dotStyle={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: 15,
-                        marginHorizontal: 10,
-                        padding: 0,
-                        margin: 0
-                    }}
-                    paginationBoxVerticalPadding={20}
-                    ImageComponentStyle={{borderRadius: 15, width: '93%', margin:10}}
-                    resizeMethod={'resize'}
-                    resizeMode={'contain'}
-                    parentWidth = {390}
-                    circleLoop
-                    imageLoadingColor={COLORS.primary}
-                    // onCurrentImagePressed={(index) => toggleShowImage(true, index)}
-                    currentImageEmitter = {(index)=>setCurrentImage(index)}
-                />
-                    </View>
-                ):(
-                    <></>
-                )} */}
-                
-                {/* <Text style={{padding:10, fontSize:14}}>{knowledgeContent}</Text>
-
-              </ScrollView>
-              </SafeAreaView> */}
-            {/* </Overlay> */}
-
-      {role==USER_ROLE.admin||role==USER_ROLE.teacher?(
-          <FAB
-            visible={true}
-            onPress={() =>navigation.navigate("RequestSubmit")}
-            placement="right"
-            icon={{ name: 'add', color: 'white' }}
-            color="#d9cc35"
-          />
-      ):(
-        <View></View>
-      )}
-        
-        {/* </ImageBackground> */}
     </SafeAreaView>
 
   )

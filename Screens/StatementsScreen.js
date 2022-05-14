@@ -12,8 +12,6 @@ import { statementSubmitScreen } from './form/StatementCreateForm.js';
 //auth
 import { Provider, useSelector } from 'react-redux';
 
-
-
 const styles = StyleSheet.create({
   container: {
    flex: 1,
@@ -37,39 +35,9 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 })
-
-//http://220.246.129.225:19006/Statements';
-
-// const getResultFromApi = async() => {
-//   // const API_URL = Platform.OS === 'ios' ? 'http://localhost:19006/Statements' : 'http://220.246.129.225:19006/Statements';
-//   const API_URL = 'http://localhost:19009/statements';
-
-//   try{
-//     const res = await axios.get(API_URL);
-//     console.log(res.data);
-  
-//   }catch(error){
-//     console.log(error.message);
-//   }
-// }
-// const getResultFromApiAsync = async () => {
-//   try {
-//     const response = await fetch(
-//       // 'https://mufyptest.herokuapp.com/statements/'
-//       'https://mufyptest.herokuapp.com/api/retrieveStatements/'
-//     );
-//     return response.json();
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-
 // async function StatementsSectionList({navigation}){
  function StatementsFlatList({navigation}){
-  // const mounted=useRef();
   const role = useSelector(state => state.roleReducer.role);
-  // const [expanded, setExpanded] = useState(false);
     const renderItems = ({ item }) => (
       <TouchableOpacity onPress={() => navigation.navigate("StatementDetail",{
         title:item.title,
@@ -94,8 +62,6 @@ const styles = StyleSheet.create({
 
   const getStatements = async (searchText) => {
       
-    //https://reactnative.dev/movies.json
-    //http://localhost:8099/api/retrieveStatements/
     const API_URL = 'https://mufyptest.herokuapp.com/api/statements/find/'+searchText;
 
     try {
@@ -119,14 +85,11 @@ const styles = StyleSheet.create({
    setSearch(searchText);
    getStatements(searchText);
 
-  //  console.log(search);
  }
 
  
     return(
-      //style={{backgroundColor:COLORS.background}}
       <SafeAreaView>
-      {/* <View> */}
         {isLoading?<ActivityIndicator/>:(
           <View>
           <SearchBar 
@@ -143,61 +106,8 @@ const styles = StyleSheet.create({
             keyExtractor={item => item._id}
             onRefresh={() => getStatements("")}
             refreshing={isLoading}
-            // height={SIZES.height-400}
 
           />
-          {/* <ListItem.Accordion
-          content={
-            <>
-              <ListItem.Content>
-                <ListItem.Title>Easy</ListItem.Title>
-              </ListItem.Content>
-            </>
-          }
-          isExpanded={expanded}
-          onPress={() => {
-            setExpanded(!expanded);
-          }}>
-          {data.map((item) => (
-              <ListItem key={item.id} bottomDivideronPress={() => navigation.navigate("StatementDetail",{
-                title:item.title,
-                description:item.description,
-                images:item.images,
-              })}>
-                <ListItem.Content>
-                <Text style={{paddingLeft:10}}>{item.title}</Text>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-          ))}
-        </ListItem.Accordion>
-
-        <ListItem.Accordion
-          content={
-            <>
-              <ListItem.Content>
-                <ListItem.Title>Medium</ListItem.Title>
-              </ListItem.Content>
-            </>
-          }
-          isExpanded={expanded}
-          onPress={() => {
-            setExpanded(!expanded);
-          }}>
-          {data.map((item) => (
-              <ListItem key={item.id} bottomDivideronPress={() => navigation.navigate("StatementDetail",{
-                title:item.title,
-                description:item.description,
-                images:item.images,
-              })}>
-                <ListItem.Content>
-                <Text style={{paddingLeft:10}}>{item.title}</Text>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-          ))}
-        </ListItem.Accordion> */}
-
         </View>
           )} 
           {role==USER_ROLE.admin?(
@@ -214,9 +124,7 @@ const styles = StyleSheet.create({
             )}
       </SafeAreaView>
   )
-
 }
-
 
 const Stack = createStackNavigator();
 
